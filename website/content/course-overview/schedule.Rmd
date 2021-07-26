@@ -1,0 +1,149 @@
+---
+title: "Schedule"
+description: "Schedule"
+menu: "main"
+weight: 2
+editor_options: 
+  chunk_output_type: console
+---
+
+
+```{r schedule-setup, echo=FALSE, warning=FALSE, message=FALSE}
+# Using the FullCalendar JavaScript library: https://fullcalendar.io
+
+source('../../../R/createICS.R')
+library(readxl)
+library(lubridate)
+library(configr)
+
+options(knitr.kable.NA = '')
+
+palette <- c('#8dd3c7','#ffffb3','#bebada','#fb8072','#80b1d3','#fdb462',
+			 '#b3de69','#fccde5','#d9d9d9','#bc80bd','#ccebc5','#ffed6f')
+
+lastModified <- format(file.info('../../../Schedule.xlsx')[1,]$mtime, '%B %d, %Y %I:%M%p')
+
+meetups <- read_excel('../../../Schedule.xlsx', sheet = 'Meetups')
+meetups$day <- as.Date(meetups$Date)
+meetups$label <- paste0('Meetup ', meetups$StartTime, '\n', meetups$Topic)
+# meetups$label <- meetups$Topic
+meetups$color <- '#4A235A'
+meetups$fill <- NA
+
+# officeHours <- read_excel('../../../Schedule.xlsx', sheet = 'Office_Hours')
+# officeHours$day <- as.Date(officeHours$Date)
+# officeHours$label <- paste0('Office Hours\n', officeHours$StartTime, '')
+# officeHours$color <- '#145A32'
+# officeHours$fill <- NA
+# 
+# schedule <- rbind(meetups[,c('day', 'label', 'color', 'fill')],
+# 				  officeHours[,c('day', 'label', 'color', 'fill')])
+
+schedule <- meetups[,c('day', 'label', 'color', 'fill')]
+					
+topics <- read_excel('../../../Schedule.xlsx', sheet = 'Schedule')
+topics$Start <- as.Date(topics$Start)
+topics$End <- as.Date(topics$End)
+for(i in 1:nrow(topics)) {
+	schedule <- rbind(schedule, data.frame(
+		day = topics[i,]$Start,
+		label = paste0(topics[i,]$Topic, '\n\n\n'),
+		color = '#000000',
+		fill = palette[i]
+	))
+	dates <- seq(topics[i,]$Start, topics[i,]$End, by = 'day')[-1]
+	for(j in seq_along(dates)) {
+		schedule <- rbind(schedule, data.frame(
+			day = dates[j],
+			label = NA,
+			color = NA,
+			fill = palette[i]
+		))
+	}
+}
+
+start_day <- lubridate::floor_date(min(c(meetups$day, topics$Start)), "month")
+end_day <- lubridate::ceiling_date(max(c(meetups$day, topics$End)), "month") - 1
+```
+
+*Note: Schedule is subject to change. Last updated `r lastModified`.*
+
+```{r createICS, echo=FALSE, results='hide', warning=FALSE,error=FALSE,message=FALSE}
+config <- read.config('../../config.toml')
+outDir <- config$publishDir
+meetups$starttime <- parse_date_time(paste0(as.character(meetups$Date), ' ', meetups$StartTime),
+							    orders = "%Y-%m-%d %H:%M %p", tz = "America/New_York")
+meetups$endtime <- parse_date_time(paste0(as.character(meetups$Date), ' ', meetups$EndTime),
+								   orders = "%Y-%m-%d %H:%M %p", tz = "America/New_York")
+meetups$location <- 'Zoom'
+meetups$summary <- meetups$Topic
+meetups$description <- ''
+
+ics.file <- paste0('../../', outDir, '/Course_Calendar.ics')
+createICS(meetups) %>% write(file = ics.file)
+```
+
+
+[CUNY SPS Academic Calendar](https://sps.cuny.edu/academics/academic-calendar)
+
+```{r, echo=FALSE, results='hide'}
+initialDate <- Sys.Date()
+if(Sys.Date() < start_day) {
+	initialDate <- start_day
+} else if(Sys.Date() > end_day) {
+	initialDate <- end_day
+}
+```
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialDate: '`r initialDate`',
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      height: 'auto',
+      navLinks: true, // can click day/week names to navigate views
+      editable: true,
+      selectable: true,
+      selectMirror: true,
+      nowIndicator: true,
+      events: [
+ ```{r, echo=FALSE, results = 'asis', warning=FALSE, message=FALSE, error=FALSE}
+cat(paste0(c(
+	paste0('{ title: "', topics$Topic, '",\n', 
+	       ifelse(is.na(topics$Link), '', paste0('  url: "', topics$Link, '",\n')),
+		   "  start: '", as.Date(topics$Start), "',\n",
+		   "  end: '", (as.Date(topics$End)+1), "' }"),
+		paste0("{ title: '", meetups$Topic, "',\n", 
+	       ifelse(is.na(meetups$Link), '', paste0('  url: "', meetups$Link, '",\n')),
+		   "  start: '", format(meetups$starttime, '%Y-%m-%dT%H:%M:%S'), "',\n",
+		   "  end: '", format(meetups$endtime, '%Y-%m-%dT%H:%M:%S'), "' }")
+	), collapse = ',\n '))
+```
+      ]
+    });
+
+    calendar.render();
+  });
+
+</script>
+
+<div id='calendar'></div>
+
+
+```{r printTopics, eval = FALSE, echo=FALSE, warning=FALSE, message=FALSE, results='asis'}
+# This will create a table of the schedule. Set eval=TRUE to include.
+topics$Start <- format(topics$Start, format = '%A, %B %d, %Y')
+topics$End <- format(topics$End, format = '%A, %B %d, %Y')
+knitr::kable(topics)
+```
+
+[Click here to import the course calendar into your calendar application](/Course_Calendar.ics)
+

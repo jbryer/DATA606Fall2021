@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 5 - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+<meta name="generator" content="Hugo 0.78.1" />
+<link href="//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="/chapters/chapter5/">
+<link rel="stylesheet" href="/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script src="/js/bundle.js"></script><style>
+:root {--custom-background-color: #005DAC;}
+</style>
+<meta property="og:title" content="Chapter 5" />
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: { inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]], displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]], processEscapes: true, processEnvironments: true, skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;], TeX: { equationNumbers: { autoNumber: &#34;AMS&#34; }, extensions: [&#34;AMSmath.js&#34;, &#34;AMSsymbols.js&#34;] } } });   Foundations for Inference Learning Outcomes  Define sample statistic as a point estimate for a population parameter, for example, the sample proportion is used to estimate the population proportion, and note that point estimate and sample statistic are synonymous." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/chapters/chapter5/" />
+<meta property="og:image" content="/images/og-image.png"/>
+<meta property="article:published_time" content="2017-04-29T18:36:24+02:00" />
+<meta property="article:modified_time" content="2017-04-29T18:36:24+02:00" /><meta property="og:site_name" content="DATA 606" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/og-image.png"/>
+
+<meta name="twitter:title" content="Chapter 5"/>
+<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: { inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]], displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]], processEscapes: true, processEnvironments: true, skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;], TeX: { equationNumbers: { autoNumber: &#34;AMS&#34; }, extensions: [&#34;AMSmath.js&#34;, &#34;AMSsymbols.js&#34;] } } });   Foundations for Inference Learning Outcomes  Define sample statistic as a point estimate for a population parameter, for example, the sample proportion is used to estimate the population proportion, and note that point estimate and sample statistic are synonymous."/>
+<meta itemprop="name" content="Chapter 5">
+<meta itemprop="description" content="MathJax.Hub.Config({ tex2jax: { inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]], displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]], processEscapes: true, processEnvironments: true, skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;], TeX: { equationNumbers: { autoNumber: &#34;AMS&#34; }, extensions: [&#34;AMSmath.js&#34;, &#34;AMSsymbols.js&#34;] } } });   Foundations for Inference Learning Outcomes  Define sample statistic as a point estimate for a population parameter, for example, the sample proportion is used to estimate the population proportion, and note that point estimate and sample statistic are synonymous.">
+<meta itemprop="datePublished" content="2017-04-29T18:36:24+02:00" />
+<meta itemprop="dateModified" content="2017-04-29T18:36:24+02:00" />
+<meta itemprop="wordCount" content="1298">
+<meta itemprop="image" content="/images/og-image.png"/>
+
+
+
+<meta itemprop="keywords" content="" />
+<link href='/fullcalendar-lib/main.css' rel='stylesheet' />
+<script src='/fullcalendar-lib/main.js'></script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+#calendar {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body><div class="container"><header>
+
+<a href="/"><img src='/images/course_logo.png' align="left" style="height:40px; padding-right:10px;border:0;" /></a><h1>DATA 606 - Statistics &amp; Probability - Fall 2021</h1>
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/blog">Announcements</a></li>
+<li><a href="/course-overview/schedule/">Schedule</a></li>
+<li><a href="/course-overview/meetups/">Meetups</a></li>
+<li><a href="https://DATA606Fall2021.slack.com">Slack</a></li>
+<li><a href="https://bbhosted.cuny.edu/webapps/login">Blackboard</a></li>
+<li><a href="https://github.com/jbryer/DATA606Fall2021/">Github</a></li>
+<li><a href="https://sps.cuny.edu/academics/graduate/master-science-data-science-ms">CUNY SPS</a></li></ul>
+</nav>
+</div>
+<div class="content-container">
+<main><h1>Chapter 5</h1>
+<!-- 
+See issue with underscores in MathJax equations here: https://gohugo.io/content-management/formats/#issues-with-markdown
+The solution, put backticks (`) around the LaTeX equation
+-->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<h2 id="foundations-for-inference">Foundations for Inference</h2>
+<h3 id="learning-outcomes">Learning Outcomes</h3>
+<ul>
+<li>Define sample statistic as a point estimate for a population parameter, for example, the sample proportion is used to estimate the population proportion, and note that point estimate and sample statistic are synonymous.</li>
+<li>Recognize that point estimates (such as the sample proportion) will vary from one sample to another, and define this variability as sampling variation.</li>
+<li>Calculate the sampling variability of the proportion, the standard error, as $SE = \sqrt{\frac{p(1-p)}{n}}$, where $p$ is the population proportion.
+<ul>
+<li>Note that when the population proportion $p$ is not known (almost always), this can be estimated using the sample proportion, $SE = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$.</li>
+</ul>
+</li>
+<li>Standard error measures the variability in point estimates from different samples of the same size and from the same population, i.e. measures the sampling variability.</li>
+<li>Recognize that when the sample size increases we would expect the sampling variability to decrease.
+<ul>
+<li>Conceptually: Imagine taking many samples from the population. When sample sizes are large the sample proportion will be much more consistent across samples than when the sample sizes are small.</li>
+<li>Mathematically: $SE = ???$, when $n$ increases, $SE$ will decrease since $n$ is in the denominator.</li>
+</ul>
+</li>
+<li>Notice that sampling distributions of point estimates coming from samples that don&rsquo;t meet the required conditions for the CLT (about sample size and independence) will not be normal.</li>
+<li>Define a confidence interval as the plausible range of values for a population parameter.</li>
+<li>Define the confidence level as the percentage of random samples which yield confidence intervals that capture the true population parameter.</li>
+<li>Calculate an approximate 95% confidence interval by adding and subtracting 2 standard errors to the point estimate: $point~estimate \pm 2 \times SE$.</li>
+<li>Recognize that the Central Limit Theorem (CLT) is about the distribution of point estimates, and that given certain conditions, this distribution will be nearly normal.
+<ul>
+<li>In the case of the proportion the CLT tells us that if
+<ol>
+<li>the observations in the sample are independent, and</li>
+<li>there are at least 10 successes and 10 failures,
+\end{itemize}
+then the distribution of the sample proportion will be nearly normal, centered at the true population proportion and with a standard error of $\sqrt{\frac{p(1-p)}{n}}$.
+[ \hat{p} \sim N \left( mean = p, SE = \sqrt{\frac{\hat{p}(1-\hat{p})}{n}} \right) ]</li>
+</ol>
+</li>
+<li>When the population proportion is unknown, condition (2) can be checked using the sample proportion.</li>
+</ul>
+</li>
+<li>Recall that independence of observations in a sample is provided by random sampling (in the case of observational studies) or random assignment (in the case of experiments).
+<ul>
+<li>In addition, the sample should not be \textit{too} large compared to the population, or more precisely, should be smaller than 10% of the population, since samples that are too large will likely contain observations that are not independent.
+\end{itemize}</li>
+</ul>
+</li>
+<li>Recognize that the nearly normal distribution of the point estimate (as suggested by the CLT) implies that a more precise confidence interval can be calculated as
+[ point~estimate \pm z^{\star} \times SE, ]
+where $z^{\star}$ corresponds to the cutoff points in the standard normal distribution to capture the middle XX% of the data, where XX% is the desired confidence level.
+<ul>
+<li>For proportions this is $\bar{x} \pm Z^\star \sqrt{\frac{p(1-p)}{n}}$.</li>
+<li>Note that $z^{\star}$ is always positive.</li>
+</ul>
+</li>
+<li>Define margin of error as the distance required to travel in either direction away from the point estimate when constructing a confidence interval, i.e. $z^{\star} \times SE$.
+<ul>
+<li>Notice that this corresponds to half the width of the confidence interval.</li>
+</ul>
+</li>
+<li>Interpret a confidence interval as &ldquo;We are XX% confident that the true population parameter is in this interval&rdquo;, where XX% is the desired confidence level.
+<ul>
+<li>Note that your interpretation must always be in context of the data &ndash; mention what the population is and what the parameter is (mean or proportion).</li>
+</ul>
+</li>
+<li>Explain how the hypothesis testing framework resembles a court trial.</li>
+<li>Recognize that in hypothesis testing we evaluate two competing claims:
+<ul>
+<li>the null hypothesis, which represents a skeptical perspective or the status quo, and</li>
+<li>the alternative hypothesis, which represents an alternative under consideration and is often represented by a range of possible parameter values.</li>
+</ul>
+</li>
+<li>Construction of hypotheses:
+<ul>
+<li>Always construct hypotheses about population parameters (e.g. population proportion, $p$) and not the sample statistics (e.g. sample proportion, $\hat{p}$). Note that the population parameter is unknown while the sample statistic is measured using the observed data and hence there is no point in hypothesizing about it.</li>
+<li>Define the null value as the value the parameter is set to equal in the null hypothesis.</li>
+<li>Note that the alternative hypothesis might be one-sided ($\mu$ $&lt;$ or $&gt;$ the null value) or two-sided ($\mu$ $\ne$ the null value), and the choice depends on the research question.</li>
+</ul>
+</li>
+<li>Define a p-value as the conditional probability of obtaining a sample statistic at least as extreme as the one observed given that the null hypothesis is true.
+<code>$\text{p-value} = \text{P(observed or more extreme sample statistic}~|~H_0 \text{ true)}$</code></li>
+<li>Calculate a p-value as the area under the normal curve beyond the observed sample proportion (either in one tail or both, depending on the alternative hypothesis). Note that in doing so you can use a Z score, where
+<code>$Z = \frac{sample~statistic - null~value}{SE} = \frac{\bar{x} - \mu_0}{SE}$</code>
+<ul>
+<li>Always sketch the normal curve when calculating the p-value, and shade the appropriate area(s) depending on whether the alternative hypothesis is one- or two-sided.</li>
+</ul>
+</li>
+<li>Infer that if a confidence interval does not contain the null value the null hypothesis should be rejected in favor of the alternative.</li>
+<li>Compare the p-value to the significance level to make a decision between the hypotheses:
+<ul>
+<li>If the p-value $&lt;$ the significance level, reject the null hypothesis since this means that obtaining a sample statistics at least as extreme as the observed data is extremely unlikely to happen just by chance, and conclude that the data provides evidence for the alternative hypothesis.</li>
+<li>If the p-value $&gt;$ the significance level, fail to reject the null hypothesis since this means that obtaining a sample statistics at least as extreme as the observed data is quite likely to happen by chance, and conclude that the data does not provide evidence for the alternative hypothesis.</li>
+<li>Note that we can never &ldquo;accept&rdquo; the null hypothesis since the hypothesis testing framework does not allow us to confirm it.</li>
+</ul>
+</li>
+<li>Note that the conclusion of a hypothesis test might be erroneous regardless of the decision we make.
+<ul>
+<li>Define a Type 1 error as rejecting the null hypothesis when the null hypothesis is actually true.</li>
+<li>Define a Type 2 error as failing to reject the null hypothesis when the alternative hypothesis is actually true.</li>
+</ul>
+</li>
+<li>Choose a significance level depending on the risks associated with Type 1 and Type 2 errors.
+<ul>
+<li>Use a smaller $\alpha$ is Type 1 error is relatively riskier.</li>
+<li>Use a larger $\alpha$ is Type 2 error is relatively riskier.</li>
+</ul>
+</li>
+<li>Formulate the framework for statistical inference using hypothesis testing and nearly normal point estimates:
+<ol>
+<li>Set up the hypotheses first in plain language and then using appropriate notation.</li>
+<li>Identify the appropriate sample statistic that can be used as a point estimate for the parameter of interest.</li>
+<li>Verify that the conditions for the CLT holds.</li>
+<li>Compute the SE, sketch the sampling distribution, and shade area(s) representing the p-value.</li>
+<li>Using the sketch and the normal model, calculate the p-value and determine if the null hypothesis should be rejected or not, and state your conclusion in context of the data and the research question.</li>
+</ol>
+</li>
+<li>If the conditions necessary for the CLT to hold are not met, note this and do not go forward with the analysis. (We will later learn about methods to use in these situations.)</li>
+<li>Distinguish statistical significance vs. practical significance.</li>
+</ul>
+<h3 id="supplemental-readings">Supplemental Readings</h3>
+<ul>
+<li>
+<p><a href="https://github.com/jbryer/DATA606Fall2020/blob/master/Slides/OpenIntro/chp5.pdf">OpenIntro Statistics slides</a></p>
+</li>
+<li>
+<p><a href="https://www.openintro.org/stat/why05.php">Why do we use 0.05 as a significance level?</a></p>
+</li>
+</ul>
+<h3 id="videos">Videos</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/oLW_uzkPZGA" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/A6_W8qY8zJo" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/NVbPE1_Cbx8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BqXgM-PCcls" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="edit-meta">
+Last updated on Sat Apr 29, 2017
+
+
+<br>
+Published on Sat Apr 29, 2017
+<br><a href="https://github.com/jbryer/DATA606Fall2021/edit/master/website/content/chapters/chapter5.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="/chapters/chapter4/" title="Chapter 4"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Chapter 4</a>
+<a class="nav nav-next" href="/chapters/chapter6/" title="Chapter 6">Next - Chapter 6 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="/">Home</a></li>
+
+
+
+<li class=""><a href="/course-overview/">Syllabus</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/course-overview/instructor/">Instructor</a></li>
+<li class=""><a href="/course-overview/schedule/">Schedule</a></li>
+<li class=""><a href="/course-overview/meetups/">Meetups</a></li>
+<li class=""><a href="/course-overview/textbooks/">Textbooks</a></li>
+<li class=""><a href="/course-overview/software/">Software</a></li>
+<li class=""><a href="/course-overview/mathjax/">Math Equations</a></li>
+<li class=""><a href="/course-overview/materials/">Materials</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/assignments/">Assignments</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/assignments/daacs/">DAACS</a></li>
+<li class=""><a href="/assignments/participation/">Participation</a></li>
+<li class=""><a href="/assignments/homework/">Homework</a></li>
+<li class=""><a href="/assignments/labs/">Labs</a></li>
+<li class=""><a href="/assignments/project/">Project</a></li>
+<li class=""><a href="/assignments/final/">Final Exam</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="/chapters/">Chapters</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/chapters/chapter1/">Chapter 1</a></li>
+<li class=""><a href="/chapters/chapter2/">Chapter 2</a></li>
+<li class=""><a href="/chapters/chapter3/">Chapter 3</a></li>
+<li class=""><a href="/chapters/chapter4/">Chapter 4</a></li>
+<li class="active"><a href="/chapters/chapter5/">Chapter 5</a></li>
+<li class=""><a href="/chapters/chapter6/">Chapter 6</a></li>
+<li class=""><a href="/chapters/chapter7/">Chapter 7</a></li>
+<li class=""><a href="/chapters/chapter8/">Chapter 8</a></li>
+<li class=""><a href="/chapters/chapter9/">Chapter 9</a></li>
+<li class=""><a href="/chapters/bayesian/">Bayesian</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

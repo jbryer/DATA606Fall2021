@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Chapter 4 - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+<meta name="generator" content="Hugo 0.78.1" />
+<link href="//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="/chapters/chapter4/">
+<link rel="stylesheet" href="/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script src="/js/bundle.js"></script><style>
+:root {--custom-background-color: #005DAC;}
+</style>
+<meta property="og:title" content="Chapter 4" />
+<meta property="og:description" content="MathJax.Hub.Config({ tex2jax: { inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]], displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]], processEscapes: true, processEnvironments: true, skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;], TeX: { equationNumbers: { autoNumber: &#34;AMS&#34; }, extensions: [&#34;AMSmath.js&#34;, &#34;AMSsymbols.js&#34;] } } });   Distributions of Random Variables Learning Outcomes  Define the standardized (Z) score of a data point as the number of standard deviations it is away from the mean: $Z = \frac{x - \mu}{\sigma}$. Use the Z score  if the distribution is normal: to determine the percentile score of a data point (using technology or normal probability tables) regardless of the shape of the distribution: to assess whether or not the particular observation is considered to be unusual (more than 2 standard deviations away from the mean)   Depending on the shape of the distribution determine whether the median would have a negative, positive, or 0 Z score." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/chapters/chapter4/" />
+<meta property="og:image" content="/images/og-image.png"/>
+<meta property="article:published_time" content="2017-04-29T18:36:24+02:00" />
+<meta property="article:modified_time" content="2017-04-29T18:36:24+02:00" /><meta property="og:site_name" content="DATA 606" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/og-image.png"/>
+
+<meta name="twitter:title" content="Chapter 4"/>
+<meta name="twitter:description" content="MathJax.Hub.Config({ tex2jax: { inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]], displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]], processEscapes: true, processEnvironments: true, skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;], TeX: { equationNumbers: { autoNumber: &#34;AMS&#34; }, extensions: [&#34;AMSmath.js&#34;, &#34;AMSsymbols.js&#34;] } } });   Distributions of Random Variables Learning Outcomes  Define the standardized (Z) score of a data point as the number of standard deviations it is away from the mean: $Z = \frac{x - \mu}{\sigma}$. Use the Z score  if the distribution is normal: to determine the percentile score of a data point (using technology or normal probability tables) regardless of the shape of the distribution: to assess whether or not the particular observation is considered to be unusual (more than 2 standard deviations away from the mean)   Depending on the shape of the distribution determine whether the median would have a negative, positive, or 0 Z score."/>
+<meta itemprop="name" content="Chapter 4">
+<meta itemprop="description" content="MathJax.Hub.Config({ tex2jax: { inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]], displayMath: [[&#39;$$&#39;,&#39;$$&#39;], [&#39;\[&#39;,&#39;\]&#39;]], processEscapes: true, processEnvironments: true, skipTags: [&#39;script&#39;, &#39;noscript&#39;, &#39;style&#39;, &#39;textarea&#39;, &#39;pre&#39;], TeX: { equationNumbers: { autoNumber: &#34;AMS&#34; }, extensions: [&#34;AMSmath.js&#34;, &#34;AMSsymbols.js&#34;] } } });   Distributions of Random Variables Learning Outcomes  Define the standardized (Z) score of a data point as the number of standard deviations it is away from the mean: $Z = \frac{x - \mu}{\sigma}$. Use the Z score  if the distribution is normal: to determine the percentile score of a data point (using technology or normal probability tables) regardless of the shape of the distribution: to assess whether or not the particular observation is considered to be unusual (more than 2 standard deviations away from the mean)   Depending on the shape of the distribution determine whether the median would have a negative, positive, or 0 Z score.">
+<meta itemprop="datePublished" content="2017-04-29T18:36:24+02:00" />
+<meta itemprop="dateModified" content="2017-04-29T18:36:24+02:00" />
+<meta itemprop="wordCount" content="402">
+<meta itemprop="image" content="/images/og-image.png"/>
+
+
+
+<meta itemprop="keywords" content="" />
+<link href='/fullcalendar-lib/main.css' rel='stylesheet' />
+<script src='/fullcalendar-lib/main.js'></script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+#calendar {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body><div class="container"><header>
+
+<a href="/"><img src='/images/course_logo.png' align="left" style="height:40px; padding-right:10px;border:0;" /></a><h1>DATA 606 - Statistics &amp; Probability - Fall 2021</h1>
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/blog">Announcements</a></li>
+<li><a href="/course-overview/schedule/">Schedule</a></li>
+<li><a href="/course-overview/meetups/">Meetups</a></li>
+<li><a href="https://DATA606Fall2021.slack.com">Slack</a></li>
+<li><a href="https://bbhosted.cuny.edu/webapps/login">Blackboard</a></li>
+<li><a href="https://github.com/jbryer/DATA606Fall2021/">Github</a></li>
+<li><a href="https://sps.cuny.edu/academics/graduate/master-science-data-science-ms">CUNY SPS</a></li></ul>
+</nav>
+</div>
+<div class="content-container">
+<main><h1>Chapter 4</h1>
+<!-- 
+See issue with underscores in MathJax equations here: https://gohugo.io/content-management/formats/#issues-with-markdown
+The solution, put backticks (`) around the LaTeX equation
+-->
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  tex2jax: {
+    inlineMath: [['$','$'], ['\\(','\\)']],
+    displayMath: [['$$','$$'], ['\[','\]']],
+    processEscapes: true,
+    processEnvironments: true,
+    skipTags: ['script', 'noscript', 'style', 'textarea', 'pre'],
+    TeX: { equationNumbers: { autoNumber: "AMS" },
+         extensions: ["AMSmath.js", "AMSsymbols.js"] }
+  }
+});
+</script>
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML">
+</script>
+<h2 id="distributions-of-random-variables">Distributions of Random Variables</h2>
+<h3 id="learning-outcomes">Learning Outcomes</h3>
+<ul>
+<li>Define the standardized (Z) score of a data point as the number of standard deviations it is away from the mean: $Z = \frac{x - \mu}{\sigma}$.</li>
+<li>Use the Z score
+<ul>
+<li>if the distribution is normal: to determine the percentile score of a data point (using technology or normal probability tables)</li>
+<li>regardless of the shape of the distribution: to assess whether or not the particular observation is considered to be unusual (more than 2 standard deviations away from the mean)</li>
+</ul>
+</li>
+<li>Depending on the shape of the distribution determine whether the median would have a negative, positive, or 0 Z score.</li>
+<li>Assess whether or not a distribution is nearly normal using the 68-95-99.7% rule or graphical methods such as a normal probability plot.
+<ul>
+<li>Reading: Section 4.1 of OpenIntro Statistics</li>
+<li>Test yourself: True/False: In a right skewed distribution the Z score of the median is positive.</li>
+</ul>
+</li>
+<li>If X is a random variable that takes the value 1 with probability of success $p$ and 0 with probability of success $1-p$, then $X$ is a Bernoulli random variable.</li>
+<li>The geometric distribution is used to describe how many trials it takes to observe a success.</li>
+<li>Define the probability of finding the first success in the $n^{th}$ trial as $(1-p)^{n-1}p$.
+<ul>
+<li>$\mu = \frac{1}{p}$</li>
+<li>$\sigma^2 = \frac{1-p}{p^2}$</li>
+<li>$\sigma = \sqrt{\frac{1-p}{p^2}}$</li>
+</ul>
+</li>
+<li>Determine if a random variable is binomial using the four conditions:
+<ul>
+<li>The trials are independent.</li>
+<li>The number of trials, n, is fixed.</li>
+<li>Each trial outcome can be classified as a success or failure.</li>
+<li>The probability of a success, p, is the same for each trial.</li>
+</ul>
+</li>
+<li>Calculate the number of possible scenarios for obtaining $k$ successes in $n$ trials using the choose function: ${n \choose k} = \frac{n!}{k!~(n - k)!}$.</li>
+<li>Calculate probability of a given number of successes in a given number of trials using the binomial distribution: $P(k = K) = \frac{n!}{k!~(n - k)!}~p^k~(1-p)^{(n - k)}$.</li>
+<li>Calculate the expected number of successes in a given number of binomial trials $(\mu = np)$ and its standard deviation $(\sigma = \sqrt{np(1-p)})$.</li>
+<li>When number of trials is sufficiently large ($np \ge 10$ and $n(1-p) \ge 10$), use normal approximation to calculate binomial probabilities, and explain why this approach works.</li>
+</ul>
+<h3 id="supplemental-readings">Supplemental Readings</h3>
+<ul>
+<li><a href="https://github.com/jbryer/DATA606Fall2020/blob/master/Slides/OpenIntro/chp4.pdf">OpenIntro Statistics slides</a></li>
+</ul>
+<h3 id="videos">Videos</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/S_p5D-YXLS4" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/smJBsZ4YQZw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/tKmyzhvgudw" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/VvksxAZAlrQ" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<div class="edit-meta">
+Last updated on Sat Apr 29, 2017
+
+
+<br>
+Published on Sat Apr 29, 2017
+<br><a href="https://github.com/jbryer/DATA606Fall2021/edit/master/website/content/chapters/chapter4.md" class="edit-page"><i class="fas fa-pen-square"></i> Edit on GitHub</a></div><nav class="pagination"><a class="nav nav-prev" href="/chapters/chapter3/" title="Chapter 3"><i class="fas fa-arrow-left" aria-hidden="true"></i> Prev - Chapter 3</a>
+<a class="nav nav-next" href="/chapters/chapter5/" title="Chapter 5">Next - Chapter 5 <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="/">Home</a></li>
+
+
+
+<li class=""><a href="/course-overview/">Syllabus</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/course-overview/instructor/">Instructor</a></li>
+<li class=""><a href="/course-overview/schedule/">Schedule</a></li>
+<li class=""><a href="/course-overview/meetups/">Meetups</a></li>
+<li class=""><a href="/course-overview/textbooks/">Textbooks</a></li>
+<li class=""><a href="/course-overview/software/">Software</a></li>
+<li class=""><a href="/course-overview/mathjax/">Math Equations</a></li>
+<li class=""><a href="/course-overview/materials/">Materials</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/assignments/">Assignments</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/assignments/daacs/">DAACS</a></li>
+<li class=""><a href="/assignments/participation/">Participation</a></li>
+<li class=""><a href="/assignments/homework/">Homework</a></li>
+<li class=""><a href="/assignments/labs/">Labs</a></li>
+<li class=""><a href="/assignments/project/">Project</a></li>
+<li class=""><a href="/assignments/final/">Final Exam</a></li>
+</ul>
+  
+</li>
+
+<li class="parent"><a href="/chapters/">Chapters</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/chapters/chapter1/">Chapter 1</a></li>
+<li class=""><a href="/chapters/chapter2/">Chapter 2</a></li>
+<li class=""><a href="/chapters/chapter3/">Chapter 3</a></li>
+<li class="active"><a href="/chapters/chapter4/">Chapter 4</a></li>
+<li class=""><a href="/chapters/chapter5/">Chapter 5</a></li>
+<li class=""><a href="/chapters/chapter6/">Chapter 6</a></li>
+<li class=""><a href="/chapters/chapter7/">Chapter 7</a></li>
+<li class=""><a href="/chapters/chapter8/">Chapter 8</a></li>
+<li class=""><a href="/chapters/chapter9/">Chapter 9</a></li>
+<li class=""><a href="/chapters/bayesian/">Bayesian</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

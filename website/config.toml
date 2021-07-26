@@ -1,0 +1,151 @@
+baseURL = "/"
+
+title = "DATA 606 - Statistics & Probability - Fall 2021"
+
+# This is the default directory for Github Pages
+publishDir = "../docs/"
+
+
+ignoreErrors = ["error-remote-getjson"]
+ignoreFiles = ["\\.pdf$", "\\.r$", "\\.R$", "\\.Rd$", "\\.txt$", "\\.csv$", "\\.rda$", "\\.Rda$", "\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+languageCode = "en-us"
+DefaultContentLanguage = "en"
+theme = "hugo-theme-techdoc"
+hasCJKLanguage = true
+metaDataFormat = "yaml"
+defaultContentLanguage = "en"
+defaultContentLanguageInSubdir= false
+enableMissingTranslationPlaceholders = false
+
+
+
+[params]
+
+    # Description of course appears under title (optional)
+    # description = "CUNY Master's of Data Science"
+    # Source Code repository section
+    github_repository = "https://github.com/jbryer/DATA606Fall2021"
+
+    # Version number (optional)
+    version = ""
+
+    # Documentation repository section
+    # documentation repository (set edit link to documentation repository)
+    github_doc_repository = "https://github.com/jbryer/DATA606Fall2021"
+    # If the website is in the root of the repository then leave this blank,
+    # otherwise specify subdirectory where the Hugo source is located
+    github_doc_repository_directory = "website/"
+
+    # Analytic section
+    google_analytics_id = "" # Your Google Analytics tracking id
+    tag_manager_container_id = "" # Your Google Tag Manager container id
+    google_site_verification = "" # Your Google Site Verification for Search Console
+
+    # Open Graph and Twitter Cards settings section
+    # Open Graph settings for each page are set on the front matter.
+    # See https://gohugo.io/templates/internal/#open-graph
+    # See https://gohugo.io/templates/internal/#twitter-cards
+    title = "DATA 606"
+    images = ["images/og-image.png"] # Open graph images are placed in `static/images`
+
+    # Theme settings section
+    # Theme color
+    # See color value reference https://developer.mozilla.org/en-US/docs/Web/CSS/color
+    custom_font_color = ""
+    custom_background_color = "#005DAC" # "#003366"
+
+    # Documentation Menu section
+    # Menu style settings
+    menu_style = "open-menu" # "open-menu" or "slide-menu" or "" blank is as no sidebar
+
+    # Date format
+    dateformat = "Mon Jan 2, 2006" # default "2 Jan 2006"
+    # See the format reference https://gohugo.io/functions/format/#hugo-date-and-time-templating-reference
+
+    # path name excluded from documentation menu
+    menu_exclusion = [
+        "archives",
+        "archive",
+        "blog",
+        "entry",
+        "post",
+        #"posts",
+    ]
+
+    # Algolia site search section
+    # See https://www.algolia.com/doc/
+    algolia_search_enable = true
+    algolia_indexName = "hugo-demo-techdoc"
+    algolia_appId = "7W4SAN4PLK"
+    algolia_apiKey = "cbf12a63ff72d9c5dc0c10c195cf9128" # Search-Only API Key
+
+# Global menu section
+# See https://gohugo.io/content-management/menus/
+[menu]
+    [[menu.main]]
+        name = "Home"
+        url = "/"
+        weight = 1
+
+    [[menu.main]]
+        name = "Announcements"
+        url = "/blog"
+        weight = 2
+
+    [[menu.main]]
+        name = "Slack"
+        url = "https://DATA606Fall2021.slack.com"
+        weight = 5
+
+    [[menu.main]]
+        name = "Blackboard"
+        url = "https://bbhosted.cuny.edu/webapps/login"
+        weight = 20
+
+    [[menu.main]]
+        name = "Github"
+        url = "https://github.com/jbryer/DATA606Fall2021/"
+        weight = 25
+
+    [[menu.main]]
+        name = "CUNY SPS"
+        url = "https://sps.cuny.edu/academics/graduate/master-science-data-science-ms"
+        weight = 30
+
+# Markup configure section
+# See https://gohugo.io/getting-started/configuration-markup/
+[markup]
+    defaultMarkdownHandler = "goldmark"
+    [markup.goldmark.renderer]
+        unsafe= true
+    [markup.tableOfContents]
+        startLevel = 2
+        endLevel = 6
+        ordered = false
+
+[outputs]
+    home = ["HTML", "RSS", "Algolia"]
+
+# Algolia Search configure section
+[outputFormats.Algolia]
+    baseName = "algolia"
+    mediaType = "application/json"
+    isPlainText = true
+    notAlternative = true
+
+[params.algolia]
+    vars = [
+        "title",
+        "summary",
+        "content",
+        "date",
+        "publishdate",
+        "description",
+        "permalink",
+        "keywords",
+        "lastmod",
+    ]
+    params = [
+        "tags",
+        "categories",
+    ]

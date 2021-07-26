@@ -1,0 +1,21 @@
+---
+title: "DATA 606 Spring 2021"
+output: github_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<a href='https://spring2021.data606.net'><img src='website/static/images/course_logo.png' align="right" height="200" /></a>
+
+Instructor: Jason Bryer, Ph.D.  
+Class Meetup: Wednesday 8:30pm to 9:30pm  
+Office Hours: Friday 12pm to 1pm & by appointment  
+Email: jason.bryer@cuny.edu  
+Website: https://spring2021.data606.net  
+
+For details on the template used to create this course website, visit https://github.com/CUNY-MSDS/course_template.
+

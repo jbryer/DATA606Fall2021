@@ -1,0 +1,172 @@
+---
+title: 'Example Project: Hanging Chads'
+author: "Jason Bryer, Ph.D."
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE, error =FALSE)
+```
+
+## 2000 Election 
+
+The 2000 election between George Bush and Al Gore was ultimately decided in Florida. However, there was a third candidate on the ballot, Pat Buchanan, and one county with an unpredictable outcome. Is there evidence that a large number of votes were cast for a mistaken candidate?
+
+The `elections` data frame contains the breakdown of votes by each of the 67 counties in Florida.
+
+```{r}
+elections <- read.table("../course_data/2000elections.txt", header=TRUE)
+```
+
+```{r, echo=FALSE}
+source('../course_data/fl_counties.R')
+elections$County_Name <- fl.counties
+```
+
+There are `r nrow(elections)` counties in Florida that cast at total of `r prettyNum(sum(elections$bush), big.mark = ',')` votes for George Bush and `r prettyNum(sum(elections$gore), ',')` resulting in Bush winning by `r sum(elections$bush) - sum(elections$gore)` votes.
+
+However, in the days following the election there was much controversy surrounding so called "hanging chads." That is, there were a number of ballots where it was not clear who the vote was for. This was a particular issue in Palm Beach. 
+
+## Florida Counties (blue = Gore; red = Bush)
+
+```{r, echo = FALSE, fig.width = 8, fig.height = 6}
+library(tidyverse)
+library(urbnmapr)
+elections <- elections %>% 
+	mutate(difference = bush - gore,
+		   percent_bush = bush / (bush + gore))
+fl <- counties %>% filter(state_abbv == 'FL') %>%
+	mutate(County_Name = toupper(gsub(' County', '', county_name))) %>%
+	left_join(elections, by = 'County_Name')
+palm_beach <- fl %>% filter(County_Name == 'PALM BEACH')
+ggplot(fl, aes(long, lat, group = group, fill = percent_bush)) + 
+	geom_polygon(color = "#ffffff", size = .25) +
+	geom_polygon(data = palm_beach, color = 'black', size = 1) +
+	scale_fill_gradient2(low = 'blue', high = 'red', mid = 'white', midpoint = 0.5) +
+	coord_map() + theme_void() + theme(legend.position = 'none')
+```
+
+## Number of votes by county in Florida 
+
+```{r}
+ggplot(elections, aes(bush, buch)) + geom_point() +
+	xlab("Number of votes for Bush") + ylab("Number of votes for Buchanan") +
+	ggtitle("Number of votes by county in Florida")
+```
+
+## Correlation
+
+```{r}
+cor.test(elections$buch, elections$bush)
+```
+
+## Linear Regression Model
+
+```{r}
+model1 <- lm(buch ~ bush, data = elections)
+summary(model1)
+```
+
+
+## Residual Analysis 
+
+```{r, echo=FALSE}
+par.orig <- par(mfrow=c(2,2))
+plot(log(elections$bush), resid(model1), main="Predictors vs Residuals")
+abline(0,0)
+plot(fitted(model1), resid(model1),main="Fitted vs Residuals", xlab="Fitted Values")
+abline(0,0)
+qqnorm(resid(model1), main="QQ-Plot of Residuals")
+qqline(resid(model1))
+hist(resid(model1), main="Histogram of Residuals")
+par(par.orig)
+```
+
+## Log Tranform 
+
+```{r, echo = FALSE}
+ggplot(elections, aes(bush, buch)) + geom_point() +
+	scale_x_log10() + scale_y_log10() +
+	xlab("Log of number of votes for Bush") + ylab("Log of number of votes for Buchanan") +
+	ggtitle("Number of votes by county in Florida")
+```
+
+## Correlation with log tranformations
+
+```{r}
+cor.test(log(elections$buch), log(elections$bush))
+```
+
+## Linear Regression Model (log transform)
+
+```{r}
+model2 <- lm(log(buch) ~ log(bush), data = elections)
+summary(model2)
+```
+
+## Regression model without Palm Beach
+
+```{r}
+model3 <- lm(log(buch) ~ log(bush), data = elections[-50,])
+summary(model3)
+```
+
+## Residual Analysis (log) 
+
+```{r, echo=FALSE}
+par.orig <- par(mfrow=c(2,2))
+plot(log(elections$bush[-50]), resid(model3), main="Predictors vs Residuals")
+abline(0,0)
+plot(fitted(model3), resid(model3), main="Fitted vs Residuals", xlab="Fitted Values")
+abline(0,0)
+qqnorm(resid(model3), main="QQ-Plot of Residuals")
+qqline(resid(model3))
+hist(resid(model3), main="Histogram of Residuals")
+par(par.orig)
+```
+
+## Predict Palm Beach from the model
+
+Obtain the predicted vote count for Palm Beach given the fitted model without
+
+```{r}
+new <- data.frame(bush = elections$bush[50])
+```
+
+The difference between predicted on the original scale and the observed vote count
+
+```{r}
+elections$buch[50] - exp(predict(model3, new))
+```
+
+## Predict Palm Beach from the model (cont.)
+
+Prediction Confidence Interval for log(vote count)
+
+```{r}
+predict(model3, new, interval='prediction', level=.95)
+```
+
+Prediction Confidence Interval on the original scale
+
+```{r}
+exp(predict(model3, new, interval='prediction',level=.95))
+elections$buch[50]
+```
+
+Therefore, what we can say is that it is likely that Palm Beach is a different community.
+
+
+##
+
+<img src='Palm_Beach_Ballot.png' alt='Palm Beach Ballot' height = '550' />
+
+
+---
+# References
+
+Wand, J.N., Shotts, K.W., Sekhon, J.S., Mebane, W.R., Herron, M.C., & Brady, H.E. (2001). [The Butterfly Did It: The Aberrant Vote for Buchanan in Palm Beach County, Florida](http://sekhon.berkeley.edu/papers/butterfly.pdf). *American Political Science Reviw, 95*(4).
+
+Smith, R.L. (2002). [A Statistical Assessment of Buchanan’s Vote in Palm Beach County](https://projecteuclid.org/download/pdf_1/euclid.ss/1049993203). *Statistical Science, 17*(4).
+
+[Regression Analysis - 1.3.3 - 2000 Elections in Florida (Youtube)](https://www.youtube.com/watch?v=C0NPK24YByM)

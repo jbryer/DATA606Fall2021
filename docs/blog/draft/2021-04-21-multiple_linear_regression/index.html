@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Multiple Linear Regression - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+<meta name="generator" content="Hugo 0.78.1" />
+<link href="//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="/blog/draft/2021-04-21-multiple_linear_regression/">
+<link rel="stylesheet" href="/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script src="/js/bundle.js"></script><style>
+:root {--custom-background-color: #005DAC;}
+</style>
+<meta property="og:title" content="Multiple Linear Regression" />
+<meta property="og:description" content="
+
+
+
+Click here to open the slides.
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/draft/2021-04-21-multiple_linear_regression/" />
+<meta property="og:image" content="/images/og-image.png"/>
+<meta property="article:published_time" content="2021-04-21T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-04-21T00:00:00+00:00" /><meta property="og:site_name" content="DATA 606" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/og-image.png"/>
+
+<meta name="twitter:title" content="Multiple Linear Regression"/>
+<meta name="twitter:description" content="
+
+
+
+Click here to open the slides.
+
+
+"/>
+<meta itemprop="name" content="Multiple Linear Regression">
+<meta itemprop="description" content="
+
+
+
+Click here to open the slides.
+
+
+">
+<meta itemprop="datePublished" content="2021-04-21T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-04-21T00:00:00+00:00" />
+<meta itemprop="wordCount" content="901">
+<meta itemprop="image" content="/images/og-image.png"/>
+
+
+
+<meta itemprop="keywords" content="Annoucement," />
+<link href='/fullcalendar-lib/main.css' rel='stylesheet' />
+<script src='/fullcalendar-lib/main.js'></script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+#calendar {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body><div class="container"><header>
+
+<a href="/"><img src='/images/course_logo.png' align="left" style="height:40px; padding-right:10px;border:0;" /></a><h1>DATA 606 - Statistics &amp; Probability - Fall 2021</h1>
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/blog">Announcements</a></li>
+<li><a href="/course-overview/schedule/">Schedule</a></li>
+<li><a href="/course-overview/meetups/">Meetups</a></li>
+<li><a href="https://DATA606Fall2021.slack.com">Slack</a></li>
+<li><a href="https://bbhosted.cuny.edu/webapps/login">Blackboard</a></li>
+<li><a href="https://github.com/jbryer/DATA606Fall2021/">Github</a></li>
+<li><a href="https://sps.cuny.edu/academics/graduate/master-science-data-science-ms">CUNY SPS</a></li></ul>
+</nav>
+</div>
+<div class="content-container">
+<main><h1>Multiple Linear Regression</h1><p><a href="/slides/09-Multiple_Regression.html#1">Click here</a> to open the slides.</p>
+<p><a href="https://shiny.rit.albany.edu/stat/mod2/">Shiny app to visualize interactions, simple main effects, simple slopes and model surfaces in 2-IV linear models</a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/e27sxMFHzKM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<div id="here-is-the-r-script-for-analyzing-the-tutorial-dataset" class="section level3">
+<h3>Here is the R script for analyzing the tutorial dataset:</h3>
+<pre class="r"><code>library(openintro)
+library(ggplot2)
+
+data(&quot;tourism&quot;, package = &#39;openintro&#39;) # Question 8.21
+
+ggplot(tourism, aes(x = visitor_count_tho)) +
+    geom_histogram()</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>ggplot(tourism, aes(x = tourist_spending)) +
+    geom_histogram()</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-2.png" width="672" /></p>
+<pre class="r"><code>ggplot(tourism, aes(x = visitor_count_tho, y = tourist_spending)) +
+    geom_point() +
+    geom_smooth(method = &#39;lm&#39;, se = FALSE, formula = y ~ x) +
+    scale_x_log10() + scale_y_log10()</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-3.png" width="672" /></p>
+<pre class="r"><code>lm.out &lt;- lm(visitor_count_tho ~ tourist_spending, data = tourism)
+summary(lm.out)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = visitor_count_tho ~ tourist_spending, data = tourism)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1672.01  -377.84     3.28   410.00  2674.76 
+## 
+## Coefficients:
+##                   Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)      636.75289  151.86868   4.193 0.000127 ***
+## tourist_spending   1.49912    0.02466  60.786  &lt; 2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 815.9 on 45 degrees of freedom
+## Multiple R-squared:  0.988,  Adjusted R-squared:  0.9877 
+## F-statistic:  3695 on 1 and 45 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>lm.out.log &lt;- lm(log(visitor_count_tho) ~ log(tourist_spending), data = tourism)
+summary(lm.out.log)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = log(visitor_count_tho) ~ log(tourist_spending), 
+##     data = tourism)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.49935 -0.14620 -0.01635  0.18520  0.58194 
+## 
+## Coefficients:
+##                       Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)            4.36409    0.12413   35.16   &lt;2e-16 ***
+## log(tourist_spending)  0.54839    0.01755   31.25   &lt;2e-16 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2813 on 45 degrees of freedom
+## Multiple R-squared:  0.956,  Adjusted R-squared:  0.955 
+## F-statistic: 976.9 on 1 and 45 DF,  p-value: &lt; 2.2e-16</code></pre>
+<pre class="r"><code>tourism$residual &lt;- resid(lm.out)
+tourism$residual.log &lt;- resid(lm.out.log)
+
+ggplot(tourism, aes(x = tourist_spending, y = residual)) +
+    geom_hline(yintercept = 0) +
+    geom_point()</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-4.png" width="672" /></p>
+<pre class="r"><code>ggplot(tourism, aes(x = tourist_spending, y = residual.log)) +
+    geom_hline(yintercept = 0) +
+    geom_point()</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-5.png" width="672" /></p>
+<pre class="r"><code>hist(tourism$residual)</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-6.png" width="672" /></p>
+<pre class="r"><code>ggplot(tourism, aes(x = residual)) + geom_histogram(bins = 7)</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-7.png" width="672" /></p>
+<pre class="r"><code>ggplot(tourism, aes(x = residual)) + geom_density()</code></pre>
+<p><img src="/blog/draft/2021-04-21-Multiple_Linear_Regression_files/figure-html/unnamed-chunk-1-8.png" width="672" /></p>
+</div>
+<div id="here-is-the-r-script-that-looks-at-how-the-f-statistic-is-calculated." class="section level3">
+<h3>Here is the R script that looks at how the F-statistic is calculated.</h3>
+<pre class="r"><code>poverty &lt;- read.table(&quot;https://raw.githubusercontent.com/jbryer/DATA606Spring2021/master/course_data/poverty.txt&quot;, h = T, sep = &quot;\t&quot;)
+names(poverty) &lt;- c(&quot;state&quot;, &quot;metro_res&quot;, &quot;white&quot;, &quot;hs_grad&quot;, &quot;poverty&quot;, &quot;female_house&quot;)
+poverty &lt;- poverty[,c(1,5,2,3,4,6)]
+head(poverty)</code></pre>
+<pre><code>##        state poverty metro_res white hs_grad female_house
+## 1    Alabama    14.6      55.4  71.3    79.9         14.2
+## 2     Alaska     8.3      65.6  70.8    90.6         10.8
+## 3    Arizona    13.3      88.2  87.7    83.8         11.1
+## 4   Arkansas    18.0      52.5  81.0    80.9         12.1
+## 5 California    12.8      94.4  77.5    81.1         12.6
+## 6   Colorado     9.4      84.5  90.2    88.7          9.6</code></pre>
+<pre class="r"><code># Sample size
+n &lt;- nrow(poverty)
+# Total variance for the outcome variable
+SSy &lt;- sum((poverty$poverty - mean(poverty$poverty))^2)
+
+# Start with one predictor
+lm.out1 &lt;- lm(poverty ~ female_house, data = poverty)
+summary(lm.out1)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = poverty ~ female_house, data = poverty)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.7537 -1.8252 -0.0375  1.5565  6.3285 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)    3.3094     1.8970   1.745   0.0873 .  
+## female_house   0.6911     0.1599   4.322 7.53e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.664 on 49 degrees of freedom
+## Multiple R-squared:  0.276,  Adjusted R-squared:  0.2613 
+## F-statistic: 18.68 on 1 and 49 DF,  p-value: 7.534e-05</code></pre>
+<pre class="r"><code>anova(lm.out1)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: poverty
+##              Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## female_house  1 132.57 132.568  18.683 7.534e-05 ***
+## Residuals    49 347.68   7.095                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># Note that F-statistic is the same summary(lm.out1).
+# From the ANOVA output, it is the ratio of mean square model
+# (i.e. female_house here) to mean square error/residual.
+132.568 / 7.095</code></pre>
+<pre><code>## [1] 18.68471</code></pre>
+<pre class="r"><code># However, this only works with one predictor.
+SSresid &lt;- sum(lm.out1$residuals^2)
+SSmodel &lt;- SSy - SSresid
+k &lt;- length(lm.out1$coefficients) - 1
+((SSmodel) / k) / (SSresid / (n - (k + 1)))</code></pre>
+<pre><code>## [1] 18.68348</code></pre>
+<pre class="r"><code>lm.out2 &lt;- lm(poverty ~ female_house + white, data = poverty)
+summary(lm.out2)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = poverty ~ female_house + white, data = poverty)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -5.5245 -1.8526 -0.0381  1.3770  6.2689 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)  -2.57894    5.78491  -0.446 0.657743    
+## female_house  0.88689    0.24191   3.666 0.000615 ***
+## white         0.04418    0.04101   1.077 0.286755    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.659 on 48 degrees of freedom
+## Multiple R-squared:  0.2931, Adjusted R-squared:  0.2637 
+## F-statistic: 9.953 on 2 and 48 DF,  p-value: 0.0002422</code></pre>
+<pre class="r"><code>anova(lm.out2)</code></pre>
+<pre><code>## Analysis of Variance Table
+## 
+## Response: poverty
+##              Df Sum Sq Mean Sq F value    Pr(&gt;F)    
+## female_house  1 132.57 132.568 18.7447 7.562e-05 ***
+## white         1   8.21   8.207  1.1605    0.2868    
+## Residuals    48 339.47   7.072                      
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1</code></pre>
+<pre class="r"><code># How is the F-Statistic calculated
+# Ho: All coefficients are zero
+# Ha: At least one coefficient is nonzero
+n &lt;- nrow(poverty)
+SSresid &lt;- sum(lm.out2$residuals^2)
+SSy &lt;- sum((poverty$poverty - mean(poverty$poverty))^2)
+SSmodel &lt;- SSy - SSresid
+k &lt;- length(lm.out2$coefficients) - 1
+((SSmodel) / k) / (SSresid / (n - (k + 1)))</code></pre>
+<pre><code>## [1] 9.952561</code></pre>
+</div>
+<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="/">Home</a></li>
+
+
+
+<li class=""><a href="/course-overview/">Syllabus</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/course-overview/instructor/">Instructor</a></li>
+<li class=""><a href="/course-overview/schedule/">Schedule</a></li>
+<li class=""><a href="/course-overview/meetups/">Meetups</a></li>
+<li class=""><a href="/course-overview/textbooks/">Textbooks</a></li>
+<li class=""><a href="/course-overview/software/">Software</a></li>
+<li class=""><a href="/course-overview/mathjax/">Math Equations</a></li>
+<li class=""><a href="/course-overview/materials/">Materials</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/assignments/">Assignments</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/assignments/daacs/">DAACS</a></li>
+<li class=""><a href="/assignments/participation/">Participation</a></li>
+<li class=""><a href="/assignments/homework/">Homework</a></li>
+<li class=""><a href="/assignments/labs/">Labs</a></li>
+<li class=""><a href="/assignments/project/">Project</a></li>
+<li class=""><a href="/assignments/final/">Final Exam</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/chapters/">Chapters</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/chapters/chapter1/">Chapter 1</a></li>
+<li class=""><a href="/chapters/chapter2/">Chapter 2</a></li>
+<li class=""><a href="/chapters/chapter3/">Chapter 3</a></li>
+<li class=""><a href="/chapters/chapter4/">Chapter 4</a></li>
+<li class=""><a href="/chapters/chapter5/">Chapter 5</a></li>
+<li class=""><a href="/chapters/chapter6/">Chapter 6</a></li>
+<li class=""><a href="/chapters/chapter7/">Chapter 7</a></li>
+<li class=""><a href="/chapters/chapter8/">Chapter 8</a></li>
+<li class=""><a href="/chapters/chapter9/">Chapter 9</a></li>
+<li class=""><a href="/chapters/bayesian/">Bayesian</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

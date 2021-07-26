@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>random numbers on DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+    <link>/tags/random-numbers/</link>
+    <description>Recent content in random numbers on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 18 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/random-numbers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Random Numbers and Seeds in R</title>
+      <link>/blog/draft/2021-02-18-random_numbers_and_seeds/</link>
+      <pubDate>Thu, 18 Feb 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/draft/2021-02-18-random_numbers_and_seeds/</guid>
+      <description>To explore how R generates random numbers, we will use the rnorm function. This function draws a random number from a normal distribution with a mean = 0 and standard deviation = 1 (though these can be changed with the mean and sd parameters). With n = 1 we will get one random number.
+rnorm(n = 1) ## [1] 0.8305346 rnorm(n = 1) ## [1] -0.1843309 Each time you run the command you will get a different number.</description>
+    </item>
+    
+  </channel>
+</rss>

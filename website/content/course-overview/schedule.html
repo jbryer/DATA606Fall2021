@@ -1,0 +1,154 @@
+---
+title: "Schedule"
+description: "Schedule"
+menu: "main"
+weight: 2
+editor_options: 
+  chunk_output_type: console
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p><em>Note: Schedule is subject to change. Last updated July 26, 2021 10:35AM.</em></p>
+<p><a href="https://sps.cuny.edu/academics/academic-calendar">CUNY SPS Academic Calendar</a></p>
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+      initialDate: '2021-08-01',
+      initialView: 'dayGridMonth',
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      height: 'auto',
+      navLinks: true, // can click day/week names to navigate views
+      editable: true,
+      selectable: true,
+      selectMirror: true,
+      nowIndicator: true,
+      events: [
+ { title: "Chapter 1 - Intro to Data, R, and Rstudio",
+   url: "/chapters/chapter1/",
+   start: '2021-08-25',
+   end: '2021-09-06' },
+  { title: "Chatper 2 - Summarizing Data",
+   url: "/chatpers/chapter2/",
+   start: '2021-09-06',
+   end: '2021-09-13' },
+  { title: "Chapter 3 - Probability",
+   url: "/chapters/chapter3",
+   start: '2021-09-13',
+   end: '2021-09-20' },
+  { title: "Chapter 4 - Distributions",
+   url: "/chapters/chapter4",
+   start: '2021-09-20',
+   end: '2021-09-27' },
+  { title: "Chatper 5 - Foundation for Inference",
+   url: "/chapters/chapter5",
+   start: '2021-09-27',
+   end: '2021-10-04' },
+  { title: "Chapter 6 - Inference for Categorical Data",
+   url: "/chapters/chapter6",
+   start: '2021-10-04',
+   end: '2021-10-11' },
+  { title: "Chapter 7 - Inference for Numerical Data",
+   url: "/chapters/chapter7",
+   start: '2021-10-11',
+   end: '2021-10-18' },
+  { title: "Chapter 8 Linear Regression",
+   url: "/chapters/chapter8",
+   start: '2021-10-18',
+   end: '2021-11-01' },
+  { title: "Chapter 9 - Multiple & Logistic Regression",
+   url: "/chapters/chapter9",
+   start: '2021-11-01',
+   end: '2021-11-22' },
+  { title: "Thanksgiving Break",
+   start: '2021-11-22',
+   end: '2021-11-29' },
+  { title: "Intro to Bayesian Analysis",
+   url: "/chatpers/bayesian/",
+   start: '2021-11-29',
+   end: '2021-12-08' },
+  { title: "Final Exam",
+   url: "/assesssments/final/",
+   start: '2021-12-08',
+   end: '2021-12-13' },
+  { title: 'Intro to the Course',
+   url: "/course-overview/meetups",
+   start: '2021-08-25T20:30:00',
+   end: '2021-08-25T21:30:00' },
+  { title: 'Intro to Data',
+   url: "/course-overview/meetups",
+   start: '2021-09-01T20:30:00',
+   end: '2021-09-01T21:30:00' },
+  { title: 'Summarizing Data',
+   url: "/course-overview/meetups",
+   start: '2021-09-08T20:30:00',
+   end: '2021-09-08T21:30:00' },
+  { title: 'Probability',
+   url: "/course-overview/meetups",
+   start: '2021-09-15T20:30:00',
+   end: '2021-09-15T21:30:00' },
+  { title: 'Distributions',
+   url: "/course-overview/meetups",
+   start: '2021-09-22T20:30:00',
+   end: '2021-09-22T21:30:00' },
+  { title: 'Foundation for Inference',
+   url: "/course-overview/meetups",
+   start: '2021-09-29T20:30:00',
+   end: '2021-09-29T21:30:00' },
+  { title: 'Inference for Categorical Data',
+   url: "/course-overview/meetups",
+   start: '2021-10-06T20:30:00',
+   end: '2021-10-06T21:30:00' },
+  { title: 'Inference for Numerical Data',
+   url: "/course-overview/meetups",
+   start: '2021-10-13T20:30:00',
+   end: '2021-10-13T21:30:00' },
+  { title: 'Linear Regression',
+   url: "/course-overview/meetups",
+   start: '2021-10-20T20:30:00',
+   end: '2021-10-20T21:30:00' },
+  { title: 'Linear Regression (cont.)',
+   url: "/course-overview/meetups",
+   start: '2021-10-27T20:30:00',
+   end: '2021-10-27T21:30:00' },
+  { title: 'Multiple Regression',
+   url: "/course-overview/meetups",
+   start: '2021-11-03T20:30:00',
+   end: '2021-11-03T21:30:00' },
+  { title: 'Logistic Regression',
+   url: "/course-overview/meetups",
+   start: '2021-11-10T20:00:00',
+   end: '2021-11-10T21:00:00' },
+  { title: 'TBD',
+   start: '2021-11-17T20:30:00',
+   end: '2021-11-17T21:30:00' },
+  { title: 'NO CLASS - Happy Thanksgiving',
+   start: 'NA',
+   end: 'NA' },
+  { title: 'Bayesian Analysis',
+   url: "/course-overview/meetups",
+   start: '2021-12-01T20:30:00',
+   end: '2021-12-01T21:30:00' },
+  { title: 'Final Meetup',
+   url: "/course-overview/meetups",
+   start: '2021-12-08T20:30:00',
+   end: '2021-12-08T21:30:00' }
+      ]
+    });
+
+    calendar.render();
+  });
+
+</script>
+<div id="calendar">
+
+</div>
+<p><a href="/Course_Calendar.ics">Click here to import the course calendar into your calendar application</a></p>

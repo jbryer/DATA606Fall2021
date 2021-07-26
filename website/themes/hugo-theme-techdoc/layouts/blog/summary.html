@@ -1,0 +1,6 @@
+<article>
+<h3><a href="{{ .Permalink }}">{{ .Title }}</a></h3>
+<time>{{ .Date.Format "Mon, Jan 2, 2006" }}</time>
+{{ .Summary }} <!-- Could use .Summary or .Content -->
+</article>
+<hr/>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Quantile-Quantile Plots - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+<meta name="generator" content="Hugo 0.78.1" />
+<link href="//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="/blog/draft/2021-03-01-qqplots/">
+<link rel="stylesheet" href="/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script src="/js/bundle.js"></script><style>
+:root {--custom-background-color: #005DAC;}
+</style>
+<meta property="og:title" content="Quantile-Quantile Plots" />
+<meta property="og:description" content="Quantile-quantile plots are a useful tool for determining whether a measure is normally distributed. From Wikipedia:
+  Q–Q (quantile-quantile) plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. First, the set of intervals for the quantiles is chosen. A point (x, y) on the plot corresponds to one of the quantiles of the second distribution (y-coordinate) plotted against the same quantile of the first distribution (x-coordinate)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/draft/2021-03-01-qqplots/" />
+<meta property="og:image" content="/images/og-image.png"/>
+<meta property="article:published_time" content="2021-03-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-03-01T00:00:00+00:00" /><meta property="og:site_name" content="DATA 606" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/og-image.png"/>
+
+<meta name="twitter:title" content="Quantile-Quantile Plots"/>
+<meta name="twitter:description" content="Quantile-quantile plots are a useful tool for determining whether a measure is normally distributed. From Wikipedia:
+  Q–Q (quantile-quantile) plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. First, the set of intervals for the quantiles is chosen. A point (x, y) on the plot corresponds to one of the quantiles of the second distribution (y-coordinate) plotted against the same quantile of the first distribution (x-coordinate)."/>
+<meta itemprop="name" content="Quantile-Quantile Plots">
+<meta itemprop="description" content="Quantile-quantile plots are a useful tool for determining whether a measure is normally distributed. From Wikipedia:
+  Q–Q (quantile-quantile) plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. First, the set of intervals for the quantiles is chosen. A point (x, y) on the plot corresponds to one of the quantiles of the second distribution (y-coordinate) plotted against the same quantile of the first distribution (x-coordinate).">
+<meta itemprop="datePublished" content="2021-03-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-03-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="688">
+<meta itemprop="image" content="/images/og-image.png"/>
+
+
+
+<meta itemprop="keywords" content="qqplots," />
+<link href='/fullcalendar-lib/main.css' rel='stylesheet' />
+<script src='/fullcalendar-lib/main.js'></script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+#calendar {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body><div class="container"><header>
+
+<a href="/"><img src='/images/course_logo.png' align="left" style="height:40px; padding-right:10px;border:0;" /></a><h1>DATA 606 - Statistics &amp; Probability - Fall 2021</h1>
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/blog">Announcements</a></li>
+<li><a href="/course-overview/schedule/">Schedule</a></li>
+<li><a href="/course-overview/meetups/">Meetups</a></li>
+<li><a href="https://DATA606Fall2021.slack.com">Slack</a></li>
+<li><a href="https://bbhosted.cuny.edu/webapps/login">Blackboard</a></li>
+<li><a href="https://github.com/jbryer/DATA606Fall2021/">Github</a></li>
+<li><a href="https://sps.cuny.edu/academics/graduate/master-science-data-science-ms">CUNY SPS</a></li></ul>
+</nav>
+</div>
+<div class="content-container">
+<main><h1>Quantile-Quantile Plots</h1>
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>Quantile-quantile plots are a useful tool for determining whether a measure is normally distributed. From <a href="https://en.wikipedia.org/wiki/Q–Q_plot">Wikipedia</a>:</p>
+<blockquote>
+<blockquote>
+<p>Q–Q (quantile-quantile) plot is a probability plot, which is a graphical method for comparing two probability distributions by plotting their quantiles against each other. First, the set of intervals for the quantiles is chosen. A point (x, y) on the plot corresponds to one of the quantiles of the second distribution (y-coordinate) plotted against the same quantile of the first distribution (x-coordinate). Thus the line is a parametric curve with the parameter which is the number of the interval for the quantile.</p>
+</blockquote>
+</blockquote>
+<p>Let’s begin with a vector of values, <code>mpg</code> from the <code>mtcars</code> data frame. The plot below is a histogram of values, density of <code>mpg</code> in black, and normal distribution in blue.</p>
+<pre class="r"><code>data(mtcars)
+x &lt;- mtcars$mpg
+x &lt;- x[order(x)] # Order the vector
+ggplot(mtcars, aes(x = mpg)) + 
+    geom_histogram(aes(y = ..density..), bins = 10, fill = &#39;grey50&#39;) +
+    geom_density() +
+    geom_function(fun = dnorm, 
+                  args = list(mean = mean(x), sd = sd(x)),
+                  color = &#39;blue&#39;) +
+    xlim(mean(x) - 3 * sd(x), mean(x) + 3 * sd(x))</code></pre>
+<p><img src="/blog/draft/2021-03-01-qqplots_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p>To calculate the theoretical quantiles, we start with a vector of length equal to the original data (i.e. n = 32 in this example). The <code>ppoints</code> generates a sequence of probability points that are equally distributed between 0 and 1.</p>
+<pre class="r"><code>( points &lt;- ppoints(length(x)) )</code></pre>
+<pre><code>##  [1] 0.015625 0.046875 0.078125 0.109375 0.140625 0.171875 0.203125 0.234375
+##  [9] 0.265625 0.296875 0.328125 0.359375 0.390625 0.421875 0.453125 0.484375
+## [17] 0.515625 0.546875 0.578125 0.609375 0.640625 0.671875 0.703125 0.734375
+## [25] 0.765625 0.796875 0.828125 0.859375 0.890625 0.921875 0.953125 0.984375</code></pre>
+<p>Using the <code>qnorm</code> function we can calucate the quantile for each of these values.</p>
+<pre class="r"><code>( y &lt;- qnorm(points) )</code></pre>
+<pre><code>##  [1] -2.15387469 -1.67593972 -1.41779714 -1.22985876 -1.07751557 -0.94678176
+##  [7] -0.83051088 -0.72451438 -0.62609901 -0.53340971 -0.44509652 -0.36012989
+## [13] -0.27769044 -0.19709908 -0.11776987 -0.03917609  0.03917609  0.11776987
+## [19]  0.19709908  0.27769044  0.36012989  0.44509652  0.53340971  0.62609901
+## [25]  0.72451438  0.83051088  0.94678176  1.07751557  1.22985876  1.41779714
+## [31]  1.67593972  2.15387469</code></pre>
+<pre class="r"><code>mean(y)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code>sd(y)</code></pre>
+<pre><code>## [1] 0.9960714</code></pre>
+<p>Note that the mean and standard deviation are 0 and 1 (within rounding error), respectively, as would be expected from a standard normal distribution. We will no convert our observed values to z-scores and see how they pair up with the theoretical quantiles.</p>
+<pre class="r"><code>z &lt;- (x - mean(x)) / sd(x)
+df &lt;- data.frame(ID = 1:length(x), Observed = x, Observed_z = z, Theoretical = y)
+head(df)</code></pre>
+<pre><code>##   ID Observed Observed_z Theoretical
+## 1  1     10.4 -1.6078826  -2.1538747
+## 2  2     10.4 -1.6078826  -1.6759397
+## 3  3     13.3 -1.1267104  -1.4177971
+## 4  4     14.3 -0.9607889  -1.2298588
+## 5  5     14.7 -0.8944204  -1.0775156
+## 6  6     15.0 -0.8446439  -0.9467818</code></pre>
+<pre class="r"><code>ggplot(df, aes(x = Observed_z, y = &#39;Observed&#39;, xend = Theoretical, yend = &#39;Theoretical&#39;)) +
+    geom_point(aes(x = Observed_z, y = &#39;Observed&#39;), color = &#39;red&#39;) +
+    geom_point(aes(x = Theoretical, y = &#39;Theoretical&#39;), color = &#39;blue&#39;) +
+    geom_segment() + ylab(&#39;&#39;) + xlab(&#39;&#39;)</code></pre>
+<p><img src="/blog/draft/2021-03-01-qqplots_files/figure-html/unnamed-chunk-4-1.png" width="672" /></p>
+<p>The points in blue are the theoretical quantiles and each is matched to a point in red which is the observed z-score. If the data points were perfectly normal, then all the lines would be vertical. The following plot shows the distributions of these to vectors.</p>
+<pre class="r"><code>ggplot(data.frame(Observation = c(rep(&#39;Observed&#39;, length(z)),
+                                  rep(&#39;Theoretical&#39;, length(y))),
+                  Value = c(z, y)), aes(x = Value, color = Observation)) +
+    geom_density() +
+    geom_rug() +
+    scale_color_manual(values = c(&#39;Observed&#39; = &#39;red&#39;, &#39;Theoretical&#39; = &#39;blue&#39;)) +
+    ylab(&#39;&#39;) + xlab(&#39;z-score&#39;)</code></pre>
+<p><img src="/blog/draft/2021-03-01-qqplots_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<p>We can see that the distribution does vary from the normal. The q-q plot provides another way of visualizing the departure from the normal distribution.</p>
+<pre class="r"><code>ggplot(df, aes(x = Observed, y = Theoretical)) + 
+    geom_point()</code></pre>
+<p><img src="/blog/draft/2021-03-01-qqplots_files/figure-html/unnamed-chunk-6-1.png" width="672" /></p>
+<p>To add the line, we need to calculate the slope and intercept from two points that would fall exactly on the line if the distribution was perfectly normal.</p>
+<pre class="r"><code>( x2 &lt;- quantile(x, probs = c(0.25, 0.75)) ) # Using 25th and 75th percetile, but any two would work.</code></pre>
+<pre><code>##    25%    75% 
+## 15.425 22.800</code></pre>
+<pre class="r"><code>( y2 &lt;- qnorm(c(0.25, 0.75)) )</code></pre>
+<pre><code>## [1] -0.6744898  0.6744898</code></pre>
+<pre class="r"><code>slope &lt;- diff(y2) / diff(x2)
+int &lt;- y2[1L] - slope * x2[1L]
+
+ggplot(df, aes(x = Observed, y = Theoretical)) + 
+    geom_point() +
+    geom_abline(slope = slope, intercept = int)</code></pre>
+<p><img src="/blog/draft/2021-03-01-qqplots_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="/">Home</a></li>
+
+
+
+<li class=""><a href="/course-overview/">Syllabus</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/course-overview/instructor/">Instructor</a></li>
+<li class=""><a href="/course-overview/schedule/">Schedule</a></li>
+<li class=""><a href="/course-overview/meetups/">Meetups</a></li>
+<li class=""><a href="/course-overview/textbooks/">Textbooks</a></li>
+<li class=""><a href="/course-overview/software/">Software</a></li>
+<li class=""><a href="/course-overview/mathjax/">Math Equations</a></li>
+<li class=""><a href="/course-overview/materials/">Materials</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/assignments/">Assignments</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/assignments/daacs/">DAACS</a></li>
+<li class=""><a href="/assignments/participation/">Participation</a></li>
+<li class=""><a href="/assignments/homework/">Homework</a></li>
+<li class=""><a href="/assignments/labs/">Labs</a></li>
+<li class=""><a href="/assignments/project/">Project</a></li>
+<li class=""><a href="/assignments/final/">Final Exam</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/chapters/">Chapters</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/chapters/chapter1/">Chapter 1</a></li>
+<li class=""><a href="/chapters/chapter2/">Chapter 2</a></li>
+<li class=""><a href="/chapters/chapter3/">Chapter 3</a></li>
+<li class=""><a href="/chapters/chapter4/">Chapter 4</a></li>
+<li class=""><a href="/chapters/chapter5/">Chapter 5</a></li>
+<li class=""><a href="/chapters/chapter6/">Chapter 6</a></li>
+<li class=""><a href="/chapters/chapter7/">Chapter 7</a></li>
+<li class=""><a href="/chapters/chapter8/">Chapter 8</a></li>
+<li class=""><a href="/chapters/chapter9/">Chapter 9</a></li>
+<li class=""><a href="/chapters/bayesian/">Bayesian</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

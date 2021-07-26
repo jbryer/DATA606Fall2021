@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Syllabus on DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+    <link>/course-overview/</link>
+    <description>Recent content in Syllabus on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 17 Oct 2017 15:26:15 +0000</lastBuildDate><atom:link href="/course-overview/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Instructor</title>
+      <link>/course-overview/instructor/</link>
+      <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
+      
+      <guid>/course-overview/instructor/</guid>
+      <description>Jason Bryer, Ph.D.
+Email: jason.bryer@cuny.edu
+I am currently an Assistant Professor in Data Science and Information Systems at the City University of New York. Additionally, I am a consultant with Cornell University where he has developed a research and data collection platform for New York State’s Office of Special Education (https://data.osepartnership.org). Prior to joining CUNY, I was Executive Director at Excelsior College where he has served as Principal Investigator of the FIPSE First in the World grant to develop and research the Diagnostic Assessment and Achievement of College Skills along with supporting research and evaluation of other grants at the institution.</description>
+    </item>
+    
+    <item>
+      <title>Schedule</title>
+      <link>/course-overview/schedule/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/course-overview/schedule/</guid>
+      <description>Note: Schedule is subject to change. Last updated July 26, 2021 10:35AM.
+CUNY SPS Academic Calendar
+ document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-08-01&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
+    </item>
+    
+    <item>
+      <title>Meetups</title>
+      <link>/course-overview/meetups/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/course-overview/meetups/</guid>
+      <description>There will be weekly meetups. You are encouraged to attend as many as you can but recordings will generally be availabe the day after the meetup.
+Join Zoom Meeting: https://zoom.us/my/jbryer
+Meeting ID: 626 617 3127
++16465588656,,6266173127# US (New York)
+Phone Number: +1 646 558 8656 US (New York)
+Find your local number: https://us02web.zoom.us/u/kn00x9C6p
+Please note: Students who participate in this class with their camera on or use a profile image are agreeing to have their video or image recorded solely for the purpose of creating a record for students enrolled in the class to refer to, including those enrolled students who are unable to attend live.</description>
+    </item>
+    
+    <item>
+      <title>Textbooks</title>
+      <link>/course-overview/textbooks/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/course-overview/textbooks/</guid>
+      <description>Required 
+Diez, D.M., Barr, C.D., &amp;amp; Çetinkaya-Rundel, M. (2019). OpenIntro Statistics (4th Ed).
+ This is an open source textbook and can be downloaded in PDF format here, from the OpenIntro website, or a printed copy can be ordered from Amazon.
+  
+Navarro, D. (2018, version 0.6). Learning Statistics with R
+ This is free textbook that supplements a lot of the material covered in Diez and Barr.</description>
+    </item>
+    
+    <item>
+      <title>Software</title>
+      <link>/course-overview/software/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/course-overview/software/</guid>
+      <description>R and RStudio We will make use of R, an open source statistics program and language. Be sure to install R and RStudio on your own computers within the first few days of the class.
+ R - download for Windows, Mac, or Linux. RStudio - Download Windows, Mac, or Linux versions from here  If using Windows, you also need to download RTools and ActivePerl.
+LaTeX LaTeX is a typesetting language for preparing documents.</description>
+    </item>
+    
+    <item>
+      <title>Math Equations</title>
+      <link>/course-overview/mathjax/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/course-overview/mathjax/</guid>
+      <description>NOTE: I am aware that Daum Equation Editor has not been updated a long while and may no longer be supported on may platforms. I have not yet found a replacement as good as Daum, however have a look at this Wikipedia page on formula editors for a comprehnsive list of available software.
+Occasionally you will need to type equations in homework and labs. R Markdown supports LaTeX style equations using the MathJax javascript library.</description>
+    </item>
+    
+    <item>
+      <title>Materials</title>
+      <link>/course-overview/materials/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/course-overview/materials/</guid>
+      <description>  These are supplemental materials. Click to download.
+ Chapter 28_Anova.pdf Cheatsheets_2019.pdf Classical_Machine_Learning.JPG ggplot_aesthetics_cheatsheet.png Kruschke-Liddell2018_Article_BayesianDataAnalysisForNewcome.pdf R_Syntax_Comparison.jpeg stats_handout.pdf Textbooks  lsr-0.6.pdf os4.pdf ProbStatBook.pdf Supplemental  OpenIntro_extra_interaction_effects.pdf OpenIntro_extra_nonlinear_relationships.pdf OpenIntro_handout.pdf os2_extra_inference_guide.pdf os2_prob_tables.pdf os4_tablet.pdf   Thirteen Ways to Look at the Correlation Coefficient.pdf What_Is_Data_Science.pdf WhatisDataScienceFinalMay162018.pdf When to use what test.pdf  </description>
+    </item>
+    
+  </channel>
+</rss>

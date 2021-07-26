@@ -1,4 +1,4 @@
-remotes::install_github("GuangchuangYu/hexSticker")
+# remotes::install_github("GuangchuangYu/hexSticker")
 
 library(hexSticker)
 library(showtext)
@@ -14,14 +14,15 @@ font_add_google(name = "Open Sans", family = "opensans")
 # CUNY Blue: 005DAC
 # CUNY Orange: F99D32
 
-color1 <- '#005DAC'
-color2 <- '#F99D32'
+color1 <- '#C571FC'
+color2 <- '#FF9822'
 bg.color <- '#FFFFFF'
 
 # Use Logo
+# https://github.com/allisonhorst/stats-illustrations
 p <- "website/static/images/CUNY_SPS_Logo.png"
 # p <- "website/static/images/CUNY_SPS_Logo_Wide.png"
-p <- 'website/static/images/ex_4.png'
+p <- 'website/static/images/ex_1.png'
 
 # Or ggplot2
 # p <- ggplot(data = mtcars, aes(x = -mpg, y = wt)) +
@@ -40,12 +41,14 @@ sticker <- sticker(p,
 		p_family = 'opensans',
 		white_around_sticker = FALSE,
 		s_x = 1, s_y = .85, s_width=.9, s_height = .7,
-		h_color = color1,
+		h_color = color2,
 		h_fill = bg.color,
 		spotlight = FALSE,
 		url = url,
 		u_color = color2,
 		filename = paste0(sub(' ', '-', course), '-', sub(' ', '-', semester), '.png') )
+
+sticker
 
 # Save a square version to use as an icon for Slack
 ggsave(filename = paste0(sub(' ', '-', course), '-', sub(' ', '-', semester), '-square.png'),

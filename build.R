@@ -15,8 +15,10 @@ for(i in tocopy) {
 	cat(paste0('Copying ', from, ' to ', to, '...\n'))
 
 	success <- FALSE
-	if(!file_test("-f", from)) { # Directory
-		# TODO: ignore drafts folder
+	if(i %in% c('draft')) {
+		cat(paste0('Ignoring ', i, '...\n'))
+		success <- TRUE
+	} else if(!file_test("-f", from)) { # Directory
 		dir.create(to, recursive = TRUE)
 		success <- file.copy(from, 'docs/slides/', recursive = TRUE, overwrite = TRUE)
 	} else { # File

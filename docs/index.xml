@@ -6,7 +6,7 @@
     <description>Recent content in Home on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 25 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 18 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 1</title>
       <link>/chapters/chapter1/</link>
@@ -27,7 +27,7 @@ Part 1 Complete this Google Form. The purpose of this survey is for me to get to
     </item>
     
     <item>
-      <title>Instructor</title>
+      <title>Instructors</title>
       <link>/course-overview/instructor/</link>
       <pubDate>Tue, 17 Oct 2017 15:26:15 +0000</pubDate>
       
@@ -63,7 +63,7 @@ I am currently an Assistant Professor in Data Science and Information Systems at
       <guid>/course-overview/schedule/</guid>
       <description>Note: Schedule is subject to change. Last updated July 26, 2021 10:35AM.
 CUNY SPS Academic Calendar
- document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-08-02&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
+ document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-08-18&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
     </item>
     
     <item>
@@ -239,11 +239,11 @@ Occasionally you will need to type equations in homework and labs. R Markdown su
     <item>
       <title>Welcome to DATA606!</title>
       <link>/blog/01-welcome-to-data606/</link>
-      <pubDate>Mon, 25 Jan 2021 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/01-welcome-to-data606/</guid>
-      <description>Welcome to DATA606! My name is Dr. Jason Bryer and I will be your instructor for this semester. I am an Assistant Professor and Associate Director in the Data Science and Information Systems department at CUNY SPS. Couple of important notes as you get started:
- The course syllabus located here: https://fall2021.data606.net/course-overview I will post all course materials there. Blackboard will be used primarily for submitting assignments. Please read the syllabus carefully!</description>
+      <description>Welcome to DATA606! Your instructors will be Dr. Jason Bryer and Dr. Angela Lui. Couple of important notes as you get started:
+ The course syllabus located here: https://fall2021.data606.net/course-overview. We will post all course materials there. Blackboard will be used primarily for submitting assignments. Please read the syllabus carefully! Send us any questions you may still have about the course. Complete this Google Form as soon as possible. We will use some of the data (in aggregate) in the meetup.</description>
     </item>
     
   </channel>

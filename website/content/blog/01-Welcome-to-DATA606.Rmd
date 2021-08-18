@@ -1,18 +1,18 @@
 ---
 title: "Welcome to DATA606!"
 author: "Jason Bryer and Angela Lui"
-date: 2021-01-25
+date: 2021-08-18
 draft: false
 categories: ["R"]
 tags: ["Annoucement"]
 ---
 
-Welcome to DATA606! My name is [Dr. Jason Bryer](https://bryer.org) and I will be your instructor for this semester. I am an Assistant Professor and Associate Director in the Data Science and Information Systems department at CUNY SPS. Couple of important notes as you get started:
+Welcome to DATA606! Your instructors will be [Dr. Jason Bryer](https://bryer.org) and Dr. Angela Lui. Couple of important notes as you get started:
 
-* The course syllabus located here: https://fall2021.data606.net/course-overview I will post all course materials there. Blackboard will be used primarily for submitting assignments. **Please read the syllabus carefully!** Send me any questions you may still have about the course.
-* Complete this [Google Form](https://forms.gle/6V5GrsgvGWFj98hN8) as soon as possible. I will use some of the data (in aggregate) in the meetup.
-* [Join the Slack channel by clicking here](). This will be our primary mode of communication. For private communications, you can either send private Slack messages or email me at [jason.bryer@sps.cuny.edu](mailto:jason.bryer@sps.cuny.edu).
+* The course syllabus located here: https://fall2021.data606.net/course-overview. We will post all course materials there. Blackboard will be used primarily for submitting assignments. **Please read the syllabus carefully!** Send us any questions you may still have about the course.
+* Complete this [Google Form](https://forms.gle/6V5GrsgvGWFj98hN8) as soon as possible. We will use some of the data (in aggregate) in the meetup.
+* [Join the Slack channel by clicking here](https://join.slack.com/t/data606fall2021/shared_invite/zt-tqeu5u6e-qIimBoChX2oyvCJLovewWg). This will be our primary mode of communication. For private communications, you can either send private Slack messages or email us at [jason.bryer@cuny.edu](mailto:jason.bryer@cuny.edu) and [angela.lui@sps.cuny.edu](mailto:angela.lui@sps.cuny.edu).
 * Once you go through the syllabus, try starting Lab 1 as soon as you can. This will require you to install R and RStudio and will help get you get acquainted with R. See the [software page](/course-overview/software/) for more information about the software we will use for this course.
-* The best way to reach me is by Slack or email at [jason.bryer@sps.cuny.edu](mailto:jason.bryer@sps.cuny.edu). If you would prefer to talk on the phone or setup a Zoom session, it is best to suggest some times by email first.
-* Our Meetups will be on Wednesdays from 8:30pm to 9:30pm. **I expect everyone to attend or watch the Meetups.** Important information will be shared during the meetups that will not be available in any other format.
-* I am looking forward to getting to know everyone and a fantastic semester! Good luck!
+* The best way to reach us is on Slack. If you would prefer to talk on the phone or setup a Zoom session, it is best to suggest some times by email first.
+* Our Meetups will be on Wednesdays from 8:30pm to 9:30pm. **We expect everyone to attend or watch the Meetups.** Important information will be shared during the meetups that will not be available in any other format.
+* We am looking forward to getting to know everyone and a fantastic semester! Good luck!

@@ -8,7 +8,7 @@ draft = false
 
 ### One Minute Papers
 
-A "one minute paper" (Angelo & Cross, 1993) is a short written reflection to be completed after each class meetup. You are to answer two questions: 1) What was the most important thing you learned during this class? and 2) What important question remains unanswered for you? My goal is to give you a moment to reflect on the most important concepts presented were and to provide me with information about what concepts are still unclear. At the completion of each meetup (whether attended live or after watching the recording), complete this [Google form](https://forms.gle/q9BMx3eLbyR4fJ6d8).
+A "one minute paper" (Angelo & Cross, 1993) is a short written reflection to be completed after each class meetup. You are to answer two questions: 1) What was the most important thing you learned during this class? and 2) What important question remains unanswered for you? My goal is to give you a moment to reflect on the most important concepts presented were and to provide me with information about what concepts are still unclear. At the completion of each meetup (whether attended live or after watching the recording), complete this [Google form](https://forms.gle/QWb3Fh6MgG4CpB3Y9).
 
 ### Homework Presentation
 

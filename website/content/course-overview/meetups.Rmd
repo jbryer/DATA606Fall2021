@@ -41,7 +41,7 @@ Find your local number: https://us02web.zoom.us/u/kn00x9C6p
 
 [Presentation Signup Sheet](https://docs.google.com/spreadsheets/d/1l_-D8hw5jRKRsjnolijVxEcB-mTHGHMjGo-595iur8g/edit?usp=sharing)
 
-**[One Minute Paper](https://forms.gle/q9BMx3eLbyR4fJ6d8) - Complete this Google form after each class meetup (whether attended live or watched the recording).**
+**[One Minute Paper](https://forms.gle/QWb3Fh6MgG4CpB3Y9) - Complete this Google form after each class meetup (whether attended live or watched the recording).**
 
 ```{r schedule-table, echo=FALSE, results='asis'}
 # meetups$Date <- format(meetups$Date, '%a, %b %d')

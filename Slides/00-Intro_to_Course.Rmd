@@ -140,10 +140,15 @@ knitr::include_graphics('images/Sleeping_Empire.jpg')
 # Teaching Experience
 
 * Introduction to Statistics in Social Sciences
+
 * Special Issues in Testing
+
 * Evaluation 
+
 * Motivation in Education
+
 * Introduction to the Psychological Processing of Schooling
+
 * Educational Psychology in Adolescent Development
 
 ---
@@ -151,20 +156,20 @@ knitr::include_graphics('images/Sleeping_Empire.jpg')
 # Homeowner
 
 .pull-left[
-<img src='images/Lui_home.jpg' />
+<img src='images/Lui_Home.jpg' height='450' />
 ]
 .pull-right[
-<img src='images/Lui_home2.png' />
+<img src='images/Lui_home2.png' height='450' />
 ]
 
 ---
 
 
 .pull-left[
-<img src='images/Lui_chickens.jpg' />
+<img src='images/Lui_chickens.jpg' height='450' />
 ]
 .pull-right[
-<img src='images/Lui_cat.jpg' />
+<img src='images/Lui_cat.jpg' height='450' />
 ]
 
 ---

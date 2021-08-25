@@ -6,7 +6,21 @@
     <description>Recent content in Announcements on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 18 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 25 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Getting Started with R</title>
+      <link>/blog/02-getting-started-with-r/</link>
+      <pubDate>Wed, 25 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/02-getting-started-with-r/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;To get started with the labs, you will need to install R and other supporting applications. Links to download all the software is on the &lt;a href=&#34;/course-overview/software/&#34;&gt;Software&lt;/a&gt; page which is also available on the &lt;code&gt;Course Overview&lt;/code&gt; menu. Once you are in RStudio, you will need to install a number of R packages using the following two commands:&lt;/p&gt;
+</description>
+    </item>
+    
     <item>
       <title>Welcome to DATA606!</title>
       <link>/blog/01-welcome-to-data606/</link>

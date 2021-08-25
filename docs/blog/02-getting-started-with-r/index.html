@@ -3,10 +3,10 @@
 <head><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<title>R - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+<title>Getting Started with R - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
 <meta name="generator" content="Hugo 0.78.1" />
 <link href="//index.xml" rel="alternate" type="application/rss+xml">
-<link rel="canonical" href="/categories/r/">
+<link rel="canonical" href="/blog/02-getting-started-with-r/">
 <link rel="stylesheet" href="/css/theme.min.css">
 <script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 <link rel="stylesheet" href="/css/chroma.min.css">
@@ -16,19 +16,43 @@
 <script src="/js/bundle.js"></script><style>
 :root {--custom-background-color: #005DAC;}
 </style>
-<meta property="og:title" content="R" />
-<meta property="og:description" content="" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="/categories/r/" />
+<meta property="og:title" content="Getting Started with R" />
+<meta property="og:description" content="
+
+
+
+To get started with the labs, you will need to install R and other supporting applications. Links to download all the software is on the Software page which is also available on the Course Overview menu. Once you are in RStudio, you will need to install a number of R packages using the following two commands:
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/02-getting-started-with-r/" />
 <meta property="og:image" content="/images/og-image.png"/>
-<meta property="og:updated_time" content="2021-08-25T00:00:00+00:00" /><meta property="og:site_name" content="DATA 606" />
+<meta property="article:published_time" content="2021-08-25T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-08-25T00:00:00+00:00" /><meta property="og:site_name" content="DATA 606" />
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:image" content="/images/og-image.png"/>
 
-<meta name="twitter:title" content="R"/>
-<meta name="twitter:description" content=""/>
-<meta itemprop="name" content="R">
-<meta itemprop="description" content="">
+<meta name="twitter:title" content="Getting Started with R"/>
+<meta name="twitter:description" content="
+
+
+
+To get started with the labs, you will need to install R and other supporting applications. Links to download all the software is on the Software page which is also available on the Course Overview menu. Once you are in RStudio, you will need to install a number of R packages using the following two commands:
+"/>
+<meta itemprop="name" content="Getting Started with R">
+<meta itemprop="description" content="
+
+
+
+To get started with the labs, you will need to install R and other supporting applications. Links to download all the software is on the Software page which is also available on the Course Overview menu. Once you are in RStudio, you will need to install a number of R packages using the following two commands:
+">
+<meta itemprop="datePublished" content="2021-08-25T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-08-25T00:00:00+00:00" />
+<meta itemprop="wordCount" content="183">
+<meta itemprop="image" content="/images/og-image.png"/>
+
+
+
+<meta itemprop="keywords" content="R Markdown,working directories," />
 <link href='/fullcalendar-lib/main.css' rel='stylesheet' />
 <script src='/fullcalendar-lib/main.js'></script>
 
@@ -62,12 +86,33 @@
 </nav>
 </div>
 <div class="content-container">
-<main><h1>R</h1><div class="edit-meta">
-Last updated on Wed Aug 25, 2021
-
-
-<br></div><nav class="pagination">
-</nav><footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+<main><h1>Getting Started with R</h1><pre><code>install.packages(c(&#39;openintro&#39;,&#39;OIdata&#39;,&#39;devtools&#39;,&#39;tidyverse&#39;, &#39;ggplot2&#39;,
+                   &#39;psych&#39;,&#39;reshape2&#39;,&#39;knitr&#39;,&#39;markdown&#39;,&#39;shiny&#39;,&#39;R.rsp&#39;,
+                   &#39;fivethirtyeight&#39;))
+devtools::install_github(&quot;jbryer/DATA606&quot;)</code></pre>
+<p>Note that this course used to be listed as IS 606, hence the different package name. The <code>library</code> command will load the package and the <code>startLab</code> function will:</p>
+<ol style="list-style-type: decimal">
+<li>Create a folder called <code>Lab1</code> in the current working directory.</li>
+<li>Open the the RMarkdown file (note that the name should have your login name).</li>
+</ol>
+<pre><code>library(DATA606)
+startLab(&#39;Lab1&#39;)</code></pre>
+<p>Note the <code>Lab1</code> directory has been created.</p>
+<div class="figure">
+<img src="/figures/RStudio-screen-files.png" alt="" />
+<p class="caption">RStudio Files Panel</p>
+</div>
+<p>If you click <code>Lab0</code> that will take you into that folder where you will see the RMardkown file (<code>.Rmd</code> extension) along with all the supporting files. Under the <code>More</code> menu there is an option to <code>Set As Working Directory</code>, you will want to do this before working in the RMarkdown file.</p>
+<div class="figure">
+<img src="/figures/RStudio-screen-setwd.png" alt="" />
+<p class="caption">Setting Working Directory</p>
+</div>
+<p>The console pane will always tell you what your current working directory is. Clicking the arrow icon will open that folder in the <code>Files</code> tab on the right. R will look for files and directories that do not have absolute paths (i.e. starting with <code>C:</code> on windows or <code>/</code> on Linux and Macs) relative to the working directory.</p>
+<div class="figure">
+<img src="/figures/RStudio-screen-wd.png" alt="" />
+<p class="caption">Working Directory</p>
+</div>
+<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
 </footer>
 </main>
 <div class="sidebar">

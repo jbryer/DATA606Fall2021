@@ -186,7 +186,7 @@ knitr::include_graphics('images/Sleeping_Empire.jpg')
 # Three Pillars of my Teaching Philosophy
 
 .pull-left[
-&nbsp;3. Cultivate a respectful culture of teaching, learning, and assessment
+&nbsp;1. Cultivate a respectful culture of teaching, learning, and assessment
 ]
 .pull-right[
 ![](images/Lui_teaching1.jpg)
@@ -386,7 +386,7 @@ This textbooks has a chapter on Bayesian analysis that we will use at the end of
 	
 * There is a general CUNY MSDS Slack channel [click here](https://join.slack.com/t/data606fall2021/shared_invite/zt-tqeu5u6e-qIimBoChX2oyvCJLovewWg) to join it.
 
-* Github Issues - Use this for issues or problems with the course or `DATA606` package: https://github.com/jbryer/DATA606Fall2021/issues
+* Github Issues - Use this for issues or problems with the `DATA606` package: https://github.com/jbryer/DATA606/issues
 
 * Email: [jason.bryer@cuny.edu](mailto:jason.bryer@cuny.edu) and [angela.lui@sps.cuny.edu](mailto:angela.lui@sps.cuny.edu)
 

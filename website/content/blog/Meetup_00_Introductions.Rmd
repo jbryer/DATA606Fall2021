@@ -11,11 +11,11 @@ tags: ["Annoucement"]
 
 [Click here](/slides/00-Intro_to_Course.html#1) to open the slides. 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/JIKSLCnwPc4" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JlKSLCnwPc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 <!--more-->
 
 [Click here](/slides/00-Intro_to_Course.html#1) to open the slides. 
 
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/JIKSLCnwPc4-ocJw" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/JlKSLCnwPc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>

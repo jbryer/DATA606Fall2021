@@ -125,6 +125,16 @@
   </url>
   
   <url>
+    <loc>/tags/annoucement/</loc>
+    <lastmod>2021-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/announcements/</loc>
+    <lastmod>2021-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/categories/</loc>
     <lastmod>2021-08-25T00:00:00+00:00</lastmod>
   </url>
@@ -136,6 +146,16 @@
   
   <url>
     <loc>/</loc>
+    <lastmod>2021-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/blog/meetup_00_introductions/</loc>
+    <lastmod>2021-08-25T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/categories/meetups/</loc>
     <lastmod>2021-08-25T00:00:00+00:00</lastmod>
   </url>
   
@@ -157,11 +177,6 @@
   <url>
     <loc>/tags/working-directories/</loc>
     <lastmod>2021-08-25T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>/tags/annoucement/</loc>
-    <lastmod>2021-08-18T00:00:00+00:00</lastmod>
   </url>
   
   <url>

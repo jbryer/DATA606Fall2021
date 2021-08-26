@@ -61,7 +61,7 @@ I am currently an Assistant Professor in Data Science and Information Systems at
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/course-overview/schedule/</guid>
-      <description>Note: Schedule is subject to change. Last updated July 26, 2021 10:35AM.
+      <description>Note: Schedule is subject to change. Last updated August 25, 2021 10:13PM.
 CUNY SPS Academic Calendar
  document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-08-25&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
     </item>
@@ -247,6 +247,22 @@ Occasionally you will need to type equations in homework and labs. R Markdown su
 
 
 &lt;p&gt;To get started with the labs, you will need to install R and other supporting applications. Links to download all the software is on the &lt;a href=&#34;/course-overview/software/&#34;&gt;Software&lt;/a&gt; page which is also available on the &lt;code&gt;Course Overview&lt;/code&gt; menu. Once you are in RStudio, you will need to install a number of R packages using the following two commands:&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introductions</title>
+      <link>/blog/meetup_00_introductions/</link>
+      <pubDate>Wed, 25 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/meetup_00_introductions/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;/slides/00-Intro_to_Course.html#1&#34;&gt;Click here&lt;/a&gt; to open the slides.&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/JIKSLCnwPc4&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
 </description>
     </item>
     

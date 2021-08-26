@@ -8,6 +8,15 @@
     <language>en-us</language>
     <lastBuildDate>Wed, 25 Aug 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Annoucement</title>
+      <link>/tags/annoucement/</link>
+      <pubDate>Wed, 25 Aug 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/annoucement/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>R Markdown</title>
       <link>/tags/r-markdown/</link>
       <pubDate>Wed, 25 Aug 2021 00:00:00 +0000</pubDate>
@@ -22,15 +31,6 @@
       <pubDate>Wed, 25 Aug 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/working-directories/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Annoucement</title>
-      <link>/tags/annoucement/</link>
-      <pubDate>Wed, 18 Aug 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/annoucement/</guid>
       <description></description>
     </item>
     

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Intro to Data</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Jason Bryer, Ph.D. and Angela Lui, Ph.D." />
+    <meta name="date" content="2021-09-01" />
+    <script src="libs/header-attrs-2.10/header-attrs.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/mtheme_max.css" type="text/css" />
+    <link rel="stylesheet" href="assets/fonts_mtheme_max.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Intro to Data
+## DATA 606 - Statistics &amp; Probability for Data Analytics
+### Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+### September 1, 2021
+
+---
+
+
+
+
+# Announcements
+
+
+* DAACS
+	* A question for everyone: How well did the results align with your understanding of you as a learner? 
+		* We have not sent emails yet (an may not need to) to get access to your DAACS results. If you completed it, you are good.
+		* DAACS feedback, on the DAACS website, is tailored to your responses. It is worth taking a few minutes to see what your strengths are, as well as areas that might be holding you back.
+
+* Lab 1 and homework 1 is due Sunday.
+	
+* Labs - When submitting the labs, you can submit just add your answers to the existing document (i.e. you can leave all the text there so you have all the content together).
+
+* Link to RStudio cheat sheets: https://rstudio.com/resources/cheatsheets/
+
+---
+# Familiarity with Statistical Topics &lt;img src="images/hex/likert.png" class="title-hex"&gt;&lt;img src="images/hex/googlesheets4.png" class="title-hex"&gt;
+
+
+
+
+
+
+```r
+likert(stats.results) %&gt;% plot(center = 2.5)
+```
+
+&lt;img src="01-Intro_to_Data_files/figure-html/unnamed-chunk-2-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Math Anxiety Survey Scale &lt;img src="images/hex/likert.png" class="title-hex"&gt;&lt;img src="images/hex/googlesheets4.png" class="title-hex"&gt;
+
+
+```r
+likert(mass.results) %&gt;% plot()
+```
+
+&lt;img src="01-Intro_to_Data_files/figure-html/unnamed-chunk-3-1.png" style="display: block; margin: auto;" /&gt;
+
+---
+# Sampling vs. Census
+
+A census involves collecting data for the entire population of interest. This is problematic for several reasons, including:
+
+* It can be difficult to complete a census: there always seem to be some individuals who are hard to locate or hard to measure. And these difficult-to-find people may have certain characteristics that distinguish them from the rest of the population.
+* Populations rarely stand still. Even if you could take a census, the population changes constantly, so it’s never possible to get a perfect measure.
+* Taking a census may be more complex than sampling.
+
+Sampling involves measuring a subset of the population of interest, usually randomly.
+
+
+---
+# Sampling Bias
+
+* **Non-response**: If only a small fraction of the randomly sampled people choose to respond to a survey, the sample may no longer be representative of the population.
+
+* **Voluntary response**: Occurs when the sample consists of people who volunteer to respond because they have strong opinions on the issue. Such a sample will also not be representative of the population.
+
+* **Convenience sample**: Individuals who are easily accessible are more likely to be included in the sample.
+
+
+---
+# Simple Random Sampling
+
+Randomly select cases from the population, where there is no implied connection between the points that are selected.
+
+.center[![Simple Random Sample](images/srs.png)]
+
+---
+# Stratified Sampling
+
+*Strata* are made up of similar observations. We take a simple random sample from each stratum.
+
+.center[![](images/stratified.png)]
+
+
+---
+# Cluster Sampling
+
+*Clusters* are usually not made up of homogeneous observations so we take random samples from random samples of clusters.
+
+.center[![](images/cluster.png)]
+
+---
+# Observational Studies vs. Experiments
+
+* **Observational study**: Researchers collect data in a way that does not directly interfere with how the data arise, i.e. they merely “observe”, and can only establish an association between the explanatory and response variables.
+
+* **Experiment**: Researchers randomly assign subjects to various treatments in order to establish causal connections between the explanatory and response variables.
+
+&lt;center&gt;&lt;img src='images/correlation.png' alt='Correlation'&gt;&lt;br /&gt;&lt;font size='-2'&gt;Source: [XKCD 552 http://xkcd.com/552/](http://xkcd.com/552/)&lt;/font&gt;&lt;/center&gt;
+
+&lt;center&gt;&lt;b&gt;&lt;font size="+4"&gt;Correlation does not imply causation!&lt;/font&gt;&lt;/b&gt;&lt;/center&gt;
+
+
+---
+# Principles of experimental design
+
+1. **Control**: Compare treatment of interest to a control group.
+
+2. **Randomize**: Randomly assign subjects to treatments, and
+randomly sample from the population whenever possible.
+
+3. **Replicate**: Within a study, replicate by collecting a sufficiently large sample. Or replicate the entire study.
+
+4. **Block**: If there are variables that are known or suspected to affect the response variable, first group subjects into blocks based on these variables, and then randomize cases within each block to treatment groups.
+
+Difference between blocking and explanatory variables
+* Factors are conditions we can impose on the experimental units.
+* Blocking variables are characteristics that the experimental units come with, that we would like to control for.
+* Blocking is like stratifying, except used in experimental settings when randomly assigning, as opposed to when sampling.
+
+
+---
+# More experimental design terminology...
+
+* **Placebo**: fake treatment, often used as the control group for medical studies
+* **Placebo effect**: experimental units showing improvement simply because they believe they are receiving a special treatment
+* **Blinding**: when experimental units do not know whether they are in the control or treatment group
+* **Double-blind**: when both the experimental units and the researchers who interact with the patients do not know who is in the control and who is in the treatment group
+
+
+---
+# Random assignment vs. random sampling
+
+.center[
+
+&lt;img src='images/random_sample_assignment.png' width='900'&gt;
+
+]
+
+---
+# Causality
+
+.center[
+
+&lt;img src='images/Causality.png' width='900'&gt;
+
+]
+
+---
+# Randomized Control Trials
+
+.pull-left[
+
+
+
+&lt;img src="01-Intro_to_Data_files/figure-html/unnamed-chunk-5-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+]
+
+---
+# Randomized Control Trials
+
+.pull-left[
+
+&lt;img src="01-Intro_to_Data_files/figure-html/unnamed-chunk-6-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+.pull-right[
+
+&lt;img src="01-Intro_to_Data_files/figure-html/unnamed-chunk-7-1.png" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+# What if we take a lot of random samples?
+
+.code80[
+
+```r
+mean_differences &lt;- numeric(500)
+for(i in 1:length(mean_differences)) {
+	thedata$RCT_Assignment &lt;- sample(c('placebo', 'treatment'), nrow(thedata), replace = TRUE)
+	thedata$RCT_Value &lt;- as.numeric(apply(thedata, 1, 
+					FUN = function(x) { return(x[x['RCT_Assignment']]) }))
+	tab.out &lt;- describeBy(thedata$RCT_Value, group = thedata$RCT_Assignment, mat = TRUE, skew = FALSE)
+	mean_differences[i] &lt;- diff(tab.out$mean)
+}
+ggplot() + geom_histogram(aes(x = mean_differences), bins = 20, fill = 'grey70') + 
+	geom_vline(xintercept = mean(mean_differences), color = 'red', alpha = 0.5) +
+	geom_vline(xintercept = pop.sd * pop.es, color = 'blue', alpha = 0.5)
+```
+
+&lt;img src="01-Intro_to_Data_files/figure-html/unnamed-chunk-8-1.png" style="display: block; margin: auto;" /&gt;
+]
+
+---
+class: middle, left
+# One Minute Paper
+
+
+Complete the one minute paper: 
+https://forms.gle/ENFqTnDB5fJDw3kx9
+
+1. What was the most important thing you learned during this class?
+
+2. What important question remains unanswered for you?
+
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "solarized-light",
+"highlightLanguage": "R",
+"highlightLines": true,
+"countIncrementalSlides": false,
+"ratio": "16:9",
+"navigation": {
+"scroll": false
+}
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+<!-- Source: https://www.garrickadenbuie.com/blog/xaringan-tip-logo-all-slides/ -->
+<style>
+.logo {
+  background-image: url(images/hex/DATA606.png);
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  bottom: 2em;
+  right: 0.5em;
+  width: 55px;
+  height: 64px;
+  z-index: 0;
+}
+</style>
+
+<script>
+document
+  .querySelectorAll(
+    '.remark-slide-content' +
+    ':not(.title-slide)' +
+    // add additional classes to exclude here, e.g.
+    // ':not(.inverse)' +
+    ':not(.hide-logo)'
+  )
+  .forEach(el => {
+    el.innerHTML += '<div class="logo"></div>';
+  });
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

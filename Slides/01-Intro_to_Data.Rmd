@@ -1,0 +1,351 @@
+---
+title: "Intro to Data"
+subtitle: "DATA 606 - Statistics & Probability for Data Analytics"
+author: Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+date: "September 1, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "DATA606Fall2021"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+# devtools::install_github("thomasp85/patchwork")
+
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(likert)
+
+
+opts_chunk$set(digits = 3)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+```
+
+# Announcements
+
+
+* DAACS
+	* A question for everyone: How well did the results align with your understanding of you as a learner? 
+		* We have not sent emails yet (an may not need to) to get access to your DAACS results. If you completed it, you are good.
+		* DAACS feedback, on the DAACS website, is tailored to your responses. It is worth taking a few minutes to see what your strengths are, as well as areas that might be holding you back.
+
+* Lab 1 and homework 1 is due Sunday.
+	
+* Labs - When submitting the labs, you can submit just add your answers to the existing document (i.e. you can leave all the text there so you have all the content together).
+
+* Link to RStudio cheat sheets: https://rstudio.com/resources/cheatsheets/
+
+---
+# Familiarity with Statistical Topics `r hexes(c('googlesheets4','likert'))`
+
+```{r, echo = FALSE, cache = TRUE, message = FALSE, warning = FALSE}
+library(googlesheets4)
+
+results <- read_sheet('https://docs.google.com/spreadsheets/d/1cYsAX67q-sJ0ROu-XwoV3l5MO6YK2jT7I0SFBSaYfC8/edit?usp=sharing') %>% as.data.frame()
+mass.items <- c('I find math interesting.',
+				'I get uptight during math tests.',
+				'I think that I will use math in the future.',
+				'Mind goes blank and I am unable to think clearly when doing my math test.',
+				'Math relates to my life.',
+				'I worry about my ability to solve math problems.',
+				'I get a sinking feeling when I try to do math problems.',
+				'I find math challenging.',
+				'Mathematics makes me feel nervous.',
+				'I would like to take more math classes.',
+				'Mathematics makes me feel uneasy.',
+				'Math is one of my favorite subjects.',
+				'I enjoy learning with mathematics.',
+				'Mathematics makes me feel confused.')
+mass.results <- results[,4:17]
+for(i in 1:ncol(mass.results)) {
+	mass.results[,i] <- factor(mass.results[,i],
+						  levels = c('Strongly Disagree', 'Disagree', 'Neutral',
+						  		   'Agree', 'Strongly Agree'),
+						  ordered = TRUE)
+}
+names(mass.results) <- mass.items
+
+stats.items <- c('Descriptive Statistics',
+                 'Probability',
+                 'Data visualizations',
+				 'Correlation',
+                 'Central limit theorem',
+                 'Null hypothesis testing',
+				 'ANOVA',
+				 'Chi-squared tests',
+				 'Type I and II errors',
+                 'Assumptions for regression',
+                 'Linear regression',
+                 'Multiple regression',
+				 'Logistic regression',
+                 'Predictive modeling',
+                 'SPSS',
+                 'R',
+                 'Python')
+
+stats.results <- results[,18:34]
+for(i in 1:ncol(stats.results)) {
+	stats.results[,i] <- factor(stats.results[,i],
+						  levels = c('Not at all familiar', 'Sligtly familiar',
+						  		     'Somewhat familiar',
+						  		     'Moderately familiar', 'Extremely familiar'),
+						  ordered = TRUE)
+}
+names(stats.results) <- stats.items
+```
+
+
+
+```{r, fig.width=12, fig.align='center'}
+likert(stats.results) %>% plot(center = 2.5)
+```
+
+---
+# Math Anxiety Survey Scale `r hexes(c('googlesheets4','likert'))`
+
+```{r, fig.width = 12, fig.align='center'}
+likert(mass.results) %>% plot()
+```
+
+---
+# Sampling vs. Census
+
+A census involves collecting data for the entire population of interest. This is problematic for several reasons, including:
+
+* It can be difficult to complete a census: there always seem to be some individuals who are hard to locate or hard to measure. And these difficult-to-find people may have certain characteristics that distinguish them from the rest of the population.
+* Populations rarely stand still. Even if you could take a census, the population changes constantly, so it’s never possible to get a perfect measure.
+* Taking a census may be more complex than sampling.
+
+Sampling involves measuring a subset of the population of interest, usually randomly.
+
+
+---
+# Sampling Bias
+
+* **Non-response**: If only a small fraction of the randomly sampled people choose to respond to a survey, the sample may no longer be representative of the population.
+
+* **Voluntary response**: Occurs when the sample consists of people who volunteer to respond because they have strong opinions on the issue. Such a sample will also not be representative of the population.
+
+* **Convenience sample**: Individuals who are easily accessible are more likely to be included in the sample.
+
+
+---
+# Simple Random Sampling
+
+Randomly select cases from the population, where there is no implied connection between the points that are selected.
+
+.center[![Simple Random Sample](images/srs.png)]
+
+---
+# Stratified Sampling
+
+*Strata* are made up of similar observations. We take a simple random sample from each stratum.
+
+.center[![](images/stratified.png)]
+
+
+---
+# Cluster Sampling
+
+*Clusters* are usually not made up of homogeneous observations so we take random samples from random samples of clusters.
+
+.center[![](images/cluster.png)]
+
+---
+# Observational Studies vs. Experiments
+
+* **Observational study**: Researchers collect data in a way that does not directly interfere with how the data arise, i.e. they merely “observe”, and can only establish an association between the explanatory and response variables.
+
+* **Experiment**: Researchers randomly assign subjects to various treatments in order to establish causal connections between the explanatory and response variables.
+
+<center><img src='images/correlation.png' alt='Correlation'><br /><font size='-2'>Source: [XKCD 552 http://xkcd.com/552/](http://xkcd.com/552/)</font></center>
+
+<center><b><font size="+4">Correlation does not imply causation!</font></b></center>
+
+
+---
+# Principles of experimental design
+
+1. **Control**: Compare treatment of interest to a control group.
+
+2. **Randomize**: Randomly assign subjects to treatments, and
+randomly sample from the population whenever possible.
+
+3. **Replicate**: Within a study, replicate by collecting a sufficiently large sample. Or replicate the entire study.
+
+4. **Block**: If there are variables that are known or suspected to affect the response variable, first group subjects into blocks based on these variables, and then randomize cases within each block to treatment groups.
+
+Difference between blocking and explanatory variables
+* Factors are conditions we can impose on the experimental units.
+* Blocking variables are characteristics that the experimental units come with, that we would like to control for.
+* Blocking is like stratifying, except used in experimental settings when randomly assigning, as opposed to when sampling.
+
+
+---
+# More experimental design terminology...
+
+* **Placebo**: fake treatment, often used as the control group for medical studies
+* **Placebo effect**: experimental units showing improvement simply because they believe they are receiving a special treatment
+* **Blinding**: when experimental units do not know whether they are in the control or treatment group
+* **Double-blind**: when both the experimental units and the researchers who interact with the patients do not know who is in the control and who is in the treatment group
+
+
+---
+# Random assignment vs. random sampling
+
+.center[
+
+<img src='images/random_sample_assignment.png' width='900'>
+
+]
+
+---
+# Causality
+
+.center[
+
+<img src='images/Causality.png' width='900'>
+
+]
+
+---
+# Randomized Control Trials
+
+.pull-left[
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+library(psych)
+library(purrr)
+
+pop.mean <- 100
+pop.sd <- 15
+pop.es <- .3
+
+n <- 30
+
+set.seed(2112)
+thedata <- data.frame(
+	id = 1:30,
+	center = rnorm(n, mean = pop.mean, sd = pop.sd),
+	stringsAsFactors = FALSE
+)
+val <- pop.sd * pop.es / 2
+thedata$placebo <- thedata$center - val
+thedata$treatment <- thedata$center + val
+thedata$diff <- thedata$treatment - thedata$placebo
+thedata$RCT_Assignment <- sample(c('placebo', 'treatment'), n, replace = TRUE)
+thedata$RCT_Value <- as.numeric(apply(thedata, 1, 
+					FUN = function(x) { return(x[x['RCT_Assignment']]) }))
+tab.out <- describeBy(thedata$RCT_Value, group = thedata$RCT_Assignment, mat = TRUE, skew = FALSE)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+ggplot(thedata) + 
+	geom_segment(aes(x = placebo, xend = treatment, y = id, yend = id)) +
+	geom_point(aes(x = placebo, y = id), color = 'blue') +
+	geom_point(aes(x = treatment, y = id), color = 'red') +
+	ylab('') + xlab('Outcome') +
+	xlim(pop.mean - 3 * pop.sd, pop.mean + 3 * pop.sd) +
+	ggtitle(paste0('True Counterfactual Difference = ', mean(thedata$diff)))
+```
+
+]
+
+.pull-right[
+
+]
+
+---
+# Randomized Control Trials
+
+.pull-left[
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+ggplot(thedata) + 
+	geom_segment(aes(x = placebo, xend = treatment, y = id, yend = id)) +
+	geom_point(aes(x = placebo, y = id), color = 'blue') +
+	geom_point(aes(x = treatment, y = id), color = 'red') +
+	ylab('') + xlab('Outcome') +
+	xlim(pop.mean - 3 * pop.sd, pop.mean + 3 * pop.sd) +
+	ggtitle(paste0('True Counterfactual Difference = ', mean(thedata$diff)))
+```
+
+]
+
+.pull-right[
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, fig.align='center'}
+ggplot(thedata, aes(x = RCT_Value, color = RCT_Assignment, y = id)) +
+	geom_point() +
+	scale_color_manual(values = c('placebo' = 'blue', 'treatment' = 'red')) +
+	theme(legend.position = 'none') +
+	geom_vline(data = tab.out, aes(xintercept = mean, color = group1)) +
+	ylab('') + xlab('Outcome') +
+	xlim(pop.mean - 3 * pop.sd, pop.mean + 3 * pop.sd) +
+	ggtitle(paste0('RCT Difference = ', round(diff(tab.out$mean), digits = 2)))
+```
+
+]
+
+---
+# What if we take a lot of random samples?
+
+.code80[
+```{r, fig.width=10, fig.height=3.5, fig.align = 'center'}
+mean_differences <- numeric(500)
+for(i in 1:length(mean_differences)) {
+	thedata$RCT_Assignment <- sample(c('placebo', 'treatment'), nrow(thedata), replace = TRUE)
+	thedata$RCT_Value <- as.numeric(apply(thedata, 1, 
+					FUN = function(x) { return(x[x['RCT_Assignment']]) }))
+	tab.out <- describeBy(thedata$RCT_Value, group = thedata$RCT_Assignment, mat = TRUE, skew = FALSE)
+	mean_differences[i] <- diff(tab.out$mean)
+}
+ggplot() + geom_histogram(aes(x = mean_differences), bins = 20, fill = 'grey70') + 
+	geom_vline(xintercept = mean(mean_differences), color = 'red', alpha = 0.5) +
+	geom_vline(xintercept = pop.sd * pop.es, color = 'blue', alpha = 0.5)
+```
+]
+
+---
+class: middle, left
+# One Minute Paper
+
+
+Complete the one minute paper: 
+https://forms.gle/ENFqTnDB5fJDw3kx9
+
+1. What was the most important thing you learned during this class?
+
+2. What important question remains unanswered for you?
+

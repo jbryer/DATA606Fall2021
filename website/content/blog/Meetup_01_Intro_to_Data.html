@@ -1,0 +1,69 @@
+---
+title: "Intro to Data"
+author: "Jason Bryer"
+date: 2021-09-01
+draft: false
+categories: ["R", "Meetups", "Announcements"]
+tags: ["Annoucement"]
+#summary: Recording and slides from the class meetup.
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p><a href="/slides/01-Intro_to_Data.html#1">Click here</a> to open the slides.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vPrVpIwTgh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<!--more-->
+<p><a href="/slides/01-Intro_to_Data.html#1">Click here</a> to open the slides.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vPrVpIwTgh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p>R code created during meeting.</p>
+<pre class="r"><code>data(mtcars)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.3     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>cor.test(mtcars$wt, mtcars$mpg)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  mtcars$wt and mtcars$mpg
+## t = -9.559, df = 30, p-value = 1.294e-10
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.9338264 -0.7440872
+## sample estimates:
+##        cor 
+## -0.8676594</code></pre>
+<pre class="r"><code>ggplot(mtcars, aes(x = wt, y = mpg)) + 
+    geom_point() +
+    geom_smooth(method = &#39;lm&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blog/Meetup_01_Intro_to_Data_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>lm.out &lt;- lm(mpg ~ wt + hp, data = mtcars)
+summary(lm.out)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ wt + hp, data = mtcars)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -3.941 -1.600 -0.182  1.050  5.854 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 37.22727    1.59879  23.285  &lt; 2e-16 ***
+## wt          -3.87783    0.63273  -6.129 1.12e-06 ***
+## hp          -0.03177    0.00903  -3.519  0.00145 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.593 on 29 degrees of freedom
+## Multiple R-squared:  0.8268, Adjusted R-squared:  0.8148 
+## F-statistic: 69.21 on 2 and 29 DF,  p-value: 9.109e-12</code></pre>

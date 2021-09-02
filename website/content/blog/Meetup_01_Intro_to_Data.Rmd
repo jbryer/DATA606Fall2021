@@ -1,0 +1,38 @@
+---
+title: "Intro to Data"
+author: "Jason Bryer"
+date: 2021-09-01
+draft: false
+categories: ["R", "Meetups", "Announcements"]
+tags: ["Annoucement"]
+#summary: Recording and slides from the class meetup.
+---
+
+
+[Click here](/slides/01-Intro_to_Data.html#1) to open the slides. 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vPrVpIwTgh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<!--more-->
+
+[Click here](/slides/01-Intro_to_Data.html#1) to open the slides. 
+
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vPrVpIwTgh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+R code created during meeting.
+
+```{r}
+data(mtcars)
+library(tidyverse)
+
+cor.test(mtcars$wt, mtcars$mpg)
+
+ggplot(mtcars, aes(x = wt, y = mpg)) + 
+	geom_point() +
+	geom_smooth(method = 'lm')
+
+lm.out <- lm(mpg ~ wt + hp, data = mtcars)
+summary(lm.out)
+```

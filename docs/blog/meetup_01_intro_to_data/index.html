@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Intro to Data - DATA 606 - Statistics &amp; Probability - Fall 2021</title>
+<meta name="generator" content="Hugo 0.78.1" />
+<link href="//index.xml" rel="alternate" type="application/rss+xml">
+<link rel="canonical" href="/blog/meetup_01_intro_to_data/">
+<link rel="stylesheet" href="/css/theme.min.css">
+<script src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+<link rel="stylesheet" href="/css/chroma.min.css">
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery.easing@1.4.1/jquery.easing.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script src="/js/bundle.js"></script><style>
+:root {--custom-background-color: #005DAC;}
+</style>
+<meta property="og:title" content="Intro to Data" />
+<meta property="og:description" content="
+
+
+
+Click here to open the slides.
+
+
+" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/meetup_01_intro_to_data/" />
+<meta property="og:image" content="/images/og-image.png"/>
+<meta property="article:published_time" content="2021-09-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-09-01T00:00:00+00:00" /><meta property="og:site_name" content="DATA 606" />
+<meta name="twitter:card" content="summary_large_image"/>
+<meta name="twitter:image" content="/images/og-image.png"/>
+
+<meta name="twitter:title" content="Intro to Data"/>
+<meta name="twitter:description" content="
+
+
+
+Click here to open the slides.
+
+
+"/>
+<meta itemprop="name" content="Intro to Data">
+<meta itemprop="description" content="
+
+
+
+Click here to open the slides.
+
+
+">
+<meta itemprop="datePublished" content="2021-09-01T00:00:00+00:00" />
+<meta itemprop="dateModified" content="2021-09-01T00:00:00+00:00" />
+<meta itemprop="wordCount" content="250">
+<meta itemprop="image" content="/images/og-image.png"/>
+
+
+
+<meta itemprop="keywords" content="Annoucement," />
+<link href='/fullcalendar-lib/main.css' rel='stylesheet' />
+<script src='/fullcalendar-lib/main.js'></script>
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+
+<style>
+#calendar {
+	max-width: 1100px;
+	margin: 0 auto;
+}
+</style>
+</head>
+<body><div class="container"><header>
+
+<a href="/"><img src='/images/course_logo.png' align="left" style="height:40px; padding-right:10px;border:0;" /></a><h1>DATA 606 - Statistics &amp; Probability - Fall 2021</h1>
+</header>
+<div class="global-menu">
+<nav>
+<ul>
+<li><a href="/">Home</a></li>
+<li><a href="/blog">Announcements</a></li>
+<li><a href="/course-overview/schedule/">Schedule</a></li>
+<li><a href="/course-overview/meetups/">Meetups</a></li>
+<li><a href="https://DATA606Fall2021.slack.com">Slack</a></li>
+<li><a href="https://bbhosted.cuny.edu/webapps/login">Blackboard</a></li>
+<li><a href="https://github.com/jbryer/DATA606Fall2021/">Github</a></li>
+<li><a href="https://sps.cuny.edu/academics/graduate/master-science-data-science-ms">CUNY SPS</a></li></ul>
+</nav>
+</div>
+<div class="content-container">
+<main><h1>Intro to Data</h1><p><a href="/slides/01-Intro_to_Data.html#1">Click here</a> to open the slides.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/vPrVpIwTgh8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p>R code created during meeting.</p>
+<pre class="r"><code>data(mtcars)
+library(tidyverse)</code></pre>
+<pre><code>## ── Attaching packages ─────────────────────────────────────── tidyverse 1.3.1 ──</code></pre>
+<pre><code>## ✓ ggplot2 3.3.5     ✓ purrr   0.3.4
+## ✓ tibble  3.1.3     ✓ dplyr   1.0.7
+## ✓ tidyr   1.1.3     ✓ stringr 1.4.0
+## ✓ readr   2.0.0     ✓ forcats 0.5.1</code></pre>
+<pre><code>## ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>cor.test(mtcars$wt, mtcars$mpg)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  mtcars$wt and mtcars$mpg
+## t = -9.559, df = 30, p-value = 1.294e-10
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.9338264 -0.7440872
+## sample estimates:
+##        cor 
+## -0.8676594</code></pre>
+<pre class="r"><code>ggplot(mtcars, aes(x = wt, y = mpg)) + 
+    geom_point() +
+    geom_smooth(method = &#39;lm&#39;)</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blog/Meetup_01_Intro_to_Data_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>lm.out &lt;- lm(mpg ~ wt + hp, data = mtcars)
+summary(lm.out)</code></pre>
+<pre><code>## 
+## Call:
+## lm(formula = mpg ~ wt + hp, data = mtcars)
+## 
+## Residuals:
+##    Min     1Q Median     3Q    Max 
+## -3.941 -1.600 -0.182  1.050  5.854 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept) 37.22727    1.59879  23.285  &lt; 2e-16 ***
+## wt          -3.87783    0.63273  -6.129 1.12e-06 ***
+## hp          -0.03177    0.00903  -3.519  0.00145 ** 
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 2.593 on 29 degrees of freedom
+## Multiple R-squared:  0.8268, Adjusted R-squared:  0.8148 
+## F-statistic: 69.21 on 2 and 29 DF,  p-value: 9.109e-12</code></pre>
+<footer><p class="powered">Powered by <a href="https://gohugo.io">Hugo</a>. Theme by <a href="https://themes.gohugo.io/hugo-theme-techdoc/">TechDoc</a>. Designed by <a href="https://github.com/thingsym/hugo-theme-techdoc">Thingsym</a>.</p>
+</footer>
+</main>
+<div class="sidebar">
+
+<nav class="open-menu">
+<ul>
+<li class=""><a href="/">Home</a></li>
+
+
+
+<li class=""><a href="/course-overview/">Syllabus</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/course-overview/instructor/">Instructors</a></li>
+<li class=""><a href="/course-overview/schedule/">Schedule</a></li>
+<li class=""><a href="/course-overview/meetups/">Meetups</a></li>
+<li class=""><a href="/course-overview/textbooks/">Textbooks</a></li>
+<li class=""><a href="/course-overview/software/">Software</a></li>
+<li class=""><a href="/course-overview/mathjax/">Math Equations</a></li>
+<li class=""><a href="/course-overview/materials/">Materials</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/assignments/">Assignments</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/assignments/daacs/">DAACS</a></li>
+<li class=""><a href="/assignments/participation/">Participation</a></li>
+<li class=""><a href="/assignments/homework/">Homework</a></li>
+<li class=""><a href="/assignments/labs/">Labs</a></li>
+<li class=""><a href="/assignments/project/">Project</a></li>
+<li class=""><a href="/assignments/final/">Final Exam</a></li>
+</ul>
+  
+</li>
+
+<li class=""><a href="/chapters/">Chapters</a>
+  
+<ul class="sub-menu">
+<li class=""><a href="/chapters/chapter1/">Chapter 1</a></li>
+<li class=""><a href="/chapters/chapter2/">Chapter 2</a></li>
+<li class=""><a href="/chapters/chapter3/">Chapter 3</a></li>
+<li class=""><a href="/chapters/chapter4/">Chapter 4</a></li>
+<li class=""><a href="/chapters/chapter5/">Chapter 5</a></li>
+<li class=""><a href="/chapters/chapter6/">Chapter 6</a></li>
+<li class=""><a href="/chapters/chapter7/">Chapter 7</a></li>
+<li class=""><a href="/chapters/chapter8/">Chapter 8</a></li>
+<li class=""><a href="/chapters/chapter9/">Chapter 9</a></li>
+<li class=""><a href="/chapters/bayesian/">Bayesian</a></li>
+</ul>
+  
+</li>
+</ul>
+</nav>
+
+
+
+<div class="sidebar-footer"></div>
+</div>
+
+</div><a href="#" id="backtothetop-fixed" class="backtothetop"
+ data-backtothetop-duration="600"
+ data-backtothetop-easing="easeOutQuart"
+ data-backtothetop-fixed-fadeIn="1000"
+ data-backtothetop-fixed-fadeOut="1000"
+ data-backtothetop-fixed-bottom="10"
+ data-backtothetop-fixed-right="20">
+<span class="fa-layers fa-fw">
+<i class="fas fa-circle"></i>
+<i class="fas fa-arrow-circle-up"></i>
+</span></a>
+</div>
+</body>
+</html>

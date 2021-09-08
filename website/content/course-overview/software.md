@@ -41,7 +41,7 @@ For more information, Jenny Bryan's [*Happy Git and Github for the useR*](https:
 Once everything is installed, execute the following command in RStudio to install the packages we will use for this class (you can copy-and-paste):
 
 {{< code >}}
-install.packages(c('openintro','OIdata','devtools','tidyverse', 'ggplot2',
+install.packages(c('openintro','devtools','tidyverse', 'ggplot2',
                    'psych','reshape2','knitr','markdown','shiny','R.rsp',
                    'fivethirtyeight'))
 devtools::install_github("jbryer/DATA606")

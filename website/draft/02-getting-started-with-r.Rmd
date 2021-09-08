@@ -10,7 +10,7 @@ tags: ["R Markdown", "working directories"]
 To get started with the labs, you will need to install R and other supporting applications. Links to download all the software is on the [Software](/software) page at [http://data606.net/software](http://data606.net/software) which is available on the `Course Overview` menu. Once you are in RStudio, you will need to install a number of R packages using the following two commands:
 
 ```
-install.packages(c('openintro','OIdata','devtools','tidyverse', 'ggplot2',
+install.packages(c('openintro','devtools','tidyverse', 'ggplot2',
                    'psych','reshape2','knitr','markdown','shiny','R.rsp',
                    'fivethirtyeight'))
 devtools::install_github("jbryer/DATA606")

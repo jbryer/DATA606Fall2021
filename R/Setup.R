@@ -2,7 +2,7 @@
 
 # Install R packages
 install.packages(c('tidyverse', 'devtools', 'shiny', 'psych', 'reshape2',
-				   'openintro', 'OIdata', 'fivethrityeight', 'knitr', 'tinytex'))
+				   'openintro', 'fivethrityeight', 'knitr', 'tinytex'))
 devtools::install_github('jbryer/DATA606')
 devtools::install_github("seankross/lego")
 

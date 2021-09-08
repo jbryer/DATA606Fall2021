@@ -20,6 +20,7 @@ output:
       after_body: [assets/insert-logo.html]
 params:
   github_link: "DATA606Fall2021"
+  one_minute_paper: https://forms.gle/ENFqTnDB5fJDw3kx9
 editor_options: 
   chunk_output_type: console
 ---
@@ -343,7 +344,7 @@ class: middle, left
 
 
 Complete the one minute paper: 
-https://forms.gle/ENFqTnDB5fJDw3kx9
+`r params$one_minute_paper`
 
 1. What was the most important thing you learned during this class?
 

@@ -6,7 +6,23 @@
     <description>Recent content in Meetups on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 01 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/meetups/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 08 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/meetups/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Summarizing Data</title>
+      <link>/blog/meetup_02_summarizing_data/</link>
+      <pubDate>Wed, 08 Sep 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/meetup_02_summarizing_data/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;/slides/02-Summarizing_Data#1&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/02-Summarizing_Data.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/qSpNkLwxmK4&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+</description>
+    </item>
+    
     <item>
       <title>Intro to Data</title>
       <link>/blog/meetup_01_intro_to_data/</link>
@@ -17,7 +33,7 @@
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;&lt;a href=&#34;/slides/01-Intro_to_Data.html#1&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/01-Intro_to_Data.pdf&#34;&gt;PDF&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/slides/01-Intro_to_Data.html#1&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/01-Intro_to_Data.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;/p&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/vPrVpIwTgh8&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
 &lt;/iframe&gt;
 </description>
@@ -33,7 +49,7 @@
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;&lt;a href=&#34;/slides/00-Intro_to_Course.html#1&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/00-Intro_to_Course.pdf&#34;&gt;PDF&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/slides/00-Intro_to_Course.html#1&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/00-Intro_to_Course.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;/p&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/JlKSLCnwPc4&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
 &lt;/iframe&gt;
 </description>

@@ -1,0 +1,42 @@
+---
+title: "Summarizing Data"
+author: "Jason Bryer"
+date: 2021-09-08
+draft: false
+categories: ["R", "Meetups", "Announcements"]
+tags: ["Annoucement"]
+#summary: Recording and slides from the class meetup.
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p><a href="/slides/02-Summarizing_Data#1">Click here</a> to open the slides (<a href="https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/02-Summarizing_Data.pdf">PDF</a>).</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qSpNkLwxmK4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<!--more-->
+<p><a href="/slides/02-Summarizing_Data.html#1">Click here</a> to open the slides (<a href="https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/02-Summarizing_Data.pdf">PDF</a>).</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qSpNkLwxmK4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p>R script from class:</p>
+<pre class="r"><code>myvar &lt;- &#39;42&#39;
+as.integer(myvar)
+myvar &lt;- &#39;hello&#39;
+as.integer(myvar)
+myvar &lt;- TRUE
+class(myvar)
+as.integer(myvar)
+class(as.numeric(myvar))
+class(as.character(myvar))
+
+data(mtcars)
+head(mtcars)
+names(mtcars)[names(mtcars) == &#39;wt&#39;] &lt;- &#39;weight&#39;
+head(mtcars)
+
+library(brickset)
+data(legosets)
+ggplot(legosets, aes(x = US_retailPrice)) + geom_histogram(bins = 20) + scale_x_log10()
+ggplot(legosets, aes(x = US_retailPrice)) + geom_density() + scale_x_log10()
+ggplot(data = legosets, 
+       mapping = aes(x = US_retailPrice)) + geom_density() + scale_x_log10()</code></pre>

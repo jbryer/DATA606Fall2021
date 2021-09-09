@@ -1,0 +1,48 @@
+---
+title: "Summarizing Data"
+author: "Jason Bryer"
+date: 2021-09-08
+draft: false
+categories: ["R", "Meetups", "Announcements"]
+tags: ["Annoucement"]
+#summary: Recording and slides from the class meetup.
+---
+
+
+[Click here](/slides/02-Summarizing_Data#1) to open the slides ([PDF](https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/02-Summarizing_Data.pdf)). 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qSpNkLwxmK4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<!--more-->
+
+[Click here](/slides/02-Summarizing_Data.html#1) to open the slides ([PDF](https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/02-Summarizing_Data.pdf)). 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/qSpNkLwxmK4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+R script from class: 
+
+```{r, eval=FALSE}
+myvar <- '42'
+as.integer(myvar)
+myvar <- 'hello'
+as.integer(myvar)
+myvar <- TRUE
+class(myvar)
+as.integer(myvar)
+class(as.numeric(myvar))
+class(as.character(myvar))
+
+data(mtcars)
+head(mtcars)
+names(mtcars)[names(mtcars) == 'wt'] <- 'weight'
+head(mtcars)
+
+library(brickset)
+data(legosets)
+ggplot(legosets, aes(x = US_retailPrice)) + geom_histogram(bins = 20) + scale_x_log10()
+ggplot(legosets, aes(x = US_retailPrice)) + geom_density() + scale_x_log10()
+ggplot(data = legosets, 
+	   mapping = aes(x = US_retailPrice)) + geom_density() + scale_x_log10()
+
+```

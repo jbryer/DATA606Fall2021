@@ -1,0 +1,781 @@
+---
+title: "Summarizing Data"
+subtitle: "DATA 606 - Statistics & Probability for Data Analytics"
+author: Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+date: "September 8, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "DATA606Fall2021"
+  one_minute_paper: https://forms.gle/ENFqTnDB5fJDw3kx9
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=7, fig.align = 'center',
+					  digits = 3) 
+options(width = 120)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+```
+
+# Agenda
+
+.pull-left[.font130[
+* Questions
+* Homework Presentations
+* Data wrangling
+	* Data types
+	* Descriptive statistics
+* Data visualization
+	* Grammar of graphics
+	* Types of graphics
+]]
+.pull-right[
+<img src='images/data_wrangler.png' alt='Data Wrangler' width='100%' />
+.right[.font60[ Image source: [@allison_horst](https://twitter.com/allison_horst) ]]
+]
+
+---
+# One Minute Paper Results
+
+```{r, echo=FALSE}
+library(googlesheets4)
+library(tidyverse)
+omp <- read_sheet('https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812')
+# names(omp)[8] <- 'Time_Spent'
+# omp$Time_Spent <- NULL
+# omp$Time_Spent <- sapply(omp$Time_Spent, FUN = function(x) { x[[1]] })
+omp <- omp %>% filter(Topic == 'Intro to Data (Chapter 1)')
+
+library("tm")
+library("SnowballC")
+library("wordcloud")
+library("RColorBrewer")
+
+ompWordCloud <- function(text) {
+	docs <- Corpus(VectorSource(text))
+	# Convert the text to lower case
+	docs <- tm_map(docs, content_transformer(tolower))
+	# Remove numbers
+	docs <- tm_map(docs, removeNumbers)
+	# Remove english common stopwords
+	docs <- tm_map(docs, removeWords, stopwords("english"))
+	# Remove your own stop word
+	# specify your stopwords as a character vector
+	docs <- tm_map(docs, removeWords, c("blabla1", "blabla2"))
+	# Remove punctuations
+	docs <- tm_map(docs, removePunctuation)
+	# Eliminate extra white spaces
+	docs <- tm_map(docs, stripWhitespace)
+	dtm <- TermDocumentMatrix(docs)
+	m <- as.matrix(dtm)
+	v <- sort(rowSums(m),decreasing=TRUE)
+	d <- data.frame(word = names(v),freq=v)
+	head(d, 10)
+	wordcloud(words = d$word, freq = d$freq, min.freq = 2,
+			  max.words=200, random.order=FALSE, rot.per=0.35,
+			  colors=brewer.pal(8, "Dark2"))
+}
+```
+
+.pull-left[
+**What was the most important thing you learned during this class?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What was the most important thing you learned during this class?`)
+```
+]
+.pull-right[
+**What important question remains unanswered for you?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What important question remains unanswered for you?`)
+```
+]
+
+---
+# Announcements
+
+There is an error in the homework 2 Rmarkdown file. The `OIdata` is no longer available on CRAN. All the data for the textbook has been moved to the `openintro` package. However, in that conversion some of the datasets have been renamed. The `heartTr` data frame has been renamed to `heart_transplant`. You have two options:
+
+1. If you already started the homework, search and replace `heartTr` with `heart_transplant`.
+
+2. If not, the Rmd file has been updated on Github: https://github.com/jbryer/DATA606Fall2021/blob/master/Homework/Homework2.Rmd
+
+___________
+
+I made a few minor updates to the `DATA606` package. You can update by reinstalling:
+
+```{r, eval=FALSE}
+remotes::install_github('jbryer/DATA606')
+```
+
+---
+# Homework Presentations
+
+* 1.13 Lisa Szydziak
+
+* 1.37 Esteban Aramayo
+
+* 1.43 Mauricio Claudio
+
+
+---
+# Workflow
+
+.center[
+<img src='images/data-science-wrangle.png' alt = 'Data Science Workflow' width='1000' />
+]
+
+.font80[Source: [Wickham & Grolemund, 2017](https://r4ds.had.co.nz)]
+
+
+---
+# Tidy Data
+
+.center[
+<img src='images/tidydata_1.jpg' height='500' />
+]
+
+See Wickham (2014) [Tidy data](https://vita.had.co.nz/papers/tidy-data.html).
+
+
+---
+# Types of Data
+
+.pull-left[
+* Numerical (quantitative)
+	* Continuous
+	* Discrete
+]
+.pull-right[
+* Categorical (qualitative)
+	* Regular categorical
+	* Ordinal
+]
+.center[
+<img src='images/continuous_discrete.png' height='400' />
+]
+
+---
+# Data Types in R
+
+```{r, echo=FALSE, fig.align='center', out.width=1000}
+knitr::include_graphics('images/DataTypesConceptModel.png')
+```
+
+---
+# Data Types / Descriptives / Visualizations
+
+
+Data Type    |  Descriptive Stats                            | Visualization
+-------------|-----------------------------------------------|-------------------|
+Continuous   | mean, median, mode, standard deviation, IQR   | histogram, density, box plot
+Discrete     | contingency table, proportional table, median | bar plot
+Categorical  | contingency table, proportional table         | bar plot
+Ordinal      | contingency table, proportional table, median | bar plot
+Two quantitative | correlation                               | scatter plot
+Two qualitative  | contingency table, chi-squared            | mosaic plot, bar plot
+Quantitative & Qualitative | grouped summaries, ANOVA, t-test | box plot
+
+---
+# Robust Statistics
+
+Median and IQR are more robust to skewness and outliers than mean and SD. Therefore,
+
+* for skewed distributions it is often more helpful to use median and IQR to describe the center and spread
+
+* for symmetric distributions it is often more helpful to use the mean and SD to describe the center and spread
+
+---
+# About `legosets` `r hexes(c('brickset'))`
+
+To install the `brickset` package:
+
+```{r, eval=FALSE}
+remotes::install_github('jbryer/brickset')
+```
+
+To load the load the `legosets` dataset.
+
+```{r}
+data('legosets', package = 'brickset')
+```
+
+The `legosets` data has `r nrow(legosets)` observations of `r ncol(legosets)` variables.
+
+.code70[
+```{r}
+names(legosets)
+```
+]
+
+---
+# Structure (`str`) `r hexes(c('brickset'))`
+
+.code50[
+
+```{r}
+str(legosets)
+```
+
+]
+
+---
+# RStudio Eenvironment tab can help `r hexes(c('rstudio'))`
+
+```{r, echo=FALSE, out.width=500}
+knitr::include_graphics('images/legosets_rstudio_environment.png')
+```
+
+---
+class: hide-logo
+# Table View 
+
+.font60[
+
+```{r eval=require('DT'), echo=FALSE, tidy=FALSE}
+legosets %>%
+	sample_n(100) %>% 
+	select(setID, name, year, theme, themeGroup, category, US_retailPrice, pieces, minifigs, rating) %>%
+	DT::datatable(fillContainer = FALSE, options = list(pageLength = 10))
+```
+
+]
+
+
+---
+# Data Wrangling Cheat Sheet `r hexes(c('dplyr'))`
+
+.center[
+<a href='https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf' target='_new'><img src='images/data-transformation.png' width='700' /></a>
+]
+
+
+---
+# Tidyverse vs Base R `r hexes(c('tidyverse', 'pipe'))`
+
+.center[
+<a href='images/R_Syntax_Comparison.jpeg' target='_new'><img src="images/R_Syntax_Comparison.jpeg" width='700' /></a>
+]
+
+
+---
+# Pipes `%>%` `r hexes(c('magrittr'))`
+
+<img src='images/magrittr_pipe.jpg' align='right' width='275' />
+
+.font90[
+The pipe operator (`%>%`) introduced with the `magrittr` R package allows for the chaining of R operations. It takes the output from the left-hand side and passes it as the first parameter to the function on the right-hand side. In base R, to get the output of a proportional table, you need to first call `table` then `prop.table`. 
+]
+
+.pull-left[
+You can do this in two steps:
+
+```{r, eval=FALSE}
+tab_out <- table(legosets$category)
+prop.table(tab_out)
+```
+
+Or as nested function calls.
+
+```{r, eval=FALSE}
+prop.table(table(legosets$category))
+```
+]
+.pull-right[
+Using the pipe (`%>%`) operator we can chain these calls in a what is arguably a more readable format:
+
+```{r, eval=FALSE}
+table(legosets$category) %>% prop.table()
+```
+]
+
+<hr />
+
+```{r, echo=FALSE}
+table(legosets$category) %>% prop.table()
+```
+
+---
+# Filter `r hexes(c('dplyr','tidyverse'))`
+
+.center[
+<img src='images/dplyr_filter_sm.png' width='800' />
+]
+
+---
+# Logical Operators
+
+* `!a` - TRUE if a is FALSE
+* `a == b` - TRUE if a and be are equal
+* `a != b` - TRUE if a and b are not equal
+* `a > b` - TRUE if a is larger than b, but not equal
+* `a >= b` - TRUE if a is larger or equal to b
+* `a < b` - TRUE if a is smaller than be, but not equal
+* `a <= b` - TRUE if a is smaller or equal to b
+* `a %in% b` - TRUE if a is in b where b is a vector  
+```{r}
+which( letters %in% c('a','e','i','o','u') )
+```
+* `a | b` - TRUE if a *or* b are TRUE
+* `a & b` - TRUE if a *and* b are TRUE
+* `isTRUE(a)` - TRUE if a is TRUE
+
+---
+# Filter `r hexes(c('dplyr','tidyverse'))`
+
+### `dplyr`
+
+```{r}
+mylego <- legosets %>% filter(themeGroup == 'Educational' & year > 2015)
+```
+
+### Base R
+
+```{r, eval=FALSE}
+mylego <- legosets[legosets$themeGroups == 'Educaitonal' & legosets$year > 2015,]
+```
+
+<hr />
+
+```{r}
+nrow(mylego)
+```
+
+---
+# Select `r hexes(c('dplyr','tidyverse'))`
+
+### `dplyr`
+
+```{r}
+mylego <- mylego %>% select(setID, pieces, theme, availability, US_retailPrice, minifigs)
+```
+
+### Base R
+
+```{r, eval=FALSE}
+mylego <- mylego[,c('setID', 'pieces', 'theme', 'availability', 'US_retailPrice', 'minifigs')]
+```
+
+<hr />
+
+```{r}
+head(mylego, n = 4)
+```
+
+---
+# Relocate `r hexes(c('dplyr','tidyverse'))`
+
+.center[
+<img src='images/dplyr_relocate.png' width='800' />
+]
+
+---
+# Relocate `r hexes(c('dplyr','tidyverse'))`
+
+### `dplyr`
+
+```{r}
+mylego %>% relocate(where(is.numeric), .after = where(is.character)) %>% head(n = 3)
+```
+
+### Base R
+
+```{r}
+mylego2 <- mylego[,c('theme', 'availability', 'setID', 'pieces', 'US_retailPrice', 'minifigs')]
+head(mylego2, n = 3)
+```
+
+
+---
+# Rename `r hexes(c('dplyr','tidyverse'))`
+
+.center[
+<img src='images/rename_sm.jpg' width='1000' />
+]
+
+---
+# Rename `r hexes(c('dplyr','tidyverse'))`
+
+### `dplyr`
+
+```{r}
+mylego %>% dplyr::rename(USD = US_retailPrice) %>% head(n = 3)
+```
+
+### Base R
+
+```{r}
+names(mylego2)[5] <- 'USD'
+head(mylego2, n = 3)
+```
+
+---
+# Mutate `r hexes(c('dplyr','tidyverse'))`
+
+.center[
+<img src='images/dplyr_mutate.png' width='700' />
+]
+
+---
+# Mutate `r hexes(c('dplyr','tidyverse'))`
+
+### `dplyr`
+
+```{r}
+mylego %>% filter(!is.na(pieces) & !is.na(US_retailPrice)) %>% 
+	mutate(Price_per_piece = US_retailPrice / pieces) %>% head(n = 3)
+```
+
+### Base R
+
+```{r}
+mylego2 <- mylego[!is.na(mylego$US_retailPrice) & !is.na(mylego$Price_per_piece),]
+mylego2$Price_per_piece <- mylego2$Price_per_piece / mylego2$US_retailPrice
+head(mylego2, n = 3)
+```
+
+
+---
+# Group By and Summarize `r hexes(c('dplyr','tidyverse'))`
+
+.code80[
+```{r}
+legosets %>% group_by(themeGroup) %>% summarize(mean_price = mean(US_retailPrice, na.rm = TRUE),
+												sd_price = sd(US_retailPrice, na.rm = TRUE),
+												median_price = median(US_retailPrice, na.rm = TRUE),
+												n = n(),
+												missing = sum(is.na(US_retailPrice)))
+```
+]
+
+---
+# Describe and Describe By
+
+```{r}
+library(psych)
+describe(legosets$US_retailPrice)
+```
+
+```{r}
+describeBy(legosets$US_retailPrice, group = legosets$availability, mat = TRUE, skew = FALSE)
+```
+
+---
+class: middle
+# Grammer of Graphics
+
+.center[
+<img src="images/ggplot2_masterpiece.png" height="550" />
+]
+
+---
+# Data Visualizations with ggplot2 `r hexes(c('ggplot2'))`
+
+* `ggplot2` is an R package that provides an alternative framework based upon Wilkinson’s (2005) Grammar of Graphics.
+
+* `ggplot2` is, in general, more flexible for creating "prettier" and complex plots.
+
+* Works by creating layers of different types of objects/geometries (i.e. bars, points, lines, polygons, etc.)
+`ggplot2` has at least three ways of creating plots:
+     1. `qplot`
+     2. `ggplot(...) + geom_XXX(...) + ...`
+     3. `ggplot(...) + layer(...)`
+
+* We will focus only on the second.
+
+
+---
+# Parts of a `ggplot2` Statement `r hexes(c('ggplot2'))`
+
+* Data  
+`ggplot(myDataFrame, aes(x=x, y=y))`
+
+* Layers  
+`geom_point()`, `geom_histogram()`
+
+* Facets  
+`facet_wrap(~ cut)`, `facet_grid(~ cut)`
+
+* Scales  
+`scale_y_log10()`
+
+* Other options  
+`ggtitle('my title')`, `ylim(c(0, 10000))`, `xlab('x-axis label')`
+
+---
+# Lots of geoms `r hexes(c('ggplot2'))`
+
+```{r}
+ls('package:ggplot2')[grep('^geom_', ls('package:ggplot2'))]
+```
+
+---
+# Data Visualization Cheat Sheet `r hexes(c('ggplot2'))`
+
+.center[
+<a href='https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf'><img src='images/data-visualization-2.1.png' width='700' /></a>
+]
+
+
+---
+# Scatterplot  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x=pieces, y=US_retailPrice)) + geom_point()
+```
+
+---
+# Scatterplot (cont.)  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x=pieces, y=US_retailPrice, color=availability)) + geom_point()
+```
+
+---
+# Scatterplot (cont.)  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x=pieces, y=US_retailPrice, size=minifigs, color=availability)) + geom_point()
+```
+
+---
+# Scatterplot (cont.)  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x=pieces, y=US_retailPrice, size=minifigs)) + geom_point() + facet_wrap(~ availability)
+```
+
+---
+# Boxplots  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x='Lego', y=US_retailPrice)) + geom_boxplot()
+```
+
+---
+# Boxplots (cont.)  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x=availability, y=US_retailPrice)) + geom_boxplot()
+```
+
+---
+# Boxplot (cont.)  `r hexes(c('ggplot2'))`
+
+```{r, warning=FALSE}
+ggplot(legosets, aes(x=availability, y=US_retailPrice)) + geom_boxplot() + coord_flip()
+```
+
+---
+# Histograms `r hexes(c('ggplot2'))`
+
+```{r}
+ggplot(legosets, aes(x = US_retailPrice)) + geom_histogram()
+```
+
+---
+# Histograms (cont.)`r hexes(c('ggplot2'))`
+
+```{r}
+ggplot(legosets, aes(x = US_retailPrice)) + geom_histogram() + scale_x_log10()
+```
+
+---
+# Histograms (cont.) `r hexes(c('ggplot2'))`
+
+```{r}
+ggplot(legosets, aes(x = US_retailPrice)) + geom_histogram() + facet_wrap(~ availability)
+```
+
+---
+# Density Plots `r hexes(c('ggplot2'))`
+
+```{r}
+ggplot(legosets, aes(x = US_retailPrice, color = availability)) + geom_density()
+```
+
+---
+# `ggplot2` aesthetics `r hexes(c('ggplot2'))`
+
+.center[
+<a href='images/ggplot_aesthetics_cheatsheet.png' target='_new'> <img src='images/ggplot_aesthetics_cheatsheet.png' height='550' /></a>
+]
+
+---
+# Likert Scales `r hexes(c('likert'))`
+
+Likert scales are a type of questionnaire where respondents are asked to rate items on scales usually ranging from four to seven levels (e.g. strongly disagree to strongly agree).
+
+```{r, message=FALSE, warning=FALSE}
+library(likert)
+library(reshape)
+data(pisaitems)
+items24 <- pisaitems[,substr(names(pisaitems), 1,5) == 'ST24Q']
+items24 <- rename(items24, c(
+			ST24Q01="I read only if I have to.",
+			ST24Q02="Reading is one of my favorite hobbies.",
+			ST24Q03="I like talking about books with other people.",
+			ST24Q04="I find it hard to finish books.",
+			ST24Q05="I feel happy if I receive a book as a present.",
+			ST24Q06="For me, reading is a waste of time.",
+			ST24Q07="I enjoy going to a bookstore or a library.",
+			ST24Q08="I read only to get information that I need.",
+			ST24Q09="I cannot sit still and read for more than a few minutes.",
+			ST24Q10="I like to express my opinions about books I have read.",
+			ST24Q11="I like to exchange books with my friends."))
+
+```
+
+---
+# `likert` R Package `r hexes(c('likert'))`
+
+```{r}
+l24 <- likert(items24)
+summary(l24)
+```
+
+---
+# `likert` Plots  `r hexes(c('likert'))`
+
+```{r, fig.width=8}
+plot(l24)
+```
+
+---
+# `likert` Plots  `r hexes(c('likert'))`
+
+```{r, fig.width=8}
+plot(l24, type='heat')
+```
+
+---
+# `likert` Plots  `r hexes(c('likert'))`
+
+```{r, fig.width=4, fig.height=7}
+plot(l24, type='density')
+```
+
+---
+class: font90
+# Dual Scales `r hexes(c('shiny'))`
+
+Some problems<sup>1</sup>:
+
+* The designer has to make choices about scales and this can have a big impact on the viewer
+* "Cross-over points” where one series cross another are results of the design choices, not intrinsic to the data, and viewers (particularly unsophisticated viewers)
+* They make it easier to lazily associate correlation with causation, not taking into account autocorrelation and other time-series issues
+* Because of the issues above, in malicious hands they make it possible to deliberately mislead
+
+This example looks at the relationship between NZ dollar exchange rate and trade weighted index.
+
+```{r, eval=FALSE}
+DATA606::shiny_demo('DualScales', package='DATA606')
+```
+
+My advise:
+
+* Avoid using them. You can usually do better with other plot types.
+* When necessary (or compelled) to use them, rescale (using z-scores, we'll discuss this in a few weeks)
+
+.font50[
+<sup>1</sup> http://blog.revolutionanalytics.com/2016/08/dual-axis-time-series.html  
+<sup>2</sup> http://ellisp.github.io/blog/2016/08/18/dualaxes
+]
+
+---
+# Pie Charts
+
+There is only one pie chart in *OpenIntro Statistics* (Diez, Barr, & Çetinkaya-Rundel, 2015, p. 48). Consider the following three pie charts that represent the preference of five different colors. Is there a difference between the three pie charts? This is probably a difficult to answer.
+
+<center><img src='images/Pie.png' width='500'></center>
+
+
+---
+# Pie Charts
+
+There is only one pie chart in *OpenIntro Statistics* (Diez, Barr, & Çetinkaya-Rundel, 2015, p. 48). Consider the following three pie charts that represent the preference of five different colors. Is there a difference between the three pie charts? This is probably a difficult to answer.
+
+<center><img src='images/Pie.png' width='500'></center>
+
+<center><img src='images/Bar.png' width='500'></center>
+
+Source: [https://en.wikipedia.org/wiki/Pie_chart](https://en.wikipedia.org/wiki/Pie_chart).
+
+---
+class: middle
+# Just say NO to pie charts!
+
+.font150[
+"There is no data that can be displayed in a pie chart that cannot better be displayed in some other type of chart"]
+.right[.font130[John Tukey]]
+
+---
+# Additional Resources
+
+For data wrangling:
+
+* `dplyr` website: https://dplyr.tidyverse.org
+* R for Data Science book: https://r4ds.had.co.nz/wrangle-intro.html
+* Wrangling penguins tutorial: https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+* Data transformation cheat sheet: https://github.com/rstudio/cheatsheets/raw/master/data-transformation.pdf
+
+For data visualization:
+
+* `ggplot2` website: https://ggplot2.tidyverse.org
+* R for Data Science book: https://r4ds.had.co.nz/data-visualisation.html
+* R Graphics Cookbook: https://r-graphics.org
+* Data visualization cheat sheet: https://github.com/rstudio/cheatsheets/raw/master/data-visualization-2.1.pdf
+
+---
+class: left
+# One Minute Paper
+
+.font140[
+Complete the one minute paper: 
+`r params$one_minute_paper`
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+]
+
+ 

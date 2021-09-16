@@ -21,6 +21,7 @@ output:
 params:
   github_link: "DATA606Fall2021"
   one_minute_paper: https://forms.gle/ENFqTnDB5fJDw3kx9
+  one_minute_paper_results: "https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812"
 editor_options: 
   chunk_output_type: console
 ---
@@ -81,7 +82,7 @@ hexes <- function(x) {
 ```{r, echo=FALSE}
 library(googlesheets4)
 library(tidyverse)
-omp <- read_sheet('https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812')
+omp <- read_sheet(params$one_minute_paper_results)
 # names(omp)[8] <- 'Time_Spent'
 # omp$Time_Spent <- NULL
 # omp$Time_Spent <- sapply(omp$Time_Spent, FUN = function(x) { x[[1]] })

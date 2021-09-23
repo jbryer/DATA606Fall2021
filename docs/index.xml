@@ -57,22 +57,11 @@ I am currently an Assistant Professor in Data Science and Information Systems at
     
     <item>
       <title>Schedule</title>
-      <link>/course-overview/schedule-jason-bryers-conflicted-copy-2021-09-16/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/course-overview/schedule-jason-bryers-conflicted-copy-2021-09-16/</guid>
-      <description>Note: Schedule is subject to change. Last updated September 15, 2021 01:04PM.
-CUNY SPS Academic Calendar
- document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-09-15&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
-    </item>
-    
-    <item>
-      <title>Schedule</title>
       <link>/course-overview/schedule/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/course-overview/schedule/</guid>
-      <description>Note: Schedule is subject to change. Last updated September 22, 2021 07:33PM.
+      <description>Note: Schedule is subject to change. Last updated September 23, 2021 07:52AM.
 CUNY SPS Academic Calendar
  document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-09-23&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
     </item>
@@ -93,21 +82,6 @@ CUNY SPS Academic Calendar
       
       <guid>/assignments/homework/</guid>
       <description>The solutions to the practice problems are at the end of the book and do not need to be handed in. Graded assignments should use the provided R markdown templates provided below. Data for the homework assignments, and for within the chapters too, can be downloaded here. Or alternatively all the data is included in the openintro R packge (use the data(package = &#39;openintro&#39;) command to list all the datasets available in that package).</description>
-    </item>
-    
-    <item>
-      <title>Meetups</title>
-      <link>/course-overview/meetups-jason-bryers-conflicted-copy-2021-09-16/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/course-overview/meetups-jason-bryers-conflicted-copy-2021-09-16/</guid>
-      <description>There will be weekly meetups. You are encouraged to attend as many as you can but recordings will generally be availabe the day after the meetup.
-Join Zoom Meeting: https://zoom.us/my/jbryer
-Meeting ID: 626 617 3127
-+16465588656,,6266173127# US (New York)
-Phone Number: +1 646 558 8656 US (New York)
-Find your local number: https://us02web.zoom.us/u/kn00x9C6p
-Please note: Students who participate in this class with their camera on or use a profile image are agreeing to have their video or image recorded solely for the purpose of creating a record for students enrolled in the class to refer to, including those enrolled students who are unable to attend live.</description>
     </item>
     
     <item>

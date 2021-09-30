@@ -7,7 +7,9 @@ f <- function(x, mean = 0, sigma = 1) {
 df <- tibble(x = seq(-3, 3, by = 0.01),
 			 y = f(x))
 
-ggplot(df, aes(x = x, y = y)) + geom_path()
+ggplot() + stat_function(fun = f) + xlim(c(-4, 4))
+
+# ggplot(df, aes(x = x, y = y)) + geom_path()
 
 min <- 0
 max <- 2
@@ -34,3 +36,26 @@ ggplot() +
 	ggtitle(paste0('Aera ≈ ', prettyNum(sum(boxes$area)), digits = 4))
 
 integrate(f, min, max)
+
+##### Derivatives
+
+xlimits <- c(-5, 15)
+f <- function(x) { 0.015 * x^3 - 0.25 * x^2 + 0.49 * x + 0.47 }
+ggplot() + stat_function(fun = f) + xlim(xlimits)
+
+x <- 5
+ggplot() + stat_function(fun = f) + xlim(xlimits) +
+	geom_point(aes(x = x, y = f(x)), color = 'blue', size = 3)
+
+
+library(Deriv)
+dx <- Deriv(f)
+dx(x)
+
+ggplot() + stat_function(fun = f) + xlim(xlimits) +
+	geom_point(aes(x = x, y = f(x)), color = 'blue', size = 3) +
+	geom_abline(slope = dx(x)[1], intercept = f(x) - dx(x)[1] * x, color = 'blue')
+
+
+
+

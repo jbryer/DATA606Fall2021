@@ -65,7 +65,7 @@ hexes <- function(x) {
 
 ```{r, echo=FALSE}
 library(googlesheets4)
-omp <- read_sheet('https://docs.google.com/spreadsheets/d/1vMgo-BhGiSF1DTpf9IbjKdekyAZsslFUV5xzUN7O6pg/edit#gid=965448308')
+omp <- read_sheet(params$one_minute_paper_results)
 omp <- omp %>% dplyr::filter(Topic == 'Probability (Chapter 3)')
 source('word_cloud.R')
 ```

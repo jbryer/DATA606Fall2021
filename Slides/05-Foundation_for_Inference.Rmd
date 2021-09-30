@@ -1,0 +1,1009 @@
+---
+title: "Foundation for Inference"
+subtitle: "DATA 606 - Statistics & Probability for Data Analytics"
+author: Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+date: "September 29, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css", "assets/header-footer.css"]
+    self_contained: true
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "DATA606Fall2021"
+  one_minute_paper: "https://forms.gle/ENFqTnDB5fJDw3kx9"
+  one_minute_paper_results: "https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+
+set.seed(2112)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6.5, fig.align = 'center',
+					  digits = 3) 
+options(width = 120)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+
+PlotDist <- function(alpha, from = -5, to = 5, n = 1000, filename = NULL,
+    alternative = c("two.tailed", "greater", "lesser"), 
+    distribution = c("normal", "t", "F", "chisq", "binomial"), 
+    colour = "black", fill = "skyblue2",
+    ...)
+{
+    alternative <- match.arg(alternative)
+    alt.alpha <- switch(alternative, two.tailed = alpha/2, greater = alpha,
+        lesser = alpha)
+    MyDen <- switch(distribution, normal = dnorm, t = dt, F = df,
+        chisq = dchisq, binomial = dbinom)
+    MyDist <- switch(distribution, normal = qnorm, t = qt, F = qf,
+        chisq = qchisq, binomial = qbinom)
+    crit.lower <- MyDist(p = alt.alpha, lower.tail = TRUE, ...)
+    crit.upper <- MyDist(p = alt.alpha, lower.tail = FALSE, ...)
+    cord.x1 <- c(from, seq(from = from, to = crit.lower, length.out = 100),
+        crit.lower)
+    cord.y1 <- c(0, MyDen(x = seq(from = from, to = crit.lower,
+        length.out = 100), ...), 0)
+    cord.x2 <- c(crit.upper, seq(from = crit.upper, to = to,
+        length.out = 100), to)
+    cord.y2 <- c(0, MyDen(x = seq(from = crit.upper, to = to,
+        length.out = 100), ...), 0)
+    if (!is.null(filename)) pdf(file = filename)
+    curve(MyDen(x, ...), from = from, to = to, n = n, col = colour,
+        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
+    if (!identical(alternative, "greater")) {
+        polygon(x = cord.x1, y = cord.y1, col = fill)
+    }
+    if (!identical(alternative, "lesser")) {
+        polygon(x = cord.x2, y = cord.y2, col = fill)
+    }
+    if (!is.null(filename)) dev.off()
+}
+```
+
+# One Minute Paper Results
+
+```{r, echo=FALSE}
+library(googlesheets4)
+omp <- read_sheet(params$one_minute_paper_results)
+omp <- omp %>% dplyr::filter(Topic == 'Distributions (Chapter 4)')
+source('word_cloud.R')
+```
+
+.pull-left[
+**What was the most important thing you learned during this class?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What was the most important thing you learned during this class?`)
+```
+]
+.pull-right[
+**What important question remains unanswered for you?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What important question remains unanswered for you?`)
+```
+]
+
+---
+class: font140
+# Homework Presentations
+
+* 4.17	Nick Oliver
+
+* 4.19	William Aiken
+
+* 4.25	Tyler Baker
+
+---
+class: center, middle, inverse
+# Crash Course in Calculus 
+
+---
+class: font90
+# Crash Course in Calculus
+
+There are three major concepts in calculus that will be helpful to understand:
+
+**Limits** - the value that a function (or sequence) approaches as the input (or index) approaches some value.
+
+**Derivatives** - the slope of the line tangent at any given point on a function.
+
+```{r, echo=FALSE, fig.height=2, fig.width=4, results = 'hide'}
+library(Deriv)
+x <- 5
+xlimits <- c(-5, 15)
+f <- function(x) { 0.015 * x^3 - 0.25 * x^2 + 0.49 * x + 0.47 }
+dx <- Deriv(f)
+dx(x)
+ggplot() + stat_function(fun = f) + xlim(xlimits) +
+	geom_point(aes(x = x, y = f(x)), color = 'blue', size = 3) +
+	geom_abline(slope = dx(x)[1], intercept = f(x) - dx(x)[1] * x, color = 'blue')
+
+```
+
+**Integrals** - the area under the curve.
+
+```{r, echo=FALSE, fig.height=2, fig.width=4}
+normal_plot(cv = c(0, 2)) + ggtitle(label = NULL)
+```
+
+---
+background-image: url(images/derivative_1.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_2.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_3.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_4.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_5.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_6.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_7.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_8.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+background-image: url(images/derivative_9.jpg)
+background-size: contain
+# Derivatives
+
+<div class="my-footer"><span>
+Source: <a href='https://github.com/allisonhorst/stats-illustrations'>@allison_horst</a>
+</span></div>
+
+---
+# Function for Normal Distribution
+
+$$f\left( x|\mu ,\sigma  \right) =\frac { 1 }{ \sigma \sqrt { 2\pi  }  } { e }^{ -\frac { { \left( x-\mu  \right)  }^{ 2 } }{ { 2\sigma  }^{ 2 } }  }$$
+
+```{r}
+f <- function(x, mean = 0, sigma = 1) {
+	1 / (sigma * sqrt(2 * pi)) * exp(1)^(-1/2 * ( (x - mean) / sigma )^2)
+}
+```
+
+```{r, fig.height=3.5}
+min <- 0; max <- 2
+ggplot() + stat_function(fun = f) + xlim(c(-4, 4)) + 
+	geom_vline(xintercept = c(min, max), color = 'blue', linetype = 2) + xlab('x')
+```
+
+
+---
+# Reimann Sums
+
+One strategy to find the area between two values is to draw a series of rectangles. Given *n* rectangles, we know that the width of each is $\frac{2 - 0}{n}$ and the height is $f(x)$. Here is an example with 3 rectangles.
+
+```{r, echo=FALSE}
+riemann <- function(f, min, max, n = 2) {
+	width <- (max - min) / n
+	boxes <- tibble(
+		xmin = seq(min, min + (n-1) * width, by = width),
+		height = f(xmin),
+		area = height * width
+	)
+	return(boxes)
+}
+```
+
+```{r, fig.height=3.5, echo = FALSE}
+n <- 3
+boxes <- riemann(f, min, max, n = n)
+width <- (max-min)/n
+ggplot() +
+	geom_rect(data = boxes, aes(xmin = xmin, ymin = 0, xmax = xmin + width, ymax = height),
+			  alpha = 0.5, color = 'black') +
+	stat_function(fun = f) + xlim(c(-4, 4)) +
+	ggtitle(paste0('Area ≈ ', prettyNum(sum(boxes$area)), digits = 4))
+```
+
+---
+# Reimann Sums (10 rectangles)
+
+```{r, fig.height=3.5, echo = FALSE}
+n <- 10
+boxes <- riemann(f, min, max, n = n)
+width <- (max-min)/n
+ggplot() +
+	geom_rect(data = boxes, aes(xmin = xmin, ymin = 0, xmax = xmin + width, ymax = height),
+			  alpha = 0.5, color = 'black') +
+	stat_function(fun = f) + xlim(c(-4, 4)) +
+	ggtitle(paste0('Area ≈ ', prettyNum(sum(boxes$area)), digits = 4))
+```
+
+---
+# Reimann Sums (30 rectangles)
+
+```{r, fig.height=3.5, echo = FALSE}
+n <- 30
+boxes <- riemann(f, min, max, n = n)
+width <- (max-min)/n
+ggplot() +
+	geom_rect(data = boxes, aes(xmin = xmin, ymin = 0, xmax = xmin + width, ymax = height),
+			  alpha = 0.5, color = 'black') +
+	stat_function(fun = f) + xlim(c(-4, 4)) +
+	ggtitle(paste0('Area ≈ ', prettyNum(sum(boxes$area)), digits = 4))
+```
+
+---
+# Reimann Sums (300 rectangles)
+
+```{r, fig.height=3.5, echo = FALSE}
+n <- 300
+boxes <- riemann(f, min, max, n = n)
+width <- (max-min)/n
+ggplot() +
+	geom_rect(data = boxes, aes(xmin = xmin, ymin = 0, xmax = xmin + width, ymax = height),
+			  alpha = 0.5, color = 'black') +
+	stat_function(fun = f) + xlim(c(-4, 4)) +
+	ggtitle(paste0('Area ≈ ', prettyNum(sum(boxes$area)), digits = 4))
+```
+
+---
+# $n\rightarrow \infty$
+
+As *n* approaches infinity we are going to get the *exact* value for the area under the curve. This notion of letting a value get increasingly close to infinity, zero, or any other value, is called the **limit**.
+
+The area under a function is called the integral.
+
+```{r}
+integrate(f, 0, 2)
+```
+
+```{r, eval=FALSE}
+DATA606::shiny_demo('calculus')
+```
+
+---
+# Normal Distribution
+
+```{r, fig.height=3.5}
+normal_plot(cv = c(0, 2))
+```
+
+```{r}
+pnorm(2) - pnorm(0)
+```
+
+---
+# R's built in functions for working with distributions
+
+```{r, echo=FALSE}
+library(cowplot)
+
+plot_distributions <- function(dist, xvals, xmin, xmax,
+							   args = list(),
+							   palette = c(d = '#1b9e77', r = '#d95f02', p = '#7570b3', q = '#e7298a')) {
+	functions <- c(d = get(paste0('d', dist)),
+				   r = get(paste0('r', dist)),
+				   p = get(paste0('p', dist)),
+				   q = get(paste0('q', dist)))
+
+	df <- tibble(
+		x = xvals,
+		d = sapply(xvals, FUN = function(x) { args$x <- x; do.call(functions[['d']], args = args) }),
+		p = sapply(xvals, FUN = function(x) { args$q <- x; do.call(functions[['p']], args = args) })
+	)
+
+	args_str <- ifelse(length(args) > 0,
+					   paste0(names(args), ' = ', args, collapse = ', '),
+					   '')
+
+	d_plot <- ggplot(df, aes(x = x, y = d)) +
+		xlim(xmin, xmax) +
+		geom_function(fun = functions[['d']], args = args) +
+		geom_segment(aes(x = x, xend = x, y = 0, yend = d), color = palette['d']) +
+		geom_segment(aes(x = x, xend = xmin, y = d, yend = d), color = palette['d'],
+					 arrow = arrow(length = unit(0.5, "cm"))) +
+		geom_point(aes(x = x, y = 0), color = palette['d'], size = 2) +
+		xlab('z-score / quantile') + ylab('Probability Density') +
+		ggtitle(paste0('d', dist, '(', args_str, ')'))
+
+	r_plot <- ggplot(df, aes(x = x, y = d)) +
+		xlim(xmin, xmax) +
+		geom_function(fun = functions[['d']], args = args) +
+		geom_segment(aes(x = x, xend = x, y = d, yend = 0), color = palette['r'],
+					 arrow = arrow(length = unit(0.5, "cm"))) +
+		xlab('z-score / quantile') + ylab('Probability Density') +
+		ggtitle(paste0('r', dist, '(', args_str, ')'))
+
+	p_plot <- ggplot(df, aes(x = x, y = d)) +
+		xlim(xmin, xmax) +
+		geom_function(fun = functions[['p']], args = args) +
+		geom_segment(aes(x = x, xend = x, y = 0, yend = p), color = palette['p']) +
+		geom_segment(aes(x = x, xend = xmin, y = p, yend = p), color = palette['p'],
+					 arrow = arrow(length = unit(0.5, "cm"))) +
+		geom_point(aes(x = x, y = 0), color = palette['p'], size = 2) +
+		xlab('z-score / quantile') + ylab('Cumulative Probability') +
+		ggtitle(paste0('p', dist, '(', args_str, ')'))
+
+	q_plot <- ggplot(df, aes(x = x, y = d)) +
+		xlim(xmin, xmax) +
+		geom_function(fun = functions[['p']], args = args) +
+		geom_segment(aes(x = x, xend = x, y = p, yend = 0), color = palette['q'],
+					 arrow = arrow(length = unit(0.5, "cm"))) +
+		geom_segment(aes(x = x, xend = xmin, y = p, yend = p), color = palette['q']) +
+		geom_point(aes(x = xmin, y = p), color = palette['q'], size = 2) +
+		xlab('z-score / quantile') + ylab('Cumulative Probability') +
+		ggtitle(paste0('q', dist, '(', args_str, ')'))
+
+	plot_grid(d_plot, r_plot, p_plot, q_plot)
+}
+```
+
+```{r, echo=FALSE, fig.height=7}
+plot_distributions(dist = 'norm',
+				   xvals = c(-1, 0, 0.5),
+				   xmin = -4, xmax = 4)
+```
+
+.font70[See https://github.com/jbryer/DATA606Fall2021/blob/master/R/distributions.R]
+
+---
+class: center, middle, inverse
+# Foundation for Inference 
+
+
+---
+# Population Distribution (Uniform)
+
+```{r, fig.width=10, fig.height=6}
+n <- 1e5
+pop <- runif(n, 0, 1)
+mean(pop)
+```
+
+
+```{r, echo=FALSE, fig.width=10,fig.height=5, fig.align='center'}
+d <- density(pop)
+h <- hist(pop, plot=FALSE)
+hist(pop, main='Population Distribution', xlab="", freq=FALSE, 
+     ylim=c(0, max(d$y, h$density)+.5), col=COL[1,2], border = "white", 
+	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
+lines(d, lwd=3)
+```
+
+---
+# Random Sample (n=10)
+
+```{r, fig.width=10, fig.height=5,fig.align='center'}
+samp1 <- sample(pop, size=10)
+mean(samp1)
+```
+
+```{r, fig.width=10,fig.height=5,fig.align='center'}
+hist(samp1)
+```
+
+---
+# Random Sample (n=30)
+
+```{r, fig.width=10,fig.height=5,fig.align='center'}
+samp2 <- sample(pop, size=30)
+mean(samp2)
+```
+
+
+```{r, fig.width=10,fig.height=5,fig.align='center'}
+hist(samp2)
+```
+
+---
+# Lots of Random Samples
+
+```{r, echo=TRUE}
+M <- 1000
+samples <- numeric(length=M)
+for(i in seq_len(M)) {
+	samples[i] <- mean(sample(pop, size=30))
+}
+head(samples, n=8)
+```
+
+
+---
+# Sampling Distribution
+
+
+```{r, fig.width=10, fig.height=5,fig.align='center'}
+hist(samples)
+```
+
+
+
+---
+# Central Limit Theorem (CLT)
+
+Let $X_1$, $X_2$, ..., $X_n$ be independent, identically distributed random variables with mean $\mu$ and variance $\sigma^2$, both finite. Then for any constant $z$,
+
+$$ \underset { n\rightarrow \infty  }{ lim } P\left( \frac { \bar { X } -\mu  }{ \sigma /\sqrt { n }  } \le z \right) =\Phi \left( z \right)  $$
+
+where $\Phi$ is the cumulative distribution function (cdf) of the standard normal distribution.
+
+
+---
+# In other words...
+
+The distribution of the sample mean is well approximated by a normal model:
+
+$$ \bar { x } \sim N\left( mean=\mu ,SE=\frac { \sigma  }{ \sqrt { n }  }  \right)  $$
+
+where SE represents the **standard error**, which is defined as the standard deviation of the sampling distribution. In most cases $\sigma$ is not known, so use $s$.
+
+
+---
+# CLT Shiny App
+
+```{r, eval=FALSE}
+library(DATA606)
+shiny_demo('sampdist')
+shiny_demo('CLT_mean')
+```
+
+---
+# Standard Error
+
+```{r}
+samp2 <- sample(pop, size=30)
+mean(samp2)
+(samp2.se <- sd(samp2) / sqrt(length(samp2)))
+```
+
+---
+# Confidence Interval
+
+The confidence interval is then $\mu \pm CV \times SE$ where CV is the critical value. For a 95% confidence interval, the critical value is ~1.96 since
+
+$$\int _{ -1.96 }^{ 1.96 }{ \frac { 1 }{ \sigma \sqrt { 2\pi  }  } { d }^{ -\frac { { \left( x-\mu  \right)  }^{ 2 } }{ 2{ \sigma  }^{ 2 } }  } } \approx 0.95$$
+
+```{r}
+qnorm(0.025) # Remember we need to consider the two tails, 2.5% to the left, 2.5% to the right.
+```
+
+```{r}
+(samp2.ci <- c(mean(samp2) - 1.96 * samp2.se, mean(samp2) + 1.96 * samp2.se))
+```
+
+
+---
+# Confidence Intervals (cont.)
+
+We are 95% confident that the true population mean is between `r samp2.ci`. 
+
+That is, if we were to take 100 random samples, we would expect at least 95% of those samples to have a mean within `r samp2.ci`.
+
+```{r}
+ci <- data.frame(mean=numeric(), min=numeric(), max=numeric())
+for(i in seq_len(100)) {
+	samp <- sample(pop, size=30)
+	se <- sd(samp) / sqrt(length(samp))
+	ci[i,] <- c(mean(samp),
+				mean(samp) - 1.96 * se, 
+				mean(samp) + 1.96 * se)
+}
+ci$sample <- 1:nrow(ci)
+ci$sig <- ci$min < 0.5 & ci$max > 0.5
+```
+
+
+---
+# Confidence Intervals 
+
+```{r, eval=TRUE, fig.width=10, fig.height=6}
+ggplot(ci, aes(x=min, xend=max, y=sample, yend=sample, color=sig)) + 
+	geom_vline(xintercept=0.5) + 
+	geom_segment() + xlab('CI') + ylab('') +
+	scale_color_manual(values=c('TRUE'='grey', 'FALSE'='red'))
+```
+
+---
+class: center, middle, inverse
+# Null Hypothesis Testing
+
+---
+# Hypothesis Testing
+
+* We start with a null hypothesis ( $H_0$ ) that represents the status quo.
+
+* We also have an alternative hypothesis ( $H_A$ ) that represents our research question, i.e. what we're testing for.
+
+* We conduct a hypothesis test under the assumption that the null hypothesis is true, either via simulation or traditional methods based on the central limit theorem.
+
+* If the test results suggest that the data do not provide convincing evidence for the alternative hypothesis, we stick with the null hypothesis. If they do, then we reject the null hypothesis in favor of the alternative.
+
+
+---
+# Hypothesis Testing (using CI)
+
+$H_0$: The mean of `samp2` = 0.5  
+$H_A$: The mean of `samp2` $\ne$ 0.5
+
+Using confidence intervals, if the *null* value is within the confidence interval, then we *fail* to reject the *null* hypothesis.
+
+```{r}
+(samp2.ci <- c(mean(samp2) - 2 * sd(samp2) / sqrt(length(samp2)),
+			   mean(samp2) + 2 * sd(samp2) / sqrt(length(samp2))))
+```
+
+Since 0.5 fall within `r samp2.ci`, we *fail* to reject the null hypothesis.
+
+
+---
+# Hypothesis Testing (using *p*-values)
+
+$$ \bar { x } \sim N\left( mean=0.49,SE=\frac { 0.27 }{ \sqrt { 30 } = 0.049 }  \right)  $$
+
+$$ Z=\frac { \bar { x } -null }{ SE } =\frac { 0.49-0.50 }{ 0.049 } = -.204081633 $$
+
+```{r}
+pnorm(-.204) * 2
+```
+
+---
+# Hypothesis Testing (using *p*-values)
+
+
+```{r, fig.width=10, fig.height=5, fig.align='center'}
+DATA606::normal_plot(cv = c(.204), tails = 'two.sided')
+```
+
+
+---
+# Type I and II Errors
+
+There are two competing hypotheses: the null and the alternative. In a hypothesis test, we make a decision about which might be true, but our choice might be incorrect.
+
+
+
+|                    | fail to reject H<sub>0</sub> | reject H<sub>0</sub> |
+|--------------------|:----------------------------:|:--------------------:|
+| H<sub>0</sub> true |        	&#10004;            |  Type I Error        |
+| H<sub>A</sub> true |     Type II Error            |      	&#10004;       |
+
+
+<br /><br />
+
+* Type I Error: **Rejecting** the null hypothesis when it is **true**.
+* Type II Error: **Failing to reject** the null hypothesis when it is **false**.
+
+
+---
+# Hypothesis Test
+
+If we again think of a hypothesis test as a criminal trial then it
+makes sense to frame the verdict in terms of the null and
+alternative hypotheses:
+
+<p style="padding-left:150px">
+H<sub>0</sub> : Defendant is innocent<br/>
+H<sub>A</sub> : Defendant is guilty
+</p>
+
+Which type of error is being committed in the following
+circumstances?
+
+* Declaring the defendant innocent when they are actually guilty  
+<center>Type 2 error</center>
+
+* Declaring the defendant guilty when they are actually innocent  
+<center>Type 1 error</center>
+
+Which error do you think is the worse error to make? 
+
+
+---
+# Null Distribution
+
+```{r, fig.width=10, fig.height=5}
+(cv <- qnorm(0.05, mean=0, sd=1, lower.tail=FALSE))
+```
+
+```{r, fig.width=10, fig.height=5,echo=FALSE}
+PlotDist(alpha=0.05, distribution='normal', alternative='greater')
+abline(v=cv, col='blue')
+```
+
+---
+# Alternative Distribution
+
+```{r, echo=FALSE, fig.width=10, fig.height=5}
+cord.x1 <- c(-5, seq(from = -5, to = cv, length.out = 100), cv)
+cord.y1 <- c(0, dnorm(mean=cv, x=seq(from=-5, to=cv, length.out = 100)), 0)
+curve(dnorm(x, mean=cv), from = -5, to = 5, n = 1000, col = "black",
+        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
+polygon(x = cord.x1, y = cord.y1, col = 'lightgreen')
+abline(v=cv, col='blue')
+```
+
+```{r}
+pnorm(cv, mean=cv, lower.tail = FALSE)
+```
+
+---
+# Another Example (mu = 2.5)
+
+.pull-left[
+```{r}
+mu <- 2.5
+(cv <- qnorm(0.05, 
+			 mean=0, 
+			 sd=1, 
+			 lower.tail=FALSE))
+```
+]
+.pull-right[
+```{r, echo=FALSE, fig.width=6, fig.height=3.5, fig.show='hold'}
+pv <- pnorm(mu, mean=0, sd=1, lower.tail=FALSE)
+
+PlotDist(alpha=pv, distribution='normal', alternative='greater')
+abline(v=mu, col='blue')
+title('Null Distribution')
+
+cord.x1 <- c(-5, seq(from = -5, to = cv, length.out = 100), cv)
+cord.y1 <- c(0, dnorm(mean=mu, x=seq(from=-5, to=cv, length.out = 100)), 0)
+curve(dnorm(x, mean=mu), from = -5, to = 5, n = 1000, col = "black",
+        lty = 1, lwd = 2, ylab = "Density", xlab = "Values")
+polygon(x = cord.x1, y = cord.y1, col='lightgreen')
+abline(v=mu, col='blue')
+title('Alternative Distribution')
+```
+]
+
+---
+# Numeric Values
+
+Type I Error
+
+```{r}
+pnorm(mu, mean=0, sd=1, lower.tail=FALSE)
+```
+
+Type II Error
+
+```{r}
+pnorm(cv, mean=mu, lower.tail = TRUE)
+```
+
+---
+# Shiny Application
+
+Visualizing Type I and Type II errors: [https://bcdudek.net/betaprob/](https://bcdudek.net/betaprob/)
+
+---
+# Why p < 0.05?
+
+Check out this page: https://r.bryer.org/shiny/Why05/
+
+See also:
+
+Kelly M. [*Emily Dickinson and monkeys on the stair Or: What is the significance of the 5% significance level?*](http://www.acsu.buffalo.edu/~grant/5pcMarkKelley.pdf) Significance 10:5. 2013.
+
+
+---
+# Statistical vs. Practical Significance
+
+* Real differences between the point estimate and null value are easier to detect with larger samples.
+
+* However, very large samples will result in statistical significance even for tiny differences between the sample mean and the null value (effect size), even when the difference is not practically significant.
+
+* This is especially important to research: if we conduct a study, we want to focus on finding meaningful results (we want observed differences to be real, but also large enough to matter).
+
+* The role of a statistician is not just in the analysis of data, but also in planning and design of a study.
+
+---
+class: center, middle, inverse
+# Bootstrapping 
+
+
+---
+# Bootstrapping
+
+* First introduced by Efron (1979) in [*Bootstrap Methods: Another Look at the Jackknife*](https://projecteuclid.org/euclid.aos/1176344552).
+
+* Estimates confidence of statistics by resampling *with* replacement.
+
+* The *bootstrap sample* provides an estimate of the sampling distribution.
+
+* The `boot` R package provides a framework for doing bootstrapping: https://www.statmethods.net/advstats/bootstrapping.html
+
+---
+# Bootstrapping Example (Population)
+
+Define our population with a uniform distribution.
+
+```{r}
+n <- 1e5
+pop <- runif(n, 0, 1)
+mean(pop)
+```
+
+```{r, echo=FALSE, fig.height=5}
+d <- density(pop)
+h <- hist(pop, plot=FALSE)
+hist(pop, main='Population Distribution', xlab="", freq=FALSE, 
+     ylim=c(0, max(d$y, h$density)+.5), col=COL[1,2], border = "white", 
+	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
+lines(d, lwd=3)
+```
+
+---
+# Bootstrapping Example (Sample)
+
+We observe one random sample from the population.
+
+```{r}
+samp1 <- sample(pop, size = 50)
+```
+
+```{r, echo=FALSE}
+d <- density(samp1)
+h <- hist(samp1, plot=FALSE)
+hist(samp1, main='Distribution of Sample', xlab="", freq=FALSE, 
+     ylim=c(0, max(d$y, h$density)+.5), col=COL[1,2], border = "white", 
+	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
+lines(d, lwd=3)
+```
+
+---
+# Bootsrapping Example (Estimate)
+
+```{r}
+boot.samples <- numeric(1000) # 1,000 bootstrap samples
+for(i in seq_along(boot.samples)) { 
+	tmp <- sample(samp1, size = length(samp1), replace = TRUE)
+	boot.samples[i] <- mean(tmp)
+}
+head(boot.samples)
+```
+
+---
+# Bootsrapping Example (Distribution)
+
+```{r, fig.height = 6}
+d <- density(boot.samples)
+h <- hist(boot.samples, plot=FALSE)
+hist(boot.samples, main='Bootstrap Distribution', xlab="", freq=FALSE, 
+     ylim=c(0, max(d$y, h$density)+.5), col=COL[1,2], border = "white", 
+	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
+lines(d, lwd=3)
+```
+
+---
+# 95% confidence interval
+
+```{r}
+c(mean(boot.samples) - 1.96 * sd(boot.samples), 
+  mean(boot.samples) + 1.96 * sd(boot.samples))
+```
+
+---
+# Bootstrapping is not just for means!
+
+```{r}
+boot.samples.median <- numeric(1000) # 1,000 bootstrap samples
+for(i in seq_along(boot.samples.median)) { 
+	tmp <- sample(samp1, size = length(samp1), replace = TRUE)
+	boot.samples.median[i] <- median(tmp) # NOTICE WE ARE NOW USING THE median FUNCTION!
+}
+head(boot.samples.median)
+```
+
+95% confidence interval for the median
+
+```{r}
+c(mean(boot.samples.median) - 1.96 * sd(boot.samples.median), 
+  mean(boot.samples.median) + 1.96 * sd(boot.samples.median))
+```
+
+---
+class: inverse, middle, center
+# Review
+
+
+---
+# Review: Sampling Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE}
+set.seed(123)
+n <- 1e5
+pop2 <- runif(n, 0, 5)
+# pop2 <- rnorm(n, mean = 100, sd = 15)
+samp <- sample(pop2, size = 30)
+se <- sd(samp) / sqrt(length(samp))
+
+hist.samp <- density(samp, 
+				  from = mean(samp) - 1.96 * sd(samp), 
+				  to = mean(samp) + 1.96 * sd(samp))
+hist.samp <- data.frame(x = hist.samp$x, y = hist.samp$y)
+hist.sampdist <- data.frame(x = seq(mean(samp) - 1.96 * se,
+									mean(samp) + 1.96 * se, 0.01))
+hist.sampdist$y <- dnorm(hist.sampdist$x, mean = mean(samp), sd = se)
+
+
+ggplot(data = data.frame(x = range(samp)), aes(x)) +
+	geom_density(data = data.frame(x = pop2), alpha = 0.2) +
+	geom_vline(xintercept = mean(pop2)) +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(hist.sampdist$y))) +
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+	ggtitle('Distribution of Population (in black)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+---
+# Review: Sampling Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE}
+ggplot(data = data.frame(x = range(samp)), aes(x)) +
+	geom_density(data = data.frame(x = pop2), alpha = 0.2) +
+	geom_vline(xintercept = mean(pop2)) +
+	geom_ribbon(data = hist.samp, aes(x = x, ymin = 0, ymax = y), fill = 'blue', alpha = 0.5) +
+	geom_density(data = data.frame(x = samp), color = 'blue') +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(hist.sampdist$y))) + 
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+		ggtitle('Distribution of Population (in black), Sample (in blue)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+
+---
+# Review: Sampling Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE}
+ggplot(data = data.frame(x = range(samp)), aes(x)) +
+	geom_density(data = data.frame(x = pop2), alpha = 0.2) +
+	geom_vline(xintercept = mean(pop2)) +
+	geom_ribbon(data = hist.samp, aes(x = x, ymin = 0, ymax = y), fill = 'blue', alpha = 0.5) +
+	geom_density(data = data.frame(x = samp), color = 'blue') +
+	geom_ribbon(data = hist.sampdist, aes(x = x, ymin = 0, ymax = y), fill = 'maroon', alpha = 0.5) +
+	stat_function(fun = dnorm, n = 1000,
+				  args = list(mean = mean(samp), sd = se), color = 'maroon') +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(hist.sampdist$y))) +
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+	ggtitle('Distribution of Population (in black), Sample (in blue), and Sampling Distribution (in maroon)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+---
+# Review: Add Bootstrap Distribution
+
+```{r, echo=FALSE, fig.align='center', warning=FALSE, message=FALSE}
+pop_mean <- mean(pop2)
+boot.samples <- numeric(1000) # 1,000 bootstrap samples
+for(i in seq_along(boot.samples)) { 
+	tmp <- sample(samp, size = length(samp1), replace = TRUE)
+	boot.samples[i] <- mean(tmp)
+}
+hist.boot <- data.frame(x = seq(mean(boot.samples) - 1.96 * sd(boot.samples),
+								mean(boot.samples) + 1.96 * sd(boot.samples), 0.01))
+hist.boot$y <- dnorm(hist.boot$x, mean = mean(boot.samples), sd = sd(boot.samples))
+ggplot(data = data.frame(x = pop2)) +
+	geom_density(data = data.frame(x = pop2), aes(x = x), alpha = 0.2) +
+	geom_vline(xintercept = pop_mean) +
+	geom_ribbon(data = hist.boot, aes(x = x, ymin = 0, ymax = y), fill = 'green', alpha = 0.5) +
+	geom_density(data = data.frame(x = boot.samples), aes(x = x), color = 'green') +
+	geom_ribbon(data = hist.samp, aes(x = x, ymin = 0, ymax = y), fill = 'blue', alpha = 0.5) +
+	geom_density(data = data.frame(x = samp), aes(x = x), color = 'blue') +
+	geom_ribbon(data = hist.sampdist, aes(x = x, ymin = 0, ymax = y), fill = 'maroon', alpha = 0.5) +
+	stat_function(fun = dnorm, n = 1000,
+				  args = list(mean = mean(samp), sd = se), color = 'maroon') +
+	xlim(mean(samp) - 3 * sd(samp), mean(samp) + 3 * sd(samp)) + ylab("") +
+	ylim(c(0, max(c(hist.sampdist$y, hist.boot$y)))) +
+	theme(axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
+	ggtitle('Distribution of Population (in black), Sample (in blue), and Sampling Distribution (in maroon)',
+			subtitle = paste0('Population mean = ', round(mean(pop2), digits = 3), 
+							  ' sample n = ', length(samp), ''))
+```
+
+
+
+---
+class: left, font140
+# One Minute Paper
+
+Complete the one minute paper: 
+`r params$one_minute_paper`
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?
+
+

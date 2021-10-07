@@ -104,7 +104,7 @@ PlotDist <- function(alpha, from = -5, to = 5, n = 1000, filename = NULL,
 ```{r, echo=FALSE}
 library(googlesheets4)
 omp <- read_sheet(params$one_minute_paper_results)
-omp <- omp %>% dplyr::filter(Topic == 'Distributions (Chapter 4)')
+omp <- omp %>% dplyr::filter(Topic == 'Foundation for Inference (Chapter 5)')
 source('word_cloud.R')
 ```
 
@@ -125,7 +125,42 @@ ompWordCloud(omp$`What important question remains unanswered for you?`)
 class: font140
 # Homework Presentations
 
+* 5.4	Cliff Lee
 
+* 5.6	Alec McCabe
+
+
+---
+# Population Distribution (Uniform)
+
+```{r, fig.width=10, fig.height=6}
+n <- 1e5
+pop <- runif(n, 0, 1)
+mean(pop)
+```
+
+
+```{r, echo=FALSE, fig.width=10,fig.height=5, fig.align='center'}
+d <- density(pop)
+h <- hist(pop, plot=FALSE)
+hist(pop, main='Population Distribution', xlab="", freq=FALSE, 
+     ylim=c(0, max(d$y, h$density)+.5), col=COL[1,2], border = "white", 
+	 cex.main = 1.5, cex.axis = 1.5, cex.lab = 1.5)
+lines(d, lwd=3)
+```
+
+---
+# Random Sample (n=30)
+
+```{r, fig.width=10,fig.height=5,fig.align='center'}
+samp2 <- sample(pop, size=30)
+mean(samp2)
+```
+
+
+```{r, fig.width=10,fig.height=5,fig.align='center'}
+hist(samp2)
+```
 
 
 

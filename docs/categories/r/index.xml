@@ -6,7 +6,23 @@
     <description>Recent content in R on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 29 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 06 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Foundation for Inference Part 2</title>
+      <link>/blog/meetup_06_foundation_for_inference2/</link>
+      <pubDate>Wed, 06 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/meetup_06_foundation_for_inference2/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;/slides/05-Foundation_for_Inference2.html&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/05-Foundation_for_Inference2.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/eWQLeAN_M5s&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+</description>
+    </item>
+    
     <item>
       <title>Foundation for Inference Part 1</title>
       <link>/blog/meetup_05_foundation_for_inference/</link>

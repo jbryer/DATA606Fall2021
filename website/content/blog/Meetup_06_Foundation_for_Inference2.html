@@ -1,0 +1,46 @@
+---
+title: "Foundation for Inference Part 2"
+author: "Jason Bryer"
+date: 2021-10-06
+draft: false
+categories: ["R", "Meetups", "Announcements"]
+tags: ["Annoucement"]
+#summary: Recording and slides from the class meetup.
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p><a href="/slides/05-Foundation_for_Inference2.html">Click here</a> to open the slides (<a href="https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/05-Foundation_for_Inference2.pdf">PDF</a>).</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/eWQLeAN_M5s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<!--more-->
+<p><a href="/slides/05-Foundation_for_Inference2.html#1">Click here</a> to open the slides (<a href="https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/05-Foundation_for_Inference2.pdf">PDF</a>).</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/eWQLeAN_M5s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+<p>Here’s the R code for the random number discussion.</p>
+<pre class="r"><code>sample(1:100, 1)</code></pre>
+<pre><code>## [1] 93</code></pre>
+<pre class="r"><code>sample(1:100, 1)</code></pre>
+<pre><code>## [1] 91</code></pre>
+<pre class="r"><code>set.seed(2112); sample(1:100, 1)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>random_numbers &lt;- integer(1000)
+for(i in 1:length(random_numbers)) {
+    set.seed(i)
+    random_numbers[i] &lt;- sample(1:100, 1)
+}
+plot(1:length(random_numbers), random_numbers)</code></pre>
+<p><img src="/blog/Meetup_06_Foundation_for_Inference2_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<pre class="r"><code>cor.test(1:length(random_numbers), random_numbers)</code></pre>
+<pre><code>## 
+##  Pearson&#39;s product-moment correlation
+## 
+## data:  1:length(random_numbers) and random_numbers
+## t = -0.11161, df = 998, p-value = 0.9112
+## alternative hypothesis: true correlation is not equal to 0
+## 95 percent confidence interval:
+##  -0.06551171  0.05847292
+## sample estimates:
+##          cor 
+## -0.003532972</code></pre>

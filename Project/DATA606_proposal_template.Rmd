@@ -50,7 +50,6 @@ author:
 
 ### Independent Variable
 
-**You should have two independent variables, one quantitative and one qualitative.**
 
 
 

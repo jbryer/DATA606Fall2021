@@ -6,7 +6,7 @@
     <description>Recent content in Home on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 20 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 1</title>
       <link>/chapters/chapter1/</link>
@@ -61,9 +61,9 @@ I am currently an Assistant Professor in Data Science and Information Systems at
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/course-overview/schedule/</guid>
-      <description>Note: Schedule is subject to change. Last updated October 13, 2021 08:23PM.
+      <description>Note: Schedule is subject to change. Last updated October 20, 2021 11:22PM.
 CUNY SPS Academic Calendar
- document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-10-14&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
+ document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-10-20&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
     </item>
     
     <item>
@@ -237,7 +237,23 @@ Occasionally you will need to type equations in homework and labs. R Markdown su
     </item>
     
     <item>
-      <title>Foundation for Categorical</title>
+      <title>Inference for Numerical Data</title>
+      <link>/blog/meetup_08_inference_for_numerical_data/</link>
+      <pubDate>Wed, 20 Oct 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/meetup_08_inference_for_numerical_data/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;&lt;a href=&#34;/slides/07-Inference_for_Numerical_Data.html&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/07-Inference_for_Numerical_Data.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/8ktp1mvGw0Q&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Inference for Categorical Data</title>
       <link>/blog/meetup_07_inference_for_categorical_data/</link>
       <pubDate>Wed, 13 Oct 2021 00:00:00 +0000</pubDate>
       

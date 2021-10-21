@@ -20,9 +20,9 @@ tags: ["Annoucement"]
 </iframe>
 <p>Here’s the R code for the random number discussion.</p>
 <pre class="r"><code>sample(1:100, 1)</code></pre>
-<pre><code>## [1] 72</code></pre>
+<pre><code>## [1] 7</code></pre>
 <pre class="r"><code>sample(1:100, 1)</code></pre>
-<pre><code>## [1] 91</code></pre>
+<pre><code>## [1] 50</code></pre>
 <pre class="r"><code>set.seed(2112); sample(1:100, 1)</code></pre>
 <pre><code>## [1] 6</code></pre>
 <pre class="r"><code>random_numbers &lt;- integer(1000)
@@ -31,7 +31,7 @@ for(i in 1:length(random_numbers)) {
     random_numbers[i] &lt;- sample(1:100, 1)
 }
 plot(1:length(random_numbers), random_numbers)</code></pre>
-<p><img src="/blog/Meetup_06_Foundation_for_Inference2_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
+<p><img src="/blog/Meetup_05b_Foundation_for_Inference2_files/figure-html/unnamed-chunk-1-1.png" width="672" /></p>
 <pre class="r"><code>cor.test(1:length(random_numbers), random_numbers)</code></pre>
 <pre><code>## 
 ##  Pearson&#39;s product-moment correlation

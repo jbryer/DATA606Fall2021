@@ -1,0 +1,20 @@
+---
+title: "Linear Regression Part 1"
+author: "Jason Bryer"
+date: 2021-10-27
+draft: false
+categories: ["R", "Meetups", "Announcements"]
+tags: ["Annoucement"]
+#summary: Recording and slides from the class meetup.
+---
+
+[Click here](/slides/08-Linear_Regression.html) to open the slides ([PDF](https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/08-Linear_Regression.pdf)). 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1T8cbvdDeNc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<!--more-->
+
+[Click here](/slides/08-Linear_Regression.html) to open the slides ([PDF](https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/08-Linear_Regression.pdf)). 
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1T8cbvdDeNc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+

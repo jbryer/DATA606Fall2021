@@ -1,0 +1,375 @@
+---
+title: "Linear Regression Part 2"
+subtitle: "DATA 606 - Statistics & Probability for Data Analytics"
+author: Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+date: "November 3, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    self_contained: true
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "DATA606Fall2021"
+  one_minute_paper: "https://forms.gle/ENFqTnDB5fJDw3kx9"
+  one_minute_paper_results: "https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+library(reshape2)
+library(latex2exp)
+library(psych)
+
+set.seed(2112)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6.5, fig.align = 'center',
+					  digits = 3) 
+options(width = 120)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+
+
+```
+
+# One Minute Paper Results
+
+```{r, echo=FALSE}
+library(googlesheets4)
+omp <- read_sheet(params$one_minute_paper_results)
+omp <- omp %>% dplyr::filter(Topic == 'Linear Regression (Chapter 8)')
+source('word_cloud.R')
+```
+
+.pull-left[
+**What was the most important thing you learned during this class?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What was the most important thing you learned during this class?`)
+```
+]
+.pull-right[
+**What important question remains unanswered for you?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What important question remains unanswered for you?`)
+```
+]
+
+---
+# Announcements
+
+* Project proposals are being graded as they come in.
+
+* You can sign-up for a time slot to present your project here: https://docs.google.com/spreadsheets/d/1SyNHe5ZX4wkxO2qUHi8rd56Q3rYve5sPA5mImey4HHs/edit?usp=sharing  
+Also on the project page on the website: https://fall2021.data606.net/assignments/project/
+
+* I am giving an Intro to Shiny talk at 12:00pm on November 30th.
+
+* R-Wars: Tidyverse vs. Base R and Writing Reports in R Markdown talk, go here for more info: https://www.meetup.com/rladies-newyork/events/281847904?response=3&action=rsvp&utm_medium=email&utm_source=braze_canvas&utm_campaign=mmrk_alleng_event_announcement_prod_v4_en&utm_term=promo&utm_content=lp_meetup
+
+
+
+---
+# NYS Report Card
+
+NYS publishes data for each school in the state. We will look at the grade 8 math scores for 2012 and 2013. 2013 was the first year the tests were aligned with the Common Core Standards. There was a lot of press about how the passing rates for most schools dropped. Two questions we wish to answer:
+
+1. Did the passing rates drop in a predictable manner?
+2. Were the drops different for charter and public schools?
+
+```{r}
+load('../course_data/NYSReportCard-Grade7Math.Rda')
+names(reportCard)
+```
+
+---
+# `reportCard` Data Frame
+
+.font70[
+```{r, echo=FALSE}
+DT::datatable(reportCard, rownames = FALSE, fillContainer = FALSE,
+			  options = list(pageLength = 3, selectable = FALSE))
+```
+]
+
+---
+# Descriptive Statistics
+
+```{r}
+summary(reportCard$Pass2012)
+summary(reportCard$Pass2013)
+```
+
+---
+# Histograms 
+
+```{r, warning=FALSE, warning=FALSE, message=FALSE}
+melted <- melt(reportCard[,c('Pass2012', 'Pass2013')])
+ggplot(melted, aes(x=value)) + geom_histogram() + facet_wrap(~ variable, ncol=1)
+```
+
+---
+# Log Transformation
+
+Since the distribution of the 2013 passing rates is skewed, we can log transfor that variable to get a more reasonably normal distribution.
+
+```{r, fig.height = 5}
+reportCard$LogPass2013 <- log(reportCard$Pass2013 + 1)
+ggplot(reportCard, aes(x=LogPass2013)) + geom_histogram(binwidth=0.5)
+```
+
+---
+# Scatter Plot 
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013, color=Charter)) + 
+	geom_point(alpha=0.5) + coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+---
+# Scatter Plot (log transform) 
+
+```{r, echo=TRUE, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=LogPass2013, color=Charter)) + 
+	geom_point(alpha=0.5) + xlim(c(0,100)) + ylim(c(0, log(101)))
+```
+
+---
+# Correlation
+
+```{r}
+cor.test(reportCard$Pass2012, reportCard$Pass2013)
+```
+
+
+---
+# Correlation (log transform)
+
+```{r}
+cor.test(reportCard$Pass2012, reportCard$LogPass2013)
+```
+
+---
+# Linear Regression
+
+.code80[
+```{r}
+lm.out <- lm(Pass2013 ~ Pass2012, data=reportCard)
+summary(lm.out)
+```
+]
+
+---
+# Linear Regression (log transform)
+
+.code80[
+```{r}
+lm.log.out <- lm(LogPass2013 ~ Pass2012, data=reportCard)
+summary(lm.log.out)
+```
+]
+
+---
+# Did the passing rates drop in a predictable manner?
+
+Yes! Whether we log tranform the data or not, the correlations are statistically significant with regression models with $R^2$ creater than 62%.
+
+To answer the second question, whether the drops were different for public and charter schools, we'll look at the residuals.
+
+```{r}
+reportCard$residuals <- resid(lm.out)
+reportCard$residualsLog <- resid(lm.log.out)
+```
+
+---
+# Distribution of Residuals 
+
+```{r}
+ggplot(reportCard, aes(x=residuals, color=Charter)) + geom_density()
+```
+
+---
+# Distribution of Residuals 
+
+```{r}
+ggplot(reportCard, aes(x=residualsLog, color=Charter)) + geom_density()
+```
+
+---
+# Null Hypothesis Testing
+
+$H_0$: There is no difference in the residuals between charter and public schools.
+
+$H_A$: There is a difference in the residuals between charter and public schools.
+
+```{r}
+t.test(residuals ~ Charter, data=reportCard)
+```
+
+---
+# Null Hypothesis Testing (log transform)
+
+```{r}
+t.test(residualsLog ~ Charter, data=reportCard)
+```
+
+---
+# Polynomial Models (e.g. Quadratic)
+
+It is possible to fit quatric models fairly easily in R, say of the following form:
+
+$$ y = b_1 x^2 + b_2 x + b_0 $$
+
+```{r}
+quad.out <- lm(Pass2013 ~ I(Pass2012^2) + Pass2012, data=reportCard)
+summary(quad.out)$r.squared
+summary(lm.out)$r.squared
+```
+
+---
+# Quadratic Model
+
+.code80[
+```{r}
+summary(quad.out)
+```
+]
+
+---
+# Scatter Plot 
+
+```{r, echo=TRUE, fig.height=5.7, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013)) + geom_point(alpha=0.2) + 
+	geom_smooth(method='lm', formula=y ~ x, size=2, se=FALSE) +
+	geom_smooth(method='lm', formula=y ~ I(x^2) + x, size=2, se=FALSE) +
+	coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+```{r, eval = FALSE}
+reportCard$resid_linear <- resid(lm.out)
+ggplot(reportCard, aes(x = resid_linear)) + geom_histogram()
+reportCard$resid_quad <- resid(quad.out)
+ggplot(reportCard, aes(x = resid_quad)) + geom_histogram()
+ggplot(reportCard) + geom_density(aes(x = resid_linear), color = 'blue') +
+	geom_density(aes(x = resid_quad), color = 'maroon')
+sum(reportCard$resid_linear^2) /sum(reportCard$resid_quad^2)
+```
+
+---
+# Let's go crazy, cubic!
+
+```{r}
+cube.out <- lm(Pass2013 ~ I(Pass2012^3) + I(Pass2012^2) + Pass2012, data=reportCard)
+summary(cube.out)$r.squared
+```
+
+```{r, echo=FALSE, fig.height=5.5, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013)) + 
+	geom_point(alpha=0.2) + 
+	geom_smooth(method='lm', formula=y~x, size=2, se=FALSE, color = 'black') +
+	geom_smooth(method='lm', formula=y~poly(x,2,raw=TRUE), size=2, se=FALSE, color = 'blue') +
+	geom_smooth(method='lm', formula=y~poly(x,3,raw=TRUE), size=2, se=FALSE, color = 'maroon') +
+	coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+---
+# Be careful of overfitting...
+
+.pull-left[
+![](images/Overfitting_print.png)
+]
+.pull-right[
+![](images/Overfit_Vs_Underfit_print.png)
+]
+
+.font60[Source: Chris Albon [@chrisalbon](https://twitter.com/chrisalbon) [MachineLearningFlashCards.com](https://machinelearningflashcards.com)]
+
+
+---
+# Loess Regression
+
+```{r, echo=TRUE, eval=FALSE, fig.height=5, fig.width=5, warning=FALSE, results='hide'}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013)) + geom_point(alpha=0.2) + 
+	geom_smooth(method='lm', formula=y~poly(x,2,raw=TRUE), size=2, se=FALSE) +
+	geom_smooth(method='loess', formula = y ~ x, size=2, se=FALSE, color = 'purple') +
+	coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+
+.pull-left[
+
+```{r, echo=FALSE, fig.height=5, fig.width=5, warning=FALSE}
+ggplot(reportCard, aes(x=Pass2012, y=Pass2013)) + geom_point(alpha=0.2) + 
+	geom_smooth(method='lm', formula=y~poly(x,2,raw=TRUE), size=2, se=FALSE) +
+	geom_smooth(method='loess', formula = y ~ x, size=2, se=FALSE, color = 'purple') +
+	coord_equal() + ylim(c(0,100)) + xlim(c(0,100))
+```
+]
+
+.pull-right[
+```{r, eval=FALSE}
+shiny_demo('loess')
+```
+
+https://r.bryer.org/shiny/Loess/
+
+See this site for more info: http://varianceexplained.org/files/loess.html
+]
+
+
+---
+# Shiny App
+
+```{r, eval=FALSE}
+shiny::runGitHub('NYSchools','jbryer',subdir='NYSReportCard')
+```
+
+
+See also the Github repository for more information: https://github.com/jbryer/NYSchools
+
+
+
+---
+class: left, font140
+# One Minute Paper
+
+Complete the one minute paper: 
+`r params$one_minute_paper`
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?

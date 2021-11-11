@@ -1,0 +1,431 @@
+---
+title: "Multiple Linear Regression"
+subtitle: "DATA 606 - Statistics & Probability for Data Analytics"
+author: Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+date: "November 10, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    self_contained: true
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "DATA606Fall2021"
+  one_minute_paper: "https://forms.gle/ENFqTnDB5fJDw3kx9"
+  one_minute_paper_results: "https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+library(reshape2)
+library(latex2exp)
+library(psych)
+library(xtable)
+
+set.seed(2112)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6.5, fig.align = 'center',
+					  digits = 3) 
+options(width = 120)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+
+printLaTeXFormula <- function(fit, digits=2) {
+	vars <- all.vars(fit$terms)
+	result <- paste0('\\hat{', vars[1], '} = ', prettyNum(fit$coefficients[[1]], digits=2))
+	for(i in 2:length(vars)) {
+		val <- fit$coefficients[[i]]
+		result <- paste0(result, ifelse(val < 0, ' - ', ' + '),
+						 prettyNum(abs(val), digits=digits),
+						 ' ', names(fit$coefficients)[i])
+	}
+	return(result)
+}
+
+
+```
+
+# One Minute Paper Results
+
+```{r, echo=FALSE}
+library(googlesheets4)
+omp <- read_sheet(params$one_minute_paper_results)
+omp <- omp %>% dplyr::filter(Topic == 'Linear Regression (Chapter 8)')
+source('word_cloud.R')
+```
+
+.pull-left[
+**What was the most important thing you learned during this class?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What was the most important thing you learned during this class?`)
+```
+]
+.pull-right[
+**What important question remains unanswered for you?**
+```{r, echo=FALSE, fig.height=9}
+ompWordCloud(omp$`What important question remains unanswered for you?`)
+```
+]
+
+
+---
+class: inverse, middle, center
+# Data Project
+
+---
+class: font90
+# Checklist / Suggested Outline
+
+* Abstract (300 word maximum)
+* Overview slide
+	* Context on the data collection
+	* Description of the dependent variable (what is being measured)
+	* Description of the independent variable (what is being measured; include at least 2 variables)
+	* Research question
+* Summary statistics
+* Include appropriate data visualizations.
+* Statistical output
+	* Include the appropriate statistics for your method used.
+	* For null hypothesis tests (e.g. t-test, chi-squared, ANOVA, etc.), state the null and alternative hypotheses along with relevant statistic and p-value (and confidence interval if appropriate).
+	* For regression models, include the regression output and interpret the R-squared value.
+* Conclusion
+	* Why is this analysis important?
+	* Limitations of the analysis?
+
+---
+# Criteria for Grading
+
+* Data is presented to support the conslusions using the appropriate analysis (i.e. the statistical method chosen supports the research question).
+
+* Suitable tables summarize data in a clear and meaningful way even to those unfamiliar with the project.
+
+* Suitable graphics summarize data in a clear and meaningful way even to those unfamiliar with the project.
+
+* Data reviewed and analyzed accurately and coherently.
+
+* Proper use of descriptive and/or inferential statistics.
+
+Full rubric available here: https://fall2021.data606.net/assignments/project/
+
+---
+class: font140
+# Homework Presentations
+
+* 8.24 Wiktoria Gnojek
+
+* 8.31 Eric Lehmphul
+
+
+---
+# Weight of Books
+
+```{r}
+allbacks <- read.csv('../course_data/allbacks.csv')
+head(allbacks)
+```
+
+From: Maindonald, J.H. & Braun, W.J. (2007). *Data Analysis and Graphics Using R, 2nd ed.*
+
+---
+# Weights of Books (cont) 
+
+```{r, echo=TRUE}
+lm.out <- lm(weight ~ volume, data=allbacks)
+```
+
+$$ \hat{weight} = `r round(lm.out$coefficients[[1]])` + `r prettyNum(lm.out$coefficients[[2]], digits=2)` volume $$
+$$ R^2 = `r round(cor(allbacks$weight, allbacks$volume) ^2 * 100)`\% $$
+
+```{r, echo=FALSE, fig.height=5}
+ggplot(allbacks, aes(x=volume, y=weight)) + geom_point() + geom_smooth(method='lm', formula = y ~ x)
+```
+
+---
+# Modeling weights of books using volume
+
+.code70[
+```{r}
+summary(lm.out)
+```
+]
+
+---
+# Weights of hardcover and paperback books 
+
+- Can you identify a trend in the relationship between volume and weight of hardcover and paperback books?
+
+```{r, echo=FALSE, fig.height=5}
+ggplot(allbacks, aes(x=volume, y=weight, color=cover, shape=cover)) + geom_point()
+```
+
+--
+
+- Paperbacks generally weigh less than hardcover books after controlling for book's volume.
+
+---
+# Modeling weights of books using volume and cover type
+
+.code70[
+```{r}
+lm.out2 <- lm(weight ~ volume + cover, data=allbacks)
+summary(lm.out2)
+```
+]
+
+---
+# Linear Model
+
+$$ `r printLaTeXFormula(lm.out2)` $$
+
+1. For **hardcover** books: plug in *0* for cover.  
+
+$$\hat{weight} = 197.96 + 0.72 volume - 184.05 \times 0 = 197.96 + 0.72 volume$$
+
+2. For **paperback** books: put in 1 for cover.
+$$\hat{weight} = 197.96 + 0.72 volume - 184.05 \times 1$$
+
+---
+# Visualizing the linear model 
+
+```{r, echo=FALSE}
+ggplot(allbacks, aes(x=volume, y=weight, color=cover, shape=cover)) + geom_point() + geom_smooth(method='lm', formula = y ~ x, fill=NA)
+```
+
+
+---
+# Interpretation of the regression coefficients
+
+<center>
+```{r, echo=FALSE, results='asis'}
+print(xtable(lm.out2), type='html')
+```
+</center>
+
+* **Slope of volume**: All else held constant, books that are 1 more cubic centimeter in volume tend to weigh about 0.72 grams more.
+* **Slope of cover**: All else held constant, the model predicts that paperback books weigh 184 grams lower than hardcover books.
+* **Intercept**: Hardcover books with no volume are expected on average to weigh 198 grams.
+	* Obviously, the intercept does not make sense in context. It only serves to adjust the height of the line.
+
+---
+# Modeling Poverty
+
+```{r}
+poverty <- read.table("../course_data/poverty.txt", h = T, sep = "\t")
+names(poverty) <- c("state", "metro_res", "white", "hs_grad", "poverty", "female_house")
+poverty <- poverty[,c(1,5,2,3,4,6)]
+head(poverty)
+```
+
+From: Gelman, H. (2007). *Data Analysis using Regression and Multilevel/Hierarchial Models.* Cambridge University Press.
+
+---
+# Modeling Poverty 
+
+```{r, eval = FALSE, echo=FALSE, fig.height=8}
+panel.cor <- function(x, y, digits=2, prefix="", cex.cor, ...){
+	usr <- par("usr"); on.exit(par(usr))
+	par(usr = c(0, 1, 0, 1))
+	r <- abs(cor(x, y))
+	rreal = cor(x, y)
+	txtreal <- format(c(rreal, 0.123456789), digits=digits)[1]
+	txt <- format(c(r, 0.123456789), digits=digits)[1]
+	if(missing(cex.cor)) cex.cor <- 0.8/strwidth(txt)
+	text(0.5, 0.5, txtreal, cex = cex.cor * r)
+}
+pairs(poverty[,c(2:6)], lower.panel = panel.cor, pch = 19)
+```
+
+```{r, echo=FALSE, fig.height=8}
+library(GGally)
+ggpairs(poverty[,c(2:6)])
+```
+
+---
+# Predicting Poverty using Percent Female Householder
+
+.code70[
+```{r}
+lm.poverty <- lm(poverty ~ female_house, data=poverty)
+summary(lm.poverty)
+```
+]
+
+---
+# % Poverty by % Female Household
+
+```{r, echo=FALSE}
+ggplot(poverty, aes(x=female_house, y=poverty)) + geom_point() + 
+	geom_smooth(method='lm', formula = y ~ x, fill=NA) + 
+	xlab('% Female Householder') + ylab('% in Poverty')
+```
+
+
+---
+# Another look at $R^2$
+
+$R^2$ can be calculated in three ways:
+
+1. square the correlation coefficient of x and y (how we have been
+calculating it)
+2. square the correlation coefficient of y and $\hat{y}$ 
+3. based on definition:  
+$$ R^2 = \frac{explained \quad variability \quad in \quad y}{total \quad variability \quad in \quad y} $$
+
+Using ANOVA we can calculate the explained variability and total variability in y.
+
+---
+# Sum of Squares
+
+```{r, results='asis'}
+anova.poverty <- anova(lm.poverty)
+print(xtable(anova.poverty, digits = 2), type='html')
+```
+
+--
+
+Sum of squares of *y*: ${ SS }_{ Total }=\sum { { \left( y-\bar { y }  \right)  }^{ 2 } } =480.25$ &rarr; **total variability**
+
+Sum of squares of residuals: ${ SS }_{ Error }=\sum { { e }_{ i }^{ 2 } } =347.68$ &rarr; **unexplained variability**
+
+Sum of squares of *x*: ${ SS }_{ Model }={ SS }_{ Total }-{ SS }_{ Error } = 132.57$ &rarr; **explained variability**  
+
+$$ R^2 = \frac{explained \quad variability \quad in \quad y}{total \quad variability \quad in \quad y} = \frac{132.57}{480.25} = 0.28 $$
+
+---
+# Why bother?
+
+* For single-predictor linear regression, having three ways to calculate the same value may seem like overkill.
+
+* However, in multiple linear regression, we can't calculate $R^2$ as the square of the correlation between *x* and *y* because we have multiple *x*s.
+
+* And next we'll learn another measure of explained variability, *adjusted $R^2$*, that requires the use of the third approach, ratio of explained and unexplained variability.
+
+---
+# Predicting poverty using % female household & % white
+
+.pull-left[.code70[
+```{r, results='asis'}
+lm.poverty2 <- lm(poverty ~ female_house + white, data=poverty)
+print(xtable(lm.poverty2), type='html')
+```
+] ]
+.pull-right[.code70[
+```{r, results = 'asis'}
+anova.poverty2 <- anova(lm.poverty2)
+print(xtable(anova.poverty2, digits = 3), type='html')
+```
+] ]
+
+<br/>
+
+$$ R^2 = \frac{explained \quad variability \quad in \quad y}{total \quad variability \quad in \quad y} = \frac{132.57 + 8.21}{480.25} = 0.29 $$
+
+---
+# Unique information
+
+.left-column[Does adding the variable `white` to the model add valuable information that wasn't provided by `female_house`?]
+
+```{r, echo=FALSE, fig.height=8}
+# pairs(poverty[,c(2:6)], lower.panel = panel.cor, pch = 19)
+p <- ggpairs(poverty[,c(2:6)], lower = list(continuous = wrap("smooth", se=FALSE, alpha = 0.7, size=0.5)))
+p[5,3] <- p[5,3] + theme(panel.border = element_rect(color = 'blue', fill = NA, size = 2))
+p[3,5] <- p[3,5] + theme(panel.border = element_rect(color = 'blue', fill = NA, size = 2))
+p
+```
+
+---
+# Collinearity between explanatory variables
+
+poverty vs % female head of household
+
+```{r, echo=FALSE, results='asis'}
+print(xtable(lm.poverty), type='html')
+```
+
+poverty vs % female head of household and % female household
+
+```{r, echo=FALSE, results='asis'}
+print(xtable(lm.poverty2), type='html')
+```
+
+Note the difference in the estimate for `female_house`.
+
+---
+# Collinearity between explanatory variables
+
+* Two predictor variables are said to be collinear when they are correlated, and this collinearity complicates model estimation.  
+Remember: Predictors are also called explanatory or independent variables. Ideally, they would be independent of each other.
+
+* We don't like adding predictors that are associated with each other to the model, because often times the addition of such variable brings nothing to the table. Instead, we prefer the simplest best model, i.e. *parsimonious* model.
+
+* While it's impossible to avoid collinearity from arising in observational data, experiments are usually designed to prevent correlation among predictors
+
+---
+# $R^2$ vs. adjusted $R^2$
+
+Model                      | $R^2$ | Adjusted $R^2$
+---------------------------|-------|----------------
+Model 1 (Single-predictor) | 0.28  | 0.26
+Model 2 (Multiple)         | 0.29  | 0.26
+
+* When any variable is added to the model $R^2$ increases.
+* But if the added variable doesn't really provide any new information, or is completely unrelated, adjusted $R^2$ does not increase.
+
+---
+# Adjusted $R^2$
+
+$${ R }_{ adj }^{ 2 }={ 1-\left( \frac { { SS }_{ error } }{ { SS }_{ total } } \times \frac { n-1 }{ n-p-1 }  \right)  }$$
+
+where *n* is the number of cases and *p* is the number of predictors (explanatory variables) in the model.
+
+* Because *p* is never negative, ${ R }_{ adj }^{ 2 }$ will always be smaller than $R^2$.
+* ${ R }_{ adj }^{ 2 }$ applies a penalty for the number of predictors included in the model.
+* Therefore, we choose models with higher ${ R }_{ adj }^{ 2 }$ over others.
+
+
+---
+class: left, font140
+# One Minute Paper
+
+Complete the one minute paper: 
+`r params$one_minute_paper`
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?

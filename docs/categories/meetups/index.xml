@@ -17,10 +17,13 @@
 &lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
 
 
-&lt;p&gt;&lt;a href=&#34;/slides/09-Logistic_Regression.html&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/09-Logistic_Regression.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;br /&gt;
-Supplement documents:
-* &lt;a href=&#34;https://htmlpreview.github.io/?https://github.com/jbryer/visualMLE/blob/master/doc/mle.html&#34;&gt;Visual Introduction to Maximum Likelihood Estimation&lt;/a&gt;&lt;br /&gt;
-* &lt;a href=&#34;https://htmlpreview.github.io/?https://github.com/jbryer/visualMLE/blob/master/doc/log_likelihood.html&#34;&gt;The Path to Log Likelihood&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;/slides/09-Logistic_Regression.html&#34;&gt;Click here&lt;/a&gt; to open the slides (&lt;a href=&#34;https://github.com/jbryer/DATA606Fall2021/blob/master/Slides/09-Logistic_Regression.pdf&#34;&gt;PDF&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Supplement documents:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://htmlpreview.github.io/?https://github.com/jbryer/visualMLE/blob/master/doc/mle.html&#34;&gt;Visual Introduction to Maximum Likelihood Estimation&lt;/a&gt;&lt;br /&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://htmlpreview.github.io/?https://github.com/jbryer/visualMLE/blob/master/doc/log_likelihood.html&#34;&gt;The Path to Log Likelihood&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
 &lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/VExQruB0TkU&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
 &lt;/iframe&gt;
 </description>

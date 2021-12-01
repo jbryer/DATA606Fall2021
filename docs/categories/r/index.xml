@@ -6,7 +6,26 @@
     <description>Recent content in R on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Intro to Shiny</title>
+      <link>/blog/2021-11-30-intro_to_shiny/</link>
+      <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-11-30-intro_to_shiny/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Shiny is an R package designed to create web based applications using the R programming language. This talk will introduce the basic framework for creating interactive Shiny applications including user inputs, dynamic plots and tables, reactive programming, and creating data dashboards.&lt;/p&gt;
+&lt;p&gt;Slides can be viewed here: &lt;a href=&#34;https://r.bryer.org/shiny/Intro_to_Shiny/&#34; class=&#34;uri&#34;&gt;https://r.bryer.org/shiny/Intro_to_Shiny/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Recording of the talk: &lt;a href=&#34;https://www.youtube.com/watch?v=W-DrXHqeqz8&amp;amp;t=5s&#34; class=&#34;uri&#34;&gt;https://www.youtube.com/watch?v=W-DrXHqeqz8&amp;amp;t=5s&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Source code and resources are on Github here: &lt;a href=&#34;https://github.com/jbryer/AlbanyRUsers/tree/main/meetups/2021-11-30-Intro_to_Shiny&#34; class=&#34;uri&#34;&gt;https://github.com/jbryer/AlbanyRUsers/tree/main/meetups/2021-11-30-Intro_to_Shiny&lt;/a&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/W-DrXHqeqz8&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+</description>
+    </item>
+    
     <item>
       <title>Maximum Likelihood Estimation and Logistic Regression</title>
       <link>/blog/meetup_09b_logistic_regression/</link>

@@ -6,7 +6,7 @@
     <description>Recent content in Home on DATA 606 - Statistics &amp; Probability - Fall 2021</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 17 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 30 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Chapter 1</title>
       <link>/chapters/chapter1/</link>
@@ -63,7 +63,7 @@ I am currently an Assistant Professor in Data Science and Information Systems at
       <guid>/course-overview/schedule/</guid>
       <description>Note: Schedule is subject to change. Last updated November 18, 2021 07:49AM.
 CUNY SPS Academic Calendar
- document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-11-18&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
+ document.addEventListener(&#39;DOMContentLoaded&#39;, function() { var calendarEl = document.getElementById(&#39;calendar&#39;); var calendar = new FullCalendar.Calendar(calendarEl, { initialDate: &#39;2021-12-01&#39;, initialView: &#39;dayGridMonth&#39;, headerToolbar: { left: &#39;prev,next today&#39;, center: &#39;title&#39;, right: &#39;dayGridMonth,timeGridWeek,timeGridDay,listWeek&#39; }, height: &#39;auto&#39;, navLinks: true, // can click day/week names to navigate views editable: true, selectable: true, selectMirror: true, nowIndicator: true, events: [ { title: &#34;</description>
     </item>
     
     <item>
@@ -234,6 +234,25 @@ Occasionally you will need to type equations in homework and labs. R Markdown su
       <guid>/course-overview/materials/</guid>
       <description>  These are supplemental materials. Click to download.
  Chapter 28_Anova.pdf Cheatsheets_2019.pdf Classical_Machine_Learning.JPG ElementalGraphics4ANOVA.RP+JH.pdf ggplot_aesthetics_cheatsheet.png Kruschke-Liddell2018_Article_BayesianDataAnalysisForNewcome.pdf R_Syntax_Comparison.jpeg stats_handout.pdf Textbooks  lsr-0.6.pdf os4.pdf ProbStatBook.pdf Supplemental  OpenIntro_extra_interaction_effects.pdf OpenIntro_extra_nonlinear_relationships.pdf OpenIntro_handout.pdf os2_extra_inference_guide.pdf os2_prob_tables.pdf os4_tablet.pdf   Thirteen Ways to Look at the Correlation Coefficient.pdf What_Is_Data_Science.pdf WhatisDataScienceFinalMay162018.pdf When to use what test.pdf  </description>
+    </item>
+    
+    <item>
+      <title>Intro to Shiny</title>
+      <link>/blog/2021-11-30-intro_to_shiny/</link>
+      <pubDate>Tue, 30 Nov 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/2021-11-30-intro_to_shiny/</guid>
+      <description>
+&lt;script src=&#34;/rmarkdown-libs/header-attrs/header-attrs.js&#34;&gt;&lt;/script&gt;
+
+
+&lt;p&gt;Shiny is an R package designed to create web based applications using the R programming language. This talk will introduce the basic framework for creating interactive Shiny applications including user inputs, dynamic plots and tables, reactive programming, and creating data dashboards.&lt;/p&gt;
+&lt;p&gt;Slides can be viewed here: &lt;a href=&#34;https://r.bryer.org/shiny/Intro_to_Shiny/&#34; class=&#34;uri&#34;&gt;https://r.bryer.org/shiny/Intro_to_Shiny/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Recording of the talk: &lt;a href=&#34;https://www.youtube.com/watch?v=W-DrXHqeqz8&amp;amp;t=5s&#34; class=&#34;uri&#34;&gt;https://www.youtube.com/watch?v=W-DrXHqeqz8&amp;amp;t=5s&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Source code and resources are on Github here: &lt;a href=&#34;https://github.com/jbryer/AlbanyRUsers/tree/main/meetups/2021-11-30-Intro_to_Shiny&#34; class=&#34;uri&#34;&gt;https://github.com/jbryer/AlbanyRUsers/tree/main/meetups/2021-11-30-Intro_to_Shiny&lt;/a&gt;&lt;/p&gt;
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/W-DrXHqeqz8&#34; title=&#34;YouTube video player&#34; frameborder=&#34;0&#34; allow=&#34;accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture&#34; allowfullscreen&gt;
+&lt;/iframe&gt;
+</description>
     </item>
     
     <item>

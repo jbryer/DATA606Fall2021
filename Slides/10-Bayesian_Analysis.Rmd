@@ -1,0 +1,301 @@
+---
+title: "Bayesian Analysis"
+subtitle: "DATA 606 - Statistics & Probability for Data Analytics"
+author: Jason Bryer, Ph.D. and Angela Lui, Ph.D.
+date: "December 1, 2021"
+output:
+  xaringan::moon_reader:
+    css: ["assets/mtheme_max.css", "assets/fonts_mtheme_max.css"]
+    self_contained: false
+    lib_dir: libs
+    nature:
+      highlightStyle: solarized-light
+      highlightLanguage: R
+      highlightLines: true
+      countIncrementalSlides: false
+      ratio: "16:9"
+      navigation:
+        scroll: false
+    includes:
+      in_header: [assets/header.html]
+      after_body: [assets/insert-logo.html]
+params:
+  github_link: "DATA606Fall2021"
+  one_minute_paper: "https://forms.gle/ENFqTnDB5fJDw3kx9"
+  one_minute_paper_results: "https://docs.google.com/spreadsheets/d/1mhAT8YeBQek1r7tqz0j96-fYhU3arZwpVw623RjlaBs/edit?resourcekey#gid=1608172812"
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r setup, include = FALSE}
+# remotes::install_github("gadenbuie/countdown")
+# remotes::install_github("mitchelloharawild/icon")
+# icon::download_fontawesome()
+library(knitr)
+library(tidyverse)
+library(countdown)
+library(openintro)
+library(DATA606)
+library(reshape2)
+library(latex2exp)
+library(psych)
+library(xtable)
+
+library(gganimate)
+library(magick)
+library(cowplot)
+library(DT)
+
+source('../R/roc.R')
+library(titanic)
+data("titanic")
+
+set.seed(2112)
+
+knitr::opts_chunk$set(warning = FALSE, message = FALSE, error = FALSE, 
+					  fig.width = 12, fig.height=6.5, fig.align = 'center',
+					  digits = 3) 
+options(width = 120)
+# The following is to fix a DT::datatable issue with Xaringan
+# https://github.com/yihui/xaringan/issues/293
+options(htmltools.dir.version = FALSE, htmltools.preserve.raw = FALSE)
+
+# This style was adapted from Max Kuhn: https://github.com/rstudio-conf-2020/applied-ml
+# And Rstudio::conf 2020: https://github.com/rstudio-conf-2020/slide-templates/tree/master/xaringan
+# This slide deck shows a lot of the features of Xaringan: https://www.kirenz.com/slides/xaringan-demo-slides.html
+
+# To use, add this to the slide title:   `r I(hexes(c("DATA606")))`
+# It will use images in the images/hex_stickers directory (i.e. the filename is the paramter)
+hexes <- function(x) {
+  x <- rev(sort(x))
+  markup <- function(pkg) glue::glue('<img src="images/hex/{pkg}.png" class="title-hex">')
+  res <- purrr::map_chr(x, markup)
+  paste0(res, collapse = "")
+}
+
+# Cartoons from https://github.com/allisonhorst/stats-illustrations
+# dplyr based upon https://allisonhorst.shinyapps.io/dplyr-learnr/#section-welcome
+
+printLaTeXFormula <- function(fit, digits=2) {
+	vars <- all.vars(fit$terms)
+	result <- paste0('\\hat{', vars[1], '} = ', prettyNum(fit$coefficients[[1]], digits=2))
+	for(i in 2:length(vars)) {
+		val <- fit$coefficients[[i]]
+		result <- paste0(result, ifelse(val < 0, ' - ', ' + '),
+						 prettyNum(abs(val), digits=digits),
+						 ' ', names(fit$coefficients)[i])
+	}
+	return(result)
+}
+
+
+```
+
+# One Minute Paper Results
+
+```{r, echo=FALSE, eval = TRUE}
+library(googlesheets4)
+omp <- read_sheet(params$one_minute_paper_results)
+omp <- omp %>% dplyr::filter(Topic == 'Logistic Regression (Chapter 9)')
+source('word_cloud.R')
+```
+
+.pull-left[
+**What was the most important thing you learned during this class?**
+```{r, echo=FALSE, fig.height=9, eval = TRUE}
+ompWordCloud(omp$`What was the most important thing you learned during this class?`)
+```
+]
+.pull-right[
+**What important question remains unanswered for you?**
+```{r, echo=FALSE, fig.height=9, eval = TRUE}
+ompWordCloud(omp$`What important question remains unanswered for you?`)
+```
+]
+
+---
+# Presentations
+
+* 8.21	Preston Peck
+
+* 8.23	Bikram Barua
+
+* Jaya Veluri
+
+---
+# Bayesian Analysis
+
+<img src='http://ecx.images-amazon.com/images/I/515eRFg9Y8L._SX404_BO1,204,203,200_.jpg' align='right'>
+
+Kruschke's videos are an excelent introduction to Bayesian Analysis [https://www.youtube.com/watch?v=YyohWpjl6KU](https://www.youtube.com/watch?v=YyohWpjl6KU)!
+
+[Doing Bayesian Data Analysis, Second Edition: A Tutorial with R, JAGS, and Stan](http://www.amazon.com/Doing-Bayesian-Data-Analysis-Second/dp/0124058884/ref=sr_1_1?ie=UTF8&qid=1437688316&sr=8-1&keywords=Kruschke)
+
+*The Theory That Would Not Die: How Bayes' Rule Cracked the Enigma Code, Hunted Down Russian Submarines, and Emerged Triumphant from Two Centuries of Controversy* by Sharon Bertsch McGrayne
+
+Video series by Rasmus Baath [Part 1](https://www.youtube.com/watch?v=3OJEae7Qb_o&app=desktop), [Part 2](https://www.youtube.com/watch?v=mAUwjSo5TJE), [Part 3](https://www.youtube.com/watch?v=Ie-6H_r7I5A)
+
+---
+# Bayes Theorem
+
+
+$$ P(A|B)=\frac{P(B|A)P(A)}{P(B|A)P(A)+P(B|{A}^{'})P({A}^{'})} $$
+
+
+Consider the following data from a cancer test:
+
+* 1% of women have breast cancer (and therefore 99% do not).
+* 80% of mammograms detect breast cancer when it is there (and therefore 20% miss it).
+* 9.6% of mammograms detect breast cancer when it's not there (and therefore 90.4% correctly return a negative result).
+
+&nbsp;        | Cancer (1%) | No Cancer (99%)
+--------------|-------------|-----------------
+Test postive  | 80%         |  9.6%
+Test negative | 20%         |  90.4%
+
+
+---
+# How accurate is the test?
+
+Now suppose you get a positive test result. What are the chances you have cancer?  
+80%? 99%? 1%?
+
+* Ok, we got a positive result. It means we're somewhere in the top row of our table. Let's not assume anything - it could be a true positive or a false positive.
+* The chances of a true positive = chance you have cancer * chance test caught it = 1% * 80% = .008
+* The chances of a false positive = chance you don't have cancer * chance test caught it anyway = 99% * 9.6% = 0.09504
+
+&nbsp;        | Cancer (1%)       | No Cancer (99%)      |
+--------------|-------------------|----------------------|-------------
+Test postive  | True +: 1% * 80%  | False +: 99% * 9.6%  | **10.304%**
+Test negative | False -: 1% * 20% | True -: 99% * 90.4%  | **89.696%**
+
+---
+# How accurate is the test?
+
+$$ Probability = \frac{desired\quad event}{all\quad possibilities} $$
+
+The chance of getting a real, positive result is .008. The chance of getting any type of positive result is the chance of a true positive plus the chance of a false positive (.008 + 0.09504 = .10304).
+
+$$P(C | P) = \frac{P(P|C) P(C)}{P(P)} = \frac{.8 * .01}{.008 + 0.095} \approx .078$$
+
+**So, our chance of cancer is .008/.10304 = 0.0776, or about 7.8%.**
+
+
+---
+# Bayes Formula
+
+It all comes down to the chance of a true positive result divided by the chance of any positive result. We can simplify the equation to:
+
+$$ P\left( A|B \right) =\frac { P\left( B|A \right) P\left( A \right)  }{ P\left( B \right)  }  $$
+
+---
+class: middle, center
+
+<img src='images/Bayes_Theorem_web.png' height='90%' />
+
+---
+# How many fish are in the lake?
+
+* Catch them all, count them. Not practical (or even possible)!
+* We can sample some fish.
+
+Our strategy:
+
+1. Catch some fish.
+2. Mark them.
+3. Return the fish to the pond. Let them get mixed up (i.e. wait a while).
+4. Catch some more fish.
+5. Count how many are marked.
+
+For example, we initially caught 20 fish, marked them, returned them to the pond. We then caught another 20 fish and 5 of them were marked (i.e they were caught the first time).
+
+<font size='-1'>
+Adopted from Rasmath Bääth useR! 2015 workshop: http://www.sumsar.net/files/academia/user_2015_tutorial_bayesian_data_analysis_short_version.pdf
+</font>
+
+---
+# Strategy for fitting a model
+
+Step 1: Define Prior Distribution. Draw a lot of random samples from the "prior" probability distribution on the parameters.
+
+```{r, fig.width=8, fig.height=3}
+n_draw <- 100000
+n_fish <- sample(20:250, n_draw, replace = TRUE)
+head(n_fish, n=10)
+hist(n_fish, main="Prior Distribution")
+```
+
+---
+# Strategy for fitting a model
+
+Step 2: Plug in each draw into the generative model which generates "fake" data.
+
+```{r}
+pick_fish <- function(n_fish) { # The generative model
+	fish <- rep(0:1, c(n_fish - 20, 20))
+	sum(sample(fish, 20))
+}
+n_marked <- rep(NA, n_draw)
+for(i in 1:n_draw) {
+	n_marked[i] <- pick_fish(n_fish[i])
+}
+head(n_marked, n=10)
+```
+
+---
+# Strategy for fitting a model
+
+Step 3: Keep only those parameter values that generated the data that was actually observed (in this case, 5).
+
+```{r, fig.width=8, fig.height=3.5}
+post_fish <- n_fish[n_marked == 5]
+hist(post_fish, main='Posterior Distribution')
+abline(v=median(post_fish), col='red')
+abline(v=quantile(post_fish, probs=c(.25, .75)), col='green')
+```
+
+---
+# What if we have better prior information?
+
+An "expert" believes there are around 200 fish in the pond. Insteand of a uniform distribution, we can use a binomial distribution to define our "prior" distribution.
+
+```{r, fig.width=8, fig.height=3.5}
+n_fish <- rnbinom(n_draw, mu = 200 - 20, size = 4) + 20
+hist(n_fish, main='Prior Distribution')
+```
+
+---
+# What if we have better prior information? 
+
+```{r, fig.width=8, fig.height=3.5}
+n_marked <- rep(NA, n_draw)
+for(i in 1:n_draw) {
+	n_marked[i] <- pick_fish(n_fish[i])
+}
+post_fish <- n_fish[n_marked == 5]
+hist(post_fish, main='Posterior Distribution')
+abline(v=median(post_fish), col='red')
+abline(v=quantile(post_fish, probs=c(.25, .75)), col='green')
+```
+
+---
+# Bayes Billiards Balls
+
+Consider a pool table of length one. An 8-ball is thrown such that the likelihood of its stopping point is uniform across the entire table (i.e. the table is perfectly level). The location of the 8-ball is recorded, but not known to the observer. Subsequent balls are thrown one at a time and all that is reported is whether the ball stopped to the left or right of the 8-ball. Given only this information, what is the position of the 8-ball? How does the estimate change as more balls are thrown and recorded?
+
+```{r, eval=FALSE}
+DATA606::shiny_demo('BayesBilliards', package='DATA606')
+```
+
+See also: http://www.bryer.org/post/2016-02-21-bayes_billiards_shiny/
+
+
+---
+class: left, font140
+# One Minute Paper
+
+Complete the one minute paper: 
+`r params$one_minute_paper`
+
+1. What was the most important thing you learned during this class?
+2. What important question remains unanswered for you?

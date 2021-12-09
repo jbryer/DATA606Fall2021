@@ -54,30 +54,30 @@ n <- nrow(df)
 
 ( p <- 1 - pf(F_stat, df_between, df_within) )
 
-df_rect <- data.frame(
-	group = c('Between', 'Within'),
-	xmin = c(-1* sqrt(MS_between) / sd(df$Value),
-			 -1 *sqrt(MS_within) / sd(df$Value)),
-	xmax = c(    sqrt(MS_between) / sd(df$Value),
-				 sqrt(MS_within) / sd(df$Value)),
-	ymin = c(grand_mean - 1 * sqrt(MS_between) / sd(df$Value),
-			 grand_mean - 1 * sqrt(MS_within) / sd(df$Value)),
-	ymax = c(grand_mean +     sqrt(MS_between) / sd(df$Value),
-			 grand_mean +     sqrt(MS_within) / sd(df$Value))
-)
+# df_rect <- data.frame(
+# 	`Mean Square` = c('Between', 'Within'),
+# 	xmin = c(-1* sqrt(MS_between) / sd(df$Value),
+# 			 -1 *sqrt(MS_within) / sd(df$Value)),
+# 	xmax = c(    sqrt(MS_between) / sd(df$Value),
+# 				 sqrt(MS_within) / sd(df$Value)),
+# 	ymin = c(grand_mean - 1 * sqrt(MS_between) / sd(df$Value),
+# 			 grand_mean - 1 * sqrt(MS_within) / sd(df$Value)),
+# 	ymax = c(grand_mean +     sqrt(MS_between) / sd(df$Value),
+# 			 grand_mean +     sqrt(MS_within) / sd(df$Value))
+# )
 
 df_rect <- data.frame(
 	`Mean Square` = c('Between', 'Within'),
 	# contrast = NA,
 	# Value = NA,
-	xmin = c(-1* sqrt(MS_between),
-			 -1 *sqrt(MS_within)),
-	xmax = c(    sqrt(MS_between),
-				 sqrt(MS_within)),
-	ymin = c(grand_mean - 1 * sqrt(MS_between),
-			 grand_mean - 1 * sqrt(MS_within)),
-	ymax = c(grand_mean +     sqrt(MS_between),
-			 grand_mean +     sqrt(MS_within)) )
+	xmin = c(-1* sqrt(MS_between)/2,
+			 -1 *sqrt(MS_within)/2),
+	xmax = c(    sqrt(MS_between)/2,
+				 sqrt(MS_within)/2),
+	ymin = c(grand_mean - 1 * sqrt(MS_between)/2,
+			 grand_mean - 1 * sqrt(MS_within)/2),
+	ymax = c(grand_mean +     sqrt(MS_between)/2,
+			 grand_mean +     sqrt(MS_within)/2) )
 
 slope <- (desc[1,]$mean - desc[2,]$mean) / (desc[1,]$contrast - desc[2,]$contrast)
 intercept <- desc[1,]$mean - slope * desc[1,]$contrast
@@ -96,15 +96,26 @@ df_rect_within <- df %>%
 df_subscript <- paste0(df_between, ', ', df_within)
 title <- bquote(F[.(df_subscript)] == .(prettyNum(F_stat, digits = 3)) ~ '; p' ~ .(ifelse(p < 0.01, ' < 0.01', paste0(' = ', prettyNum(p, digits = 3)))))
 
+# df_rect_within
+# df_rect_within$MS
+
+# tmp <- (df_rect$xmax - df_rect$xmin) * (df_rect$ymax - df_rect$ymin)
+# tmp[1] / tmp[2]
+# df_rect
+
+# library(granova)
+# granova.1w(df$Value, df$Group)
+
 p <- ggplot() +
-	geom_rect(data = df_rect_within, aes(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax, color = Group),
-			  alpha = 0.05, linetype = 2) +
+	# geom_rect(data = df_rect_within, aes(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax, color = Group),
+	# 		  alpha = 0.05, linetype = 2) +
 	# geom_rect(data = df_rect, aes(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax, group = Mean.Square, color = Mean.Square, fill = Mean.Square),
 	# 		  alpha = 0.05) +
 	geom_rect(data = df_rect[1,], aes(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax, group = Mean.Square),
 			  alpha = 0.1, fill = '#7fc97f') +
 	geom_rect(data = df_rect[2,], aes(xmin = xmin, ymin = ymin, xmax = xmax, ymax = ymax, group = Mean.Square),
 			  alpha = 0.4, fill = '#fdc086') +
+	# TODO: use 1/2 sqrt(ms_within)
 	geom_hline(yintercept = c(grand_mean - sd(df$Value), grand_mean + sd(df$Value)),
 			   linetype = 5, color = 'maroon', alpha = 0.5) +
 	geom_text(x = c(-100, 100),
@@ -131,7 +142,8 @@ p <- ggplot() +
 	xlab('Contrast Coefficient') + ylab('Dependent Variable') + coord_equal() +
 	theme_minimal() + theme(panel.grid.major = element_line(color = 'grey90', size = 0.3),
 							panel.grid.minor = element_blank(),
-							legend.position = 'bottom')
+							legend.position = 'bottom') +
+	xlim(range(df$Value) - grand_mean)
 p
 
 ggExtra::ggMarginal(p, groupColour = TRUE, groupFill = TRUE, type = 'boxplot', margins = 'y', yparams = list(alpha = 0.05))
